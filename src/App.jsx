@@ -17,6 +17,12 @@ import Register4ps from "./Components/Register4ps";
 import About from "./Components/About";
 import AboutSystem from "./Components/Abouts/AboutSystem";
 import AboutTown from "./Components/Abouts/AboutTown";
+import LGULayout from "./Components/LGULayout/LGULayout";
+import RegionalLayout from "./Components/RegionalLayout/RegionalLayout";
+import Applicants from "./Components/Applicants";
+import Applicants2 from "./Components/Applicants2";
+import Applicants4ps from "./Components/Applicants4ps";
+import Applicants4ps2 from "./Components/Applicants4ps2";
 
 function App() {
   return (
@@ -24,6 +30,28 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
+
+        <Route path="/LGU" element={<LGULayout />}>
+          <Route path="/LGU" element={<Registration />}>
+            <Route path="register1" element={<Register1 />} />
+            <Route path="register2" element={<Register2 />} />
+          </Route>
+          <Route path="card" element={<Card />} />
+          <Route path="registersenior" element={<Register4ps />} />
+          <Route path="applicants" element={<Applicants />} />
+          <Route path="applicants4ps2" element={<Applicants4ps2 />} />
+        </Route>
+
+        <Route path="/Regional" element={<RegionalLayout />}>
+          <Route path="/Regional" element={<Registration />}>
+            <Route path="register1" element={<Register1 />} />
+            <Route path="register2" element={<Register2 />} />
+          </Route>
+          <Route path="card" element={<Card />} />
+          <Route path="registersenior" element={<Register4ps />} />
+          <Route path="applicants2" element={<Applicants2 />} />
+          <Route path="applicants4ps" element={<Applicants4ps />} />
+        </Route>
 
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<Home />} />
@@ -34,12 +62,7 @@ function App() {
             <Route path="news" element={<News />} />
           </Route>
           <Route path="download" element={<Download />} />
-          <Route path="registration" element={<Registration />}>
-            <Route path="register1" element={<Register1 />} />
-            <Route path="register2" element={<Register2 />} />
-          </Route>
-          <Route path="card" element={<Card />} />
-          <Route path="registersenior" element={<Register4ps />} />
+
           <Route path="/about" element={<About />}>
             <Route path="aboutsystem" element={<AboutSystem />} />
             <Route path="abouttown" element={<AboutTown />} />

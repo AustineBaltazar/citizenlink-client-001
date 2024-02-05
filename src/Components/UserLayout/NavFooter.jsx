@@ -26,12 +26,6 @@ export default function NavFooter() {
             Downloads
           </Link>
           <span className="text-white">|</span>
-          <Link
-            to="registration/Register1"
-            className="text-white hover:text-blue-500"
-          >
-            Registration
-          </Link>
         </div>
         <div className="text-white text-xs">
           Copyright © CitizenLink Binmaley 2023

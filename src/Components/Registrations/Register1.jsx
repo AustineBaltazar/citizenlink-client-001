@@ -3,19 +3,19 @@ import axios from "axios";
 
 const Register1 = () => {
   const [formData, setFormData] = useState({
-    typeOfApplication: "",
+    typeOfApplication: "Select Option",
     idNumber: "",
     medicineBookletNumber: "",
     purchaseDTIbooklet: "",
     dateOfApplication: "",
-    barangay: "",
+    barangay: "Select Option",
     firstName: "",
     middleName: "",
     lastName: "",
     age: "",
-    sex: "",
-    civilStatus: "",
-    nationality: "",
+    sex: "Select Option",
+    civilStatus: "Select Option",
+    nationality: "Select Option",
     dateOfBirth: "",
     placeOfBirth: "",
     address: "",
@@ -49,9 +49,15 @@ const Register1 = () => {
 
       // Handle the response as needed
       console.log("API Response:", response.data);
+
+      // Show success alert
+      alert("Form submitted successfully!");
     } catch (error) {
       // Handle errors
       console.error("API Error:", error);
+
+      // Show error alert
+      alert("Error submitting form. Please try again.");
     }
   };
 
@@ -71,53 +77,64 @@ const Register1 = () => {
       >
         <div>
           <div>
-            <label className="text-xl">Type of Application:</label>
+            <label className="text-xl">
+              Type of Application <span className="text-red-500">*</span>
+            </label>
             <select
               name="typeOfApplication"
               value={formData.typeOfApplication}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg border-black"
             >
+              <option value="Select Option" disabled>
+                Select Type of Application
+              </option>
               <option value="New">New</option>
               <option value="Replacement">Replacement</option>
             </select>
           </div>
 
           <div>
-            <label className="text-xl">ID Number:</label>
+            <label className="text-xl">
+              ID Number<span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="idNumber"
               value={formData.idNumber}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg border-black"
-              placeholder="--ID Number--"
+              placeholder="ID Number"
             />
           </div>
         </div>
 
         <div className="">
           <div>
-            <label className="text-xl">Medicine Booklet Number:</label>
+            <label className="text-xl">
+              Medicine Booklet Number <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="medicineBookletNumber"
               value={formData.medicineBookletNumber}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg border-black"
-              placeholder="--Medicine Booklet Number--"
+              placeholder="Medicine Booklet Number"
             />
           </div>
 
           <div>
-            <label className="text-xl">Purchase DTI Booklet:</label>
+            <label className="text-xl">
+              Purchase DTI Booklet <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               name="purchaseDTIbooklet"
               value={formData.purchaseDTIbooklet}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg border-black mb-8"
-              placeholder="--Purchase DTI/Booklet--"
+              placeholder="Purchase DTI/Booklet"
             />
           </div>
         </div>
@@ -126,7 +143,9 @@ const Register1 = () => {
         </h1>
 
         <div>
-          <label className="text-xl">Date of Application:</label>
+          <label className="text-xl">
+            Date of Application <span className="text-red-500">*</span>
+          </label>
           <input
             type="date"
             name="dateOfApplication"
@@ -137,18 +156,26 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Barangay:</label>
-          <input
-            type="text"
+          <label className="text-xl">
+            Barangay<span className="text-red-500">*</span>
+          </label>
+          <select
             name="barangay"
             value={formData.barangay}
             onChange={handleInputChange}
             className="w-full p-2 border rounded-lg border-black"
-          />
+          >
+            <option value="Select Option" disabled>
+              Select Option
+            </option>
+            <option value="San Isidro Norte">San Isidro Norte</option>
+          </select>
         </div>
 
         <div>
-          <label className="text-xl">First Name:</label>
+          <label className="text-xl">
+            First Name <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="firstName"
@@ -160,7 +187,7 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Middle Name:</label>
+          <label className="text-xl">Middle Name</label>
           <input
             type="text"
             name="middleName"
@@ -172,7 +199,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Last Name:</label>
+          <label className="text-xl">
+            Last Name<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="lastName"
@@ -184,7 +213,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Age:</label>
+          <label className="text-xl">
+            Age<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="age"
@@ -196,44 +227,64 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Sex:</label>
+          <label className="text-xl">
+            Sex<span className="text-red-500">*</span>
+          </label>
           <select
             name="sex"
             value={formData.sex}
             onChange={handleInputChange}
             className="w-full p-2 border rounded-lg border-black"
           >
+            <option value="Select Option" disabled>
+              Select Option
+            </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
         </div>
 
         <div>
-          <label className="text-xl">Civil Status:</label>
-          <input
-            type="text"
+          <label className="text-xl">
+            Civil Status<span className="text-red-500">*</span>
+          </label>
+          <select
             name="civilStatus"
             value={formData.civilStatus}
             onChange={handleInputChange}
             className="w-full p-2 border rounded-lg border-black"
-            placeholder="Civil Status"
-          />
+          >
+            <option value="Select Option" disabled>
+              Select Option
+            </option>
+            <option value="single">single</option>
+            <option value="married">married</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <div>
-          <label className="text-xl">Nationality:</label>
-          <input
-            type="text"
+          <label className="text-xl">
+            Nationality<span className="text-red-500">*</span>
+          </label>
+          <select
             name="nationality"
             value={formData.nationality}
             onChange={handleInputChange}
             className="w-full p-2 border rounded-lg border-black"
-            placeholder="Nationality"
-          />
+          >
+            <option value="Select Option" disabled>
+              Select Option
+            </option>
+            <option value="Filipino">Filipino</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <div>
-          <label className="text-xl">Date of Birth:</label>
+          <label className="text-xl">
+            Date of Birth<span className="text-red-500">*</span>
+          </label>
           <input
             type="date"
             name="dateOfBirth"
@@ -244,7 +295,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Place of Birth:</label>
+          <label className="text-xl">
+            Place of Birth<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="placeOfBirth"
@@ -256,7 +309,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Address:</label>
+          <label className="text-xl">
+            Address<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="address"
@@ -268,7 +323,7 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Picture:</label>
+          <label className="text-xl">Picture</label>
           <input
             type="file"
             name="picture"
@@ -278,7 +333,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Contact Person:</label>
+          <label className="text-xl">
+            Contact Person<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="contactPerson"
@@ -290,7 +347,9 @@ const Register1 = () => {
         </div>
 
         <div>
-          <label className="text-xl">Contact Number:</label>
+          <label className="text-xl">
+            Contact Number<span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="contactNumber"

@@ -1,32 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import Empower from "./Empower";
+import axios from "axios";
 import list from "/img/list.png";
 import facebook from "/img/facebook.png";
 import Thumb3 from "/img/facebook-thumb.png";
-import { Link, Outlet } from "react-router-dom";
 import Thumb1 from "/img/thumbnails.png";
-import { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Register4ps() {
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
-    lastName: "",
+    surName: "",
     suffix: "",
     houseNumber: "",
     street: "",
-    barangay: "",
-    city: "",
-    province: "",
-    region: "",
+    barangay: "Select Option",
+    cityMunicipality: "",
+    province: "Select Option",
+    region: "Select Option",
     postal: "",
-    contact: "",
-    birthDate: "",
+    contactNumber: "",
+    dateOfBirth: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/4ps/submit",
+        formData
+      );
+
+      console.log("Form submitted successfully:", response.data);
+
+      // Show success alert
+      alert("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+
+      // Show error alert
+      alert("Error submitting form. Please try again.");
+    }
+  };
+
   return (
     <div>
       <Empower />
@@ -34,7 +57,7 @@ export default function Register4ps() {
         <div className="w-[65%] ml-16 mr-16">
           <div className="border-b-2 ">
             <h1 className="bg-red-800 w-fit text-white px-2 py-2 text-sm">
-              Application form for Senior Citizen
+              Application form for
             </h1>
           </div>
 
@@ -43,14 +66,14 @@ export default function Register4ps() {
               NON-4Ps Information Sheet
             </h1>
             <h1 className="text-3xl font-bold mt-8">Name of Applicant</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="lastName">Last Name *</label>
+                <label htmlFor="surName">Surname *</label>
                 <input
                   type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
+                  id="surName"
+                  name="surName"
+                  value={formData.surName}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="Enter Last Name"
@@ -95,33 +118,30 @@ export default function Register4ps() {
 
               <h1 className="text-3xl font-bold mt-8">Address</h1>
               <div>
-                <label htmlFor="houseNumber">House No. *</label>
-                <select
+                <label htmlFor="contact">House No. *</label>
+                <input
+                  type="text"
                   id="houseNumber"
                   name="houseNumber"
                   value={formData.houseNumber}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
-                  placeholder="Choose Options"
-                >
-                  <option value="male">house 1</option>
-                  <option value="female">house 2</option>
-                </select>
+                  placeholder="House No./Zone/Sitio/Purok"
+                />
               </div>
               <div>
-                <label htmlFor="street">Street *</label>
-                <select
+                <label htmlFor="contact">Street *</label>
+                <input
+                  type="text"
                   id="street"
                   name="street"
                   value={formData.street}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
-                  placeholder="Choose Options"
-                >
-                  <option value="male">street 1</option>
-                  <option value="female">street 2</option>
-                </select>
+                  placeholder="Street"
+                />
               </div>
+
               <div>
                 <label htmlFor="barangay">Barangay *</label>
                 <select
@@ -132,24 +152,26 @@ export default function Register4ps() {
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="Choose Options"
                 >
-                  <option value="male">barangay 1</option>
-                  <option value="female">barangay 2</option>
+                  <option value="Select Option" disabled>
+                    Select Option
+                  </option>
+                  <option value="San Isidro Norte">San Isidro Norte</option>
                 </select>
               </div>
+
               <div>
-                <label htmlFor="city">City *</label>
-                <select
-                  id="city"
-                  name="city"
-                  value={formData.city}
+                <label htmlFor="contact">City *</label>
+                <input
+                  type="text"
+                  id="cityMunicipality"
+                  name="cityMunicipality"
+                  value={formData.cityMunicipality}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
-                  placeholder="Choose Options"
-                >
-                  <option value="male">city 1</option>
-                  <option value="female">city 2</option>
-                </select>
+                  placeholder="City"
+                />
               </div>
+
               <div>
                 <label htmlFor="province">Province *</label>
                 <select
@@ -160,8 +182,10 @@ export default function Register4ps() {
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="Choose Options"
                 >
-                  <option value="male">province 1</option>
-                  <option value="female">province 2</option>
+                  <option value="Select Option" disabled>
+                    Select Option
+                  </option>
+                  <option value="Binmaley">Binmaley</option>
                 </select>
               </div>
               <div>
@@ -174,31 +198,31 @@ export default function Register4ps() {
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="Choose Options"
                 >
-                  <option value="male">region 1</option>
-                  <option value="female">region 2</option>
+                  <option value="Select Option" disabled>
+                    Select Option
+                  </option>
+                  <option value="Region 1">Region 1</option>
                 </select>
               </div>
               <div>
-                <label htmlFor="postal">Postal *</label>
-                <select
+                <label htmlFor="contact">Postal *</label>
+                <input
+                  type="text"
                   id="postal"
                   name="postal"
                   value={formData.postal}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
-                  placeholder="Choose Options"
-                >
-                  <option value="male">postal 1</option>
-                  <option value="female">postal 2</option>
-                </select>
+                  placeholder="Postal"
+                />
               </div>
               <div>
-                <label htmlFor="birthDate">Birth Date *</label>
+                <label htmlFor="birthDate">Date Of Birth *</label>
                 <input
                   type="date"
-                  id="birthDate"
-                  name="birthDate"
-                  value={formData.birthDate}
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="dd/mm/yyyy"
@@ -208,9 +232,9 @@ export default function Register4ps() {
                 <label htmlFor="contact">Contact Number *</label>
                 <input
                   type="text"
-                  id="contact"
-                  name="contact"
-                  value={formData.contact}
+                  id="contactNumber"
+                  name="contactNumber"
+                  value={formData.contactNumber}
                   onChange={handleChange}
                   className="w-full p-2 border rounded-lg border-black"
                   placeholder="Enter Contact Number"
@@ -251,7 +275,6 @@ export default function Register4ps() {
           </div>
           <div className="flex flex-col">
             <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
               <div className="m-2 flex flex-col">
                 <a
                   href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
@@ -268,7 +291,6 @@ export default function Register4ps() {
               </p>
             </div>
             <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
               <div className="m-2 flex flex-col">
                 <a
                   href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
@@ -285,7 +307,6 @@ export default function Register4ps() {
               </p>
             </div>
             <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
               <div className="m-2 flex flex-col">
                 <a
                   href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
