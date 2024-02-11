@@ -132,7 +132,7 @@ export default function Home() {
             <h2>LIST OF NEWS</h2>
           </div>
           <div>
-            <h3 className="bg-red-800 w-fit px-4 mt-6 text-white border rounded-md  mb-6 ">
+            <h3 className="bg-[#6D2932] w-fit px-4 mt-6 text-white border rounded-md  mb-6 ">
               Top News
             </h3>
           </div>
@@ -256,7 +256,7 @@ export default function Home() {
                 <div className="mb-4">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-900"
+                    className="px-4 py-2 bg-[#6D2932] text-white rounded hover:bg-red-900"
                   >
                     Continue
                   </button>

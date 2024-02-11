@@ -12,7 +12,7 @@ export default function News() {
       <div className="flex mt-5">
         <div className="w-[50%] ml-8">
           <div className="border-b-2 w-[90%] ">
-            <h1 className="bg-red-800 w-fit px-4 rounded-sm text-white">
+            <h1 className="bg-[#6D2932] w-fit px-4 rounded-sm text-white">
               TOP NEWS
             </h1>
           </div>

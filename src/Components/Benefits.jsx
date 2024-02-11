@@ -12,7 +12,7 @@ export default function Benefits() {
       <div className="flex mt-5 mb-16">
         <div className="w-[65%] ml-16 mr-16">
           <div className="border-b-2 flex px text-lg">
-            <nav className="bg-red-800 w-fit text-white px-4 py-2">
+            <nav className="bg-[#6D2932] w-fit text-white px-4 py-2">
               <Link
                 className=" mr-4 hover:text-cyan-500 transition-colors duration-300"
                 to="benefit1"

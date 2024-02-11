@@ -11,7 +11,7 @@ export default function About() {
       <div className="flex mt-5 mb-16 ">
         <div className="w-[100%] ml-16 mr-16 mt-6">
           <div className=" flex px text-sl justify-center ">
-            <nav className="bg-red-800 w-fit text-white px-4 py-2 rounded-2xl ">
+            <nav className="bg-[#6D2932] w-fit text-white px-4 py-2 rounded-2xl ">
               <Link
                 className="  hover:text-cyan-500 transition-colors duration-300"
                 to="abouttown"
@@ -19,7 +19,7 @@ export default function About() {
                 Binmaley Town
               </Link>
             </nav>
-            <nav className="bg-red-800 w-fit text-white px-2 ml-4 py-2 rounded-2xl">
+            <nav className="bg-[#6D2932] w-fit text-white px-2 ml-4 py-2 rounded-2xl">
               <Link
                 className=" ml-3 mr-3 hover:text-cyan-500 transition-colors duration-300"
                 to="aboutsystem"

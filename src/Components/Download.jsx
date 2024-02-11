@@ -10,7 +10,7 @@ export default function Download() {
       <div className="flex mt-8">
         <div className="w-[70%]">
           <div className="border-b-2 ml-32 mr-32">
-            <h1 className="bg-red-800 w-fit px-4 text-white rounded-sm">
+            <h1 className="bg-[#6D2932] w-fit px-4 text-white rounded-sm">
               Downloads
             </h1>
           </div>
