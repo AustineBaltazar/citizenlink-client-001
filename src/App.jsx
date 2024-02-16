@@ -13,7 +13,15 @@ import AboutTown from "./Components/Abouts/AboutTown";
 import BarangayLayout from "./Components/BarangayLayout/BarangayLayout";
 import SeniorForm from "./Components/BarangayPage/SeniorForm";
 import FourPsForm from "./Components/BarangayPage/FourPsForm";
-
+import RegionalLayout from "./Components/RegionalLayout/RegionalLayout";
+import Barangay1 from "./Components/RegionalPage/Barangay1";
+import Barangay2 from "./Components/RegionalPage/Barangay2";
+import Barangay3 from "./Components/RegionalPage/Barangay3";
+import Dashboard from "./Components/RegionalPage/Dashboard";
+import FourPsApplicant1 from "./Components/RegionalPage/FourPsApplicants/FourPsApplicant1";
+import SeniorApplicants1 from "./Components/RegionalPage/SeniorApplicants/SeniorApplicants1";
+import FourPsApplicant2 from "./Components/RegionalPage/FourPsApplicants/FourPsApplicant2";
+import SeniorApplicant2 from "./Components/RegionalPage/SeniorApplicants/SeniorApplicant2";
 function App() {
   return (
     <BrowserRouter>
@@ -32,9 +40,22 @@ function App() {
             <Route path="abouttown" element={<AboutTown />} />
           </Route>
         </Route>
+
         <Route path="/barangay" element={<BarangayLayout />}>
           <Route path="/barangay" element={<SeniorForm />} />
           <Route path="4ps" element={<FourPsForm />} />
+        </Route>
+
+        <Route path="/regional" element={<RegionalLayout />}>
+          <Route path="/regional" element={<Dashboard />} />
+          <Route path="Barangay1" element={<Barangay1 />}>
+            <Route path="FourPsApplicant1" element={<FourPsApplicant1 />} />
+            <Route path="SeniorApplicant1" element={<SeniorApplicants1 />} />
+          </Route>
+          <Route path="Barangay2" element={<Barangay2 />}>
+            <Route path="FourPsApplicant2" element={<FourPsApplicant2 />} />
+            <Route path="SeniorApplicant2" element={<SeniorApplicant2 />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
