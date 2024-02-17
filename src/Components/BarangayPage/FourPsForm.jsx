@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function FourPsForm() {
-  // State variables to store form data
+  // State variables to store form data, modal visibility, and loading state
   const [formData, setFormData] = useState({
     surname: "",
     firstname: "",
@@ -19,6 +19,9 @@ export default function FourPsForm() {
     contactNumber: "",
     applicationStatus: "pending",
   });
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Added loading state
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -33,17 +36,36 @@ export default function FourPsForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Set loading to true when form is submitted
+      setLoading(true);
       // Send POST request to your backend API with form data
       const response = await axios.post(
         "http://localhost:4000/api/4ps/submit",
         formData
       );
       console.log("Form submitted successfully:", response.data);
-      // Optionally, you can redirect or show a success message here
+      // Update modal message
+      setModalMessage("Form submitted successfully");
+      // Show modal
+      setShowModal(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error (e.g., show error message)
+      // Update modal message
+      setModalMessage("Error submitting form");
+      // Show modal
+      setShowModal(true);
+    } finally {
+      // Set loading to false after 1.5 seconds
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     }
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setShowModal(false);
+    setModalMessage("");
   };
 
   return (
@@ -217,6 +239,32 @@ export default function FourPsForm() {
           </form>
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white p-4 rounded-md">
+            {/* Loading indicator */}
+            {loading && <p>Loading...</p>}
+            {/* Modal content */}
+            {!loading && (
+              <>
+                <button
+                  className="absolute top-0 right-0 m-2"
+                  onClick={closeModal}
+                >
+                  &times;
+                </button>
+                <p className="text-center">{modalMessage}</p>
+                <button
+                  className="bg-[#561C24] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
