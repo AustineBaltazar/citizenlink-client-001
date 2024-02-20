@@ -1,8 +1,8 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import image1 from "/img/image-long.png";
-import image2 from "/img/image-long2.png";
+import image1 from "/img/4ps-image.png";
+import image2 from "/img/senior-image.png";
 
 const Slider = () => {
   return (

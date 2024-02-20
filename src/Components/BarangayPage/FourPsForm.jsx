@@ -69,12 +69,12 @@ export default function FourPsForm() {
   };
 
   return (
-    <div className="bg-gray-200 h-full flex justify-center items-center">
-      <div className="w-full max-w-full p-4">
+    <div className="bg-gray-200  ">
+      <div className="w-full max-w-full p-8">
         <h2 className="text-2xl mb-4 font-bold text-[#561C24]">4Ps Form</h2>
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
-          <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className=" gap-4">
             {/* Surname */}
             <div className="mb-4">
               <label htmlFor="surname" className="block mb-2">

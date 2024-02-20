@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-export default function Barangay1() {
+export default function BarangayTable() {
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold flex justify-center my-4">
@@ -12,18 +12,18 @@ export default function Barangay1() {
         <ul className="flex">
           <li className="mr-4">
             <Link
-              to="/Regional/Barangay1/FourPsApplicant1"
+              to="/Barangay/applicants/Barangay1Senior"
               className="inline-block bg-[#E8D8C4] hover:bg-gray-400 text-black font-bold py-2 px-4 "
             >
-              4ps Form
+              Senior Form
             </Link>
           </li>
           <li>
             <Link
-              to="/Regional/Barangay1/SeniorApplicant1"
+              to="/Barangay/applicants/Barangay14ps"
               className="inline-block bg-[#E8D8C4] hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
             >
-              Senior Form
+              4ps Form
             </Link>
           </li>
         </ul>

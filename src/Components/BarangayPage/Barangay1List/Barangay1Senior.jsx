@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const SeniorApplicant2 = () => {
+export default function Barangay1Senior() {
   const [forms, setForms] = useState([]);
 
   useEffect(() => {
@@ -12,10 +12,10 @@ const SeniorApplicant2 = () => {
           "http://localhost:4000/api/senior/entries"
         );
         const data = response.data;
-        const sanIsidroSurForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+        const sanIsidroNorteForms = data.filter(
+          (form) => form.barangay === "San Isidro Norte"
         );
-        setForms(sanIsidroSurForms);
+        setForms(sanIsidroNorteForms);
       } catch (error) {
         console.error(error);
       }
@@ -58,6 +58,4 @@ const SeniorApplicant2 = () => {
       </div>
     </div>
   );
-};
-
-export default SeniorApplicant2;
+}

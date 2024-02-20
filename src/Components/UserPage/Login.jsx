@@ -42,13 +42,13 @@ export default function Login() {
               placeholder="****************"
               className="border rounded-xl p-2 w-64"
             />
-            <div className="mt-4 flex justify-center">
-              <button className="bg-[#6D2932] text-white font-bold py-2 px-12 rounded-md">
-                Login
-              </button>
-            </div>
           </div>
         </form>
+      </div>
+      <div className="mt-4 flex justify-center">
+        <button className="bg-[#6D2932] text-white font-bold py-2 px-12 rounded-md">
+          Login
+        </button>
       </div>
     </div>
   );

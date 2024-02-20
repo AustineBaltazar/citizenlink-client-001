@@ -74,10 +74,10 @@ export default function SeniorForm() {
   };
 
   return (
-    <div className="bg-gray-200  p-4">
+    <div className="bg-gray-200  p-8">
       <h2 className="text-2xl font-bold mb-4 text-[#561C24]">Senior Form</h2>
-      <div className="bg-white py-2 px-8 shadow-md border rounded-md">
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+      <div className="bg-white py-2 px-10 shadow-md border rounded-md">
+        <form onSubmit={handleSubmit}>
           {/* Type of Application */}
           <div className="mb-4">
             <label htmlFor="typeOfApplication" className="block mb-2">

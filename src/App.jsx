@@ -22,6 +22,10 @@ import FourPsApplicant1 from "./Components/RegionalPage/FourPsApplicants/FourPsA
 import SeniorApplicants1 from "./Components/RegionalPage/SeniorApplicants/SeniorApplicants1";
 import FourPsApplicant2 from "./Components/RegionalPage/FourPsApplicants/FourPsApplicant2";
 import SeniorApplicant2 from "./Components/RegionalPage/SeniorApplicants/SeniorApplicant2";
+import BarangayTable from "./Components/BarangayPage/BarangayTable";
+import Barangay14ps from "./Components/BarangayPage/Barangay1List/Barangay14ps";
+import Barangay1Senior from "./Components/BarangayPage/Barangay1List/Barangay1Senior";
+
 function App() {
   return (
     <BrowserRouter>
@@ -44,6 +48,10 @@ function App() {
         <Route path="/barangay" element={<BarangayLayout />}>
           <Route path="/barangay" element={<SeniorForm />} />
           <Route path="4ps" element={<FourPsForm />} />
+          <Route path="applicants" element={<BarangayTable />}>
+            <Route path="Barangay14ps" element={<Barangay14ps />} />
+            <Route path="Barangay1Senior" element={<Barangay1Senior />} />
+          </Route>
         </Route>
 
         <Route path="/regional" element={<RegionalLayout />}>
