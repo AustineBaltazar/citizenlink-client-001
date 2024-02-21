@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-const FourPsApplicant2 = () => {
+export default function LguSenior1() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -10,10 +11,12 @@ const FourPsApplicant2 = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/4ps/forms");
+        const response = await axios.get(
+          "http://localhost:4000/api/senior/entries"
+        );
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+          (form) => form.barangay === "San Isidro Norte"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {
@@ -26,7 +29,7 @@ const FourPsApplicant2 = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:4000/api/4ps/forms/${id}`, {
+      await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
         applicationStatus: newStatus,
       });
       // Assuming successful update, update the local state to reflect changes
@@ -51,18 +54,16 @@ const FourPsApplicant2 = () => {
   };
 
   const filteredForms = forms.filter((form) =>
-    `${form.firstname} ${form.surname}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+    `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#6D2932] border-l border-black border-r border-t flex flex-row-reverse ">
+          <div className="bg-[#2D7144] border-l border-black border-r border-t flex flex-row-reverse ">
             <div className="mr-2 mt-1">
-              <button className="rounded-l-full bg-[#6D2932] border border-black text-white px-2">
+              <button className="rounded-l-full bg-[#2D7144] border border-white text-white px-2">
                 search
               </button>
               <input
@@ -74,26 +75,32 @@ const FourPsApplicant2 = () => {
               />
             </div>
           </div>
-          <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r ">
+          <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
-              <tr className="bg-[#6D2932] text-white">
+              <tr className="bg-[#2D7144] text-white">
                 <th className="px-4 py-2">First Name</th>
-                <th className="px-4 py-2">Birthday</th>
-                <th className="px-4 py-2">Town</th>
+                <th className="px-4 py-2">Last Name</th>
+                <th className="px-4 py-2">Age</th>
+                <th className="px-4 py-2">Sex</th>
+                <th className="px-4 py-2">Contact Number</th>
                 <th className="px-4 py-2">Barangay</th>
+
                 <th className="px-4 py-2">Applicant Status</th>
-                <th className="px-4 py-2">View Info</th>
+                <th className="px-4 py-2">View Form</th>
               </tr>
             </thead>
             <tbody>
               {filteredForms.map((form) => (
                 <tr key={form._id} className="border-b border-gray-300">
-                  <td className="px-4 py-2 text-center">{`${form.firstname}${form.surname}`}</td>
-                  <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
+                  <td className="px-4 py-2 text-center">{form.firstName}</td>
+                  <td className="px-4 py-2 text-center">{form.lastName}</td>
+                  <td className="px-4 py-2 text-center">{form.age}</td>
+                  <td className="px-4 py-2 text-center">{form.sex}</td>
                   <td className="px-4 py-2 text-center">
-                    {form.cityMunicipality}
+                    {form.contactNumber}
                   </td>
                   <td className="px-4 py-2 text-center">{form.barangay}</td>
+
                   <td className="px-4 py-2 text-center">
                     <select
                       value={form.applicationStatus}
@@ -101,7 +108,13 @@ const FourPsApplicant2 = () => {
                         handleStatusChange(form._id, e.target.value)
                       }
                     >
-                      {["pending", "rejected", "approved"].map((status) => (
+                      {[
+                        "pending",
+                        "on review",
+                        "incomplete",
+                        "not eligible",
+                        "eligible",
+                      ].map((status) => (
                         <option key={status} value={status}>
                           {status}
                         </option>
@@ -120,46 +133,47 @@ const FourPsApplicant2 = () => {
         </div>
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white  rounded-2xl shadow-lg">
-              <h1 className="text-xl font-semibold  bg-[#6D2932]] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
+            <div className="bg-white rounded-2xl shadow-lg">
+              <h1 className="text-xl font-semibold bg-[#2D7144] text-white text-black py-4 px-2 rounded-t-2xl flex justify-center ">
                 Applicant Information
               </h1>
               <div className="p-8">
-                <div className="grid grid-cols-3 gap-8">
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <p className="font-semibold">Type Of Application</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.typeOfApplication}
+                    </p>
+                  </div>
                   <div>
                     <p className="font-semibold">First Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.firstname}
+                      {selectedApplicant.firstName}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Middle Name:</p>
+                    <p className="font-semibold">Last Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.middlename}
+                      {selectedApplicant.lastName}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="font-semibold">Last Name:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.lastName}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Surname:</p>
+                    <p className="font-semibold">Age:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.surname}
+                      {selectedApplicant.age}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Suffix:</p>
+                    <p className="font-semibold">Sex:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.suffix}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">House Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.houseNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Street:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.street}
+                      {selectedApplicant.sex}
                     </p>
                   </div>
                   <div>
@@ -169,27 +183,45 @@ const FourPsApplicant2 = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">City Municipality:</p>
+                    <p className="font-semibold">Contact Number:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.cityMunicipality}
+                      {selectedApplicant.contactNumber}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Province:</p>
+                    <p className="font-semibold">Contact Person:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.province}
+                      {selectedApplicant.contactPerson}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Region:</p>
+                    <p className="font-semibold">ID Number:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.region}
+                      {selectedApplicant.idNumber}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Postal:</p>
+                    <p className="font-semibold">Medicine Booklet Number:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.postal}
+                      {selectedApplicant.medicineBookletNumber}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Purchase DTI booklet:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.purchaseDTIbooklet}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Date Of Application:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.dateOfApplication}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Nationality:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.nationality}
                     </p>
                   </div>
                   <div>
@@ -199,23 +231,34 @@ const FourPsApplicant2 = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">ContactNumber:</p>
+                    <p className="font-semibold">Place Of Birth:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.contactNumber}
+                      {selectedApplicant.placeOfBirth}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Applicant Status:</p>
+                    <p className="font-semibold">Address:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.address}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Picture:</p>
+                    <p className="border px-2 border-black rounded-lg">
+                      {selectedApplicant.picture}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Application Status:</p>
                     <p className="border px-2 border-black rounded-lg">
                       {selectedApplicant.applicationStatus}
                     </p>
                   </div>
-
-                  {/* Add additional fields as needed */}
                 </div>
+
                 <button
                   onClick={closeModal}
-                  className="bg-[#6D2932] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4  "
+                  className="bg-[#2D7144] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>
@@ -226,6 +269,4 @@ const FourPsApplicant2 = () => {
       </div>
     </div>
   );
-};
-
-export default FourPsApplicant2;
+}

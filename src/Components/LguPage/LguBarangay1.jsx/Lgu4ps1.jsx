@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const FourPsApplicant2 = () => {
+export default function Lgu4ps1() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -13,7 +13,7 @@ const FourPsApplicant2 = () => {
         const response = await axios.get("http://localhost:4000/api/4ps/forms");
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+          (form) => form.barangay === "San Isidro Norte"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {
@@ -60,9 +60,9 @@ const FourPsApplicant2 = () => {
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#6D2932] border-l border-black border-r border-t flex flex-row-reverse ">
+          <div className="bg-[#2D7144] border-l border-black border-r border-t flex flex-row-reverse ">
             <div className="mr-2 mt-1">
-              <button className="rounded-l-full bg-[#6D2932] border border-black text-white px-2">
+              <button className="rounded-l-full bg-[#2D7144] border border-white text-white px-2">
                 search
               </button>
               <input
@@ -74,9 +74,9 @@ const FourPsApplicant2 = () => {
               />
             </div>
           </div>
-          <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r ">
+          <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
-              <tr className="bg-[#6D2932] text-white">
+              <tr className="bg-[#2D7144] text-white">
                 <th className="px-4 py-2">First Name</th>
                 <th className="px-4 py-2">Birthday</th>
                 <th className="px-4 py-2">Town</th>
@@ -101,7 +101,13 @@ const FourPsApplicant2 = () => {
                         handleStatusChange(form._id, e.target.value)
                       }
                     >
-                      {["pending", "rejected", "approved"].map((status) => (
+                      {[
+                        "pending",
+                        "on review",
+                        "incomplete",
+                        "not eligible",
+                        "eligible",
+                      ].map((status) => (
                         <option key={status} value={status}>
                           {status}
                         </option>
@@ -121,7 +127,7 @@ const FourPsApplicant2 = () => {
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white  rounded-2xl shadow-lg">
-              <h1 className="text-xl font-semibold  bg-[#6D2932]] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
+              <h1 className="text-xl font-semibold  bg-[#2D7144] text-white text-black py-4 px-2 rounded-t-2xl flex justify-center ">
                 Applicant Information
               </h1>
               <div className="p-8">
@@ -129,19 +135,19 @@ const FourPsApplicant2 = () => {
                   <div>
                     <p className="font-semibold">First Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.firstname}
+                      {selectedApplicant.firstName}
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold">Middle Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.middlename}
+                      {selectedApplicant.middleName}
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold">Surname:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.surname}
+                      {selectedApplicant.surN7ame}
                     </p>
                   </div>
                   <div>
@@ -215,7 +221,7 @@ const FourPsApplicant2 = () => {
                 </div>
                 <button
                   onClick={closeModal}
-                  className="bg-[#6D2932] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4  "
+                  className="bg-[#2D7144] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4  "
                 >
                   Close
                 </button>
@@ -226,6 +232,4 @@ const FourPsApplicant2 = () => {
       </div>
     </div>
   );
-};
-
-export default FourPsApplicant2;
+}

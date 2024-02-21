@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function Barangay1Senior() {
+export default function LguSenior2() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function Barangay1Senior() {
         );
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Norte"
+          (form) => form.barangay === "San Isidro Sur"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {
@@ -25,6 +25,22 @@ export default function Barangay1Senior() {
 
     fetchForms();
   }, []);
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
+        applicationStatus: newStatus,
+      });
+      // Assuming successful update, update the local state to reflect changes
+      setForms(
+        forms.map((form) =>
+          form._id === id ? { ...form, applicationStatus: newStatus } : form
+        )
+      );
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
 
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
@@ -62,10 +78,27 @@ export default function Barangay1Senior() {
                 <td className="px-4 py-2 text-center">{form.sex}</td>
                 <td className="px-4 py-2 text-center">{form.contactNumber}</td>
                 <td className="px-4 py-2 text-center">{form.barangay}</td>
-                <td className="px-4 py-2 text-center">
-                  {form.applicationStatus}
-                </td>
 
+                <td className="px-4 py-2 text-center">
+                  <select
+                    value={form.applicationStatus}
+                    onChange={(e) =>
+                      handleStatusChange(form._id, e.target.value)
+                    }
+                  >
+                    {[
+                      "pending",
+                      "on review",
+                      "incomplete",
+                      "not eligible",
+                      "eligible",
+                    ].map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => handleApplicantClick(form)}>
                     View Info

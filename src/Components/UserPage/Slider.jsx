@@ -23,10 +23,10 @@ const Slider = () => {
         showThumbs={false}
       >
         <div>
-          <img src={image1} alt="Image 1" className="w-full" />
+          <img src={image2} alt="Image 2" className="w-full" />
         </div>
         <div>
-          <img src={image2} alt="Image 2" className="w-full" />
+          <img src={image1} alt="Image 1" className="w-full" />
         </div>
       </Carousel>
     </div>

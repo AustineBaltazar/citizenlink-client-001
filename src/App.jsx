@@ -25,6 +25,13 @@ import SeniorApplicant2 from "./Components/RegionalPage/SeniorApplicants/SeniorA
 import BarangayTable from "./Components/BarangayPage/BarangayTable";
 import Barangay14ps from "./Components/BarangayPage/Barangay1List/Barangay14ps";
 import Barangay1Senior from "./Components/BarangayPage/Barangay1List/Barangay1Senior";
+import LguLayout from "./Components/LguLayout/LguLayout";
+import LguBarangay1 from "./Components/LguPage/Barangays/LguBarangay1";
+import LguBarangay2 from "./Components/LguPage/Barangays/LguBarangay2";
+import Lgu4ps1 from "./Components/LguPage/LguBarangay1.jsx/Lgu4ps1";
+import Lgu4ps2 from "./Components/LguPage/LguBarangay2.jsx/Lgu4ps2";
+import LguSenior1 from "./Components/LguPage/LguBarangay1.jsx/LguSenior1";
+import LguSenior2 from "./Components/LguPage/LguBarangay2.jsx/LguSenior2";
 
 function App() {
   return (
@@ -63,6 +70,17 @@ function App() {
           <Route path="Barangay2" element={<Barangay2 />}>
             <Route path="FourPsApplicant2" element={<FourPsApplicant2 />} />
             <Route path="SeniorApplicant2" element={<SeniorApplicant2 />} />
+          </Route>
+        </Route>
+
+        <Route path="/Lgu" element={<LguLayout />}>
+          <Route path="Barangay1" element={<LguBarangay1 />}>
+            <Route path="FourPsApplicant1" element={<Lgu4ps1 />} />
+            <Route path="SeniorApplicant1" element={<LguSenior1 />} />
+          </Route>
+          <Route path="Barangay2" element={<LguBarangay2 />}>
+            <Route path="FourPsApplicant2" element={<Lgu4ps2 />} />
+            <Route path="SeniorApplicant2" element={<LguSenior2 />} />
           </Route>
         </Route>
       </Routes>
