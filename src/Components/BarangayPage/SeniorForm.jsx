@@ -75,7 +75,7 @@ export default function SeniorForm() {
 
   return (
     <div className="bg-gray-200  p-8">
-      <h2 className="text-2xl font-bold mb-4 text-[#561C24]">Senior Form</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
           {/* Type of Application */}
@@ -394,7 +394,7 @@ export default function SeniorForm() {
           <div className="col-span-2">
             <button
               type="submit"
-              className="bg-[#561C24] text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="bg-[#0569B4] text-white px-4 py-2 rounded-md hover:bg-blue-600"
             >
               Submit
             </button>

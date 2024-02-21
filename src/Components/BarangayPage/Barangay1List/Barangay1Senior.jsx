@@ -6,6 +6,7 @@ export default function Barangay1Senior() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -36,12 +37,30 @@ export default function Barangay1Senior() {
     setModalOpen(false);
   };
 
+  const filteredForms = forms.filter((form) =>
+    `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
-        <table className="table-auto border-collapse border border-gray-800 w-full">
+        <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse ">
+          <div className="mr-2 mt-1">
+            <button className="rounded-l-full bg-[#0569B4] border border-white text-white px-2">
+              search
+            </button>
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+            />
+          </div>
+        </div>
+        <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
           <thead>
-            <tr className="bg-[#E8D8C4]">
+            <tr className="bg-[#0569B4] text-white">
               <th className="px-4 py-2">First Name</th>
               <th className="px-4 py-2">Last Name</th>
               <th className="px-4 py-2">Age</th>
@@ -54,7 +73,7 @@ export default function Barangay1Senior() {
             </tr>
           </thead>
           <tbody>
-            {forms.map((form) => (
+            {filteredForms.map((form) => (
               <tr key={form._id} className="border-b border-gray-300">
                 <td className="px-4 py-2 text-center">{form.firstName}</td>
                 <td className="px-4 py-2 text-center">{form.lastName}</td>
@@ -79,7 +98,7 @@ export default function Barangay1Senior() {
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <div className="bg-white rounded-2xl shadow-lg">
-            <h1 className="text-xl font-semibold bg-[#E8D8C4] text-black py-4 px-2 rounded-t-2xl flex justify-center ">
+            <h1 className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
               Applicant Information
             </h1>
             <div className="p-8">
@@ -203,7 +222,7 @@ export default function Barangay1Senior() {
 
               <button
                 onClick={closeModal}
-                className="bg-[#E8D8C4] hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                className="bg-[#0569B4] hover:bg-gray-400 p-2 border border-black rounded-lg mt-4 text-white"
               >
                 Close
               </button>

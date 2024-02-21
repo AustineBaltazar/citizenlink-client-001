@@ -4,7 +4,7 @@ import barangay from "/img/barangay-logo.png";
 
 function Sidebar() {
   return (
-    <aside className="bg-[#E8D8C4] text-[#561C24] w-[15%]">
+    <aside className="bg-[#0569B4] text-white w-[15%]">
       <div className="container mx-auto px-4 py-4 flex flex-col justify-center items-center">
         <div className="mb-4 text-center">
           <img src={barangay} alt="Logo" className="w-64 h-32 mx-auto" />
@@ -21,7 +21,7 @@ function Sidebar() {
             <Link to="/Barangay/4ps">4Ps Form</Link>
           </li>
           <li className="mb-2">
-            <Link to="/Barangay/applicants">Applicants</Link>
+            <Link to="/Barangay/applicants/Barangay1Senior">Applicants</Link>
           </li>
         </ul>
       </div>
