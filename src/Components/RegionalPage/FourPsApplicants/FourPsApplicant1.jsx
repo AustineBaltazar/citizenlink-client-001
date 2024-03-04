@@ -80,7 +80,7 @@ const FourPsApplicant1 = () => {
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r ">
             <thead className="bg-[#6D2932] text-white">
               <tr>
-                <th className="px-4 py-2">First Name</th>
+                <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Birthday</th>
                 <th className="px-4 py-2">Town</th>
                 <th className="px-4 py-2">Barangay</th>
@@ -112,7 +112,10 @@ const FourPsApplicant1 = () => {
                     </select>
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <button onClick={() => handleApplicantClick(form)}>
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
                       View Info
                     </button>
                   </td>

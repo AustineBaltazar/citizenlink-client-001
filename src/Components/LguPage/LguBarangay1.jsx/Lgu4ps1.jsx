@@ -88,7 +88,7 @@ export default function Lgu4ps1() {
             <tbody>
               {filteredForms.map((form) => (
                 <tr key={form._id} className="border-b border-gray-300">
-                  <td className="px-4 py-2 text-center">{`${form.firstname}${form.surname}`}</td>
+                  <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
                   <td className="px-4 py-2 text-center">
                     {form.cityMunicipality}
@@ -115,7 +115,10 @@ export default function Lgu4ps1() {
                     </select>
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <button onClick={() => handleApplicantClick(form)}>
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
                       View Info
                     </button>
                   </td>
@@ -147,7 +150,7 @@ export default function Lgu4ps1() {
                   <div>
                     <p className="font-semibold">Surname:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.surN7ame}
+                      {selectedApplicant.surName}
                     </p>
                   </div>
                   <div>

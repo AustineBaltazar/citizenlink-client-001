@@ -18,7 +18,7 @@ const Slider = () => {
         showArrows={true}
         infiniteLoop={true}
         autoPlay={true}
-        interval={5000}
+        interval={2000}
         showStatus={false}
         showThumbs={false}
       >

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Barangay2() {
   return (
-    <div className="container bg-gray-100 h-full pt-8">
+    <div className="container h-full pt-8">
       <div className="text-sl flex px-4 justify-between ">
         <h1 className="text-2xl font-bold flex justify-center ">
           San Isidro Sur Applicants

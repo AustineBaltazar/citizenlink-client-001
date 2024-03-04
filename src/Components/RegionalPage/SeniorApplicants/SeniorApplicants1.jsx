@@ -78,8 +78,7 @@ const SeniorApplicants1 = () => {
           <table className="table-auto border-collapse  border-l border-r border-gray-800 w-full">
             <thead>
               <tr className="bg-[#6D2932] text-white">
-                <th className="px-4 py-2">First Name</th>
-                <th className="px-4 py-2">Last Name</th>
+                <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Age</th>
                 <th className="px-4 py-2">Sex</th>
                 <th className="px-4 py-2">Contact Number</th>
@@ -92,8 +91,7 @@ const SeniorApplicants1 = () => {
             <tbody>
               {filteredForms.map((form) => (
                 <tr key={form._id} className="border-b border-gray-300">
-                  <td className="px-4 py-2 text-center">{form.firstName}</td>
-                  <td className="px-4 py-2 text-center">{form.lastName}</td>
+                  <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                   <td className="px-4 py-2 text-center">{form.age}</td>
                   <td className="px-4 py-2 text-center">{form.sex}</td>
                   <td className="px-4 py-2 text-center">
@@ -116,7 +114,10 @@ const SeniorApplicants1 = () => {
                     </select>
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <button onClick={() => handleApplicantClick(form)}>
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
                       View Info
                     </button>
                   </td>

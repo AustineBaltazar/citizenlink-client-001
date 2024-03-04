@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useJwt } from "react-jwt"; // Import useJwt hook
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Benefits from "./Components/UserPage/Benefits";
 import Download from "./Components/UserPage/Download";
@@ -16,7 +17,6 @@ import FourPsForm from "./Components/BarangayPage/FourPsForm";
 import RegionalLayout from "./Components/RegionalLayout/RegionalLayout";
 import Barangay1 from "./Components/RegionalPage/Barangay1";
 import Barangay2 from "./Components/RegionalPage/Barangay2";
-import Barangay3 from "./Components/RegionalPage/Barangay3";
 import Dashboard from "./Components/RegionalPage/Dashboard";
 import FourPsApplicant1 from "./Components/RegionalPage/FourPsApplicants/FourPsApplicant1";
 import SeniorApplicants1 from "./Components/RegionalPage/SeniorApplicants/SeniorApplicants1";
@@ -32,12 +32,23 @@ import Lgu4ps1 from "./Components/LguPage/LguBarangay1.jsx/Lgu4ps1";
 import Lgu4ps2 from "./Components/LguPage/LguBarangay2.jsx/Lgu4ps2";
 import LguSenior1 from "./Components/LguPage/LguBarangay1.jsx/LguSenior1";
 import LguSenior2 from "./Components/LguPage/LguBarangay2.jsx/LguSenior2";
+import CitizenLayout from "./Components/CitizenLayout/CitizenLayout";
+import Status from "./Components/CitizenPage/Status";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  // Use useJwt hook to access decoded JWT token
+  const { decodedToken } = useJwt(token);
+
+  // Log the decoded token payload
+  console.log(decodedToken);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="news" element={<News />} />
@@ -82,6 +93,13 @@ function App() {
             <Route path="FourPsApplicant2" element={<Lgu4ps2 />} />
             <Route path="SeniorApplicant2" element={<LguSenior2 />} />
           </Route>
+        </Route>
+
+        <Route path="/Citizen" element={<CitizenLayout />}>
+          <Route
+            path="Status"
+            element={<Status decodedToken={decodedToken} />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

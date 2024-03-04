@@ -77,7 +77,7 @@ const FourPsApplicant2 = () => {
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r ">
             <thead>
               <tr className="bg-[#6D2932] text-white">
-                <th className="px-4 py-2">First Name</th>
+                <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Birthday</th>
                 <th className="px-4 py-2">Town</th>
                 <th className="px-4 py-2">Barangay</th>
@@ -88,7 +88,7 @@ const FourPsApplicant2 = () => {
             <tbody>
               {filteredForms.map((form) => (
                 <tr key={form._id} className="border-b border-gray-300">
-                  <td className="px-4 py-2 text-center">{`${form.firstname}${form.surname}`}</td>
+                  <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
                   <td className="px-4 py-2 text-center">
                     {form.cityMunicipality}
@@ -109,7 +109,10 @@ const FourPsApplicant2 = () => {
                     </select>
                   </td>
                   <td className="px-4 py-2 text-center">
-                    <button onClick={() => handleApplicantClick(form)}>
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
                       View Info
                     </button>
                   </td>
@@ -121,7 +124,7 @@ const FourPsApplicant2 = () => {
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white  rounded-2xl shadow-lg">
-              <h1 className="text-xl font-semibold  bg-[#6D2932]] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
+              <h1 className="text-xl font-semibold  bg-[#6D2932] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
                 Applicant Information
               </h1>
               <div className="p-8">

@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import barangay from "/img/barangay-logo.png";
 
 function SideBarRegional() {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
-    <aside className="bg-[#6D2932] text-white w-[15%]">
+    <aside className="bg-[#6D2932] text-white w-[15%] relative">
       <div className="container mx-auto px-4 py-4 flex flex-col justify-center items-center">
         {/* Logo and text */}
         <div className="mb-4 text-center">
@@ -17,15 +23,49 @@ function SideBarRegional() {
           <li className="mb-2">
             <Link to="/Regional">DashBoard</Link>
           </li>
-          <li className="mb-2">
-            <Link to="/Regional/Barangay1/FourPsApplicant1">
-              San Isidro Norte
-            </Link>
-          </li>
-          <li className="mb-2">
-            <Link to="/Regional/Barangay2/FourPsApplicant2">
-              San Isidro Sur
-            </Link>
+          {/* Dropdown */}
+          <li className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="flex justify-between w-full text-left"
+            >
+              Barangay{" "}
+              <svg
+                className={`w-6 h-6 transition-transform duration-300 transform ${
+                  dropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {dropdownOpen && (
+              <ul className="absolute left-0 w-full bg-[#6D2932] mt-2 py-1 rounded-lg shadow-lg">
+                <li>
+                  <Link
+                    to="/Regional/Barangay1/FourPsApplicant1"
+                    className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+                  >
+                    San Isidro Norte
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/Regional/Barangay2/FourPsApplicant2"
+                    className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+                  >
+                    San Isidro Sur
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>
