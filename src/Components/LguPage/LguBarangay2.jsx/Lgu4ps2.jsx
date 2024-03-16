@@ -13,7 +13,7 @@ export default function Lgu4ps2() {
         const response = await axios.get("http://localhost:4000/api/4ps/forms");
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+          (form) => form.barangay === "Baybay Lopez"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {

@@ -11,16 +11,6 @@ export default function NavUser() {
             <span>CitizenLink Binmaley</span>
           </div>
         </div>
-        <div className="flex items-center mr-24">
-          <input
-            type="text"
-            placeholder="Search"
-            className="rounded-l-full p-2 border border-gray-400 "
-          />
-          <button className="bg-[#6D2932] text-white px-4 p-2 border border-gray-400 rounded-r-full">
-            Search
-          </button>
-        </div>
       </div>
     </header>
   );

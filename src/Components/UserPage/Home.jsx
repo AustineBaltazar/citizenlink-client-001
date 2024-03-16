@@ -16,9 +16,9 @@ import calendar from "/img/calendar.png";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <Slider />
-      <div className="flex  justify-center p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         <div className=" bg-white p-4 m-2">
           <div className="text-xl font-bold bg-gray-200 py-2 px-2 flex ">
             <img src={calendar} alt="Logo" className="w-6 mr-2" />

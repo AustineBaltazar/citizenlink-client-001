@@ -16,7 +16,7 @@ export default function LguSenior2() {
         );
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+          (form) => form.barangay === "Baybay Lopez"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {

@@ -9,8 +9,8 @@ export default function About() {
     <div>
       <Empower />
       <div className="flex mt-5 mb-16 ">
-        <div className="w-[100%] ml-16 mr-16 mt-6">
-          <div className=" flex px text-sl justify-center ">
+        <div className="w-full md:w-3/4 xl:w-1/2 mx-auto mt-6">
+          <div className=" flex px text-sl justify-center  ">
             <nav className="bg-[#6D2932] w-fit text-white px-4 py-2 rounded-2xl ">
               <Link
                 className="  hover:text-cyan-500 transition-colors duration-300"

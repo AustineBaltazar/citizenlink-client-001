@@ -7,7 +7,7 @@ export default function Barangay1() {
     <div className="container h-full w-full pt-8">
       <div className="text-sl flex px-4 justify-between ">
         <h1 className="text-2xl font-bold flex justify-center ">
-          San Isidro Norte Applicants
+          San Isidro Norte Applicantssss
         </h1>
         <ul className="flex">
           <li>

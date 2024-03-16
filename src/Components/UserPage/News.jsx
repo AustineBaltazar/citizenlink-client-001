@@ -9,15 +9,15 @@ export default function News() {
   return (
     <div>
       <Empower />
-      <div className="flex mt-5">
-        <div className="w-[50%] ml-8">
-          <div className="border-b-2 w-[90%] ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-5 mx-8">
+        <div>
+          <div className="border-b-2">
             <h1 className="bg-[#6D2932] w-fit px-4 rounded-sm text-white">
               TOP NEWS
             </h1>
           </div>
-          <ul>
-            <li className="mb-2 mt-4">
+          <ul className="mt-4">
+            <li className="mb-2">
               <a
                 href="http://president.gov.ph/"
                 target="_blank"
@@ -63,68 +63,32 @@ export default function News() {
             </li>
           </ul>
         </div>
-        <div className="w-[25%] mr-8 mt-4 mb-16">
+        <div className="sm:col-span-1 ">
           <div className="text-xl font-bold bg-gray-200 py-2 px-2 flex">
             <img src={list} alt="Logo" className="w-6 mr-2" />
             <h2>LIST OF NEWS</h2>
           </div>
-          <div className="flex flex-col">
-            <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
-              <div className="m-2 flex flex-col">
-                <a
-                  href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={Thumb1} alt="Video 1" className="w-fix h-18" />
-                </a>
+          <div className="flex flex-col mt-4">
+            <div className="flex items-center mb-4">
+              <a
+                href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={Thumb1} alt="Video 1" className="w-fixed h-18" />
+              </a>
+              <div className="ml-2">
                 <p>August 12, 2023</p>
+                <p className="text-sm">
+                  DSWD Social Pension Program for Indigent Senior Citizen 2017
+                </p>
               </div>
-              <p className="text-sm">
-                DSWD Social Pension Program <br></br>for Indigent Senior Citizen
-                2017
-              </p>
             </div>
-            <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
-              <div className="m-2 flex flex-col">
-                <a
-                  href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={Thumb1} alt="Video 1" className="w-fixed h-18" />
-                </a>
-                <p>August 12, 2023</p>
-              </div>
-              <p className="text-sm">
-                DSWD Social Pension Program <br></br>for Indigent Senior Citizen
-                2017
-              </p>
-            </div>
-            <div className="flex flex-row items-start">
-              {/* Use items-start to align content at the top */}
-              <div className="m-2 flex flex-col">
-                <a
-                  href="https://www.youtube.com/watch?v=3jjnSO3m_a4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={Thumb1} alt="Video 1" className="w-fixed h-18" />
-                </a>
-                <p>August 12, 2023</p>
-              </div>
-              <p className="text-sm">
-                DSWD Social Pension Program <br></br>for Indigent Senior Citizen
-                2017
-              </p>
-            </div>
+            {/* Additional news items */}
           </div>
         </div>
-
-        <div className="w-[25%] mr-4 mt-4">
-          <div className="bg-white 2 mr-8">
+        <div className="sm:col-span-1 md:col-span-1">
+          <div className="bg-white mr-8">
             <div className="text-xl font-bold bg-gray-200 py-2 px-2 flex ">
               <img src={facebook} alt="Logo" className="w-8 mr-2" />
               <h2>FOLLOW US ON FACEBOOK</h2>
@@ -134,11 +98,7 @@ export default function News() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
-                src={Thumb3}
-                alt="Video 2"
-                className="w-full h-auto mb-16 mt-4"
-              />
+              <img src={Thumb3} alt="Video 2" className="w-full h-auto my-4" />
             </a>
           </div>
         </div>

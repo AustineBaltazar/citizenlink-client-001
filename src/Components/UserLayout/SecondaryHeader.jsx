@@ -11,7 +11,7 @@ export default function SecondaryHeader() {
   return (
     <header className="bg-[#6D2932] text-white py-7">
       <div className="container mx-auto text-sm">
-        <div className="flex space-x-6 ml-28">
+        <div className="flex flex-wrap justify-center sm:justify-start space-x-6 sm:ml-28">
           <Link
             to="/"
             className="text-white hover:text-cyan-500 transition-colors duration-300"

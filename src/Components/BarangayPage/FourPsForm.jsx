@@ -11,17 +11,20 @@ export default function FourPsForm() {
     houseNumber: "",
     street: "",
     barangay: "",
-    cityMunicipality: "Binmaley",
-    province: "Pangasinan",
-    region: "Region 1",
-    postal: "2431",
+    cityMunicipality: "",
+    province: "",
+    region: "",
+    postal: "2417",
     dateOfBirth: "",
     contactNumber: "",
+    sex: "",
+    placeOfBirth: "",
     applicationStatus: "pending",
   });
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false); // Added loading state
+  const [account, setAccount] = useState();
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -36,16 +39,51 @@ export default function FourPsForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
+
+      // Make sure the token is available
+      if (!token) {
+        // Handle case where token is missing (e.g., redirect to login page)
+        return;
+      }
+
+      // Set the Authorization header with the token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       // Set loading to true when form is submitted
       setLoading(true);
       // Send POST request to your backend API with form data
       const response = await axios.post(
         "http://localhost:4000/api/4ps/submit",
-        formData
+        formData,
+        config
       );
+      setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
       // Update modal message
       setModalMessage("Form submitted successfully");
+      // Reset form data to initial state
+      setFormData({
+        surname: "",
+        firstname: "",
+        middlename: "",
+        suffix: "",
+        houseNumber: "",
+        street: "",
+        barangay: "",
+        cityMunicipality: "",
+        province: "",
+        region: "",
+        postal: "2417",
+        dateOfBirth: "",
+        contactNumber: "",
+        sex: "",
+        placeOfBirth: "",
+        applicationStatus: "pending",
+      });
       // Show modal
       setShowModal(true);
     } catch (error) {
@@ -61,7 +99,6 @@ export default function FourPsForm() {
       }, 1500);
     }
   };
-
   // Close modal
   const closeModal = () => {
     setShowModal(false);
@@ -78,7 +115,7 @@ export default function FourPsForm() {
             {/* Surname */}
             <div className="mb-4">
               <label htmlFor="surname" className="block mb-2">
-                Surname:
+                Surname<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -91,11 +128,10 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
             {/* Firstname */}
             <div className="mb-4">
               <label htmlFor="firstname" className="block mb-2">
-                Firstname:
+                Firstname<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -108,11 +144,10 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
             {/* Middlename */}
             <div className="mb-4">
               <label htmlFor="middlename" className="block mb-2">
-                Middlename:
+                Middlename
               </label>
               <input
                 type="text"
@@ -124,11 +159,10 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
             {/* Suffix */}
             <div className="mb-4">
               <label htmlFor="suffix" className="block mb-2">
-                Suffix:
+                Suffix
               </label>
               <input
                 type="text"
@@ -140,11 +174,27 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
+            <div className="mb-4">
+              <label htmlFor="sex" className="block mb-2">
+                Sex<span className="text-red-500">*</span>
+              </label>
+              <select
+                id="sex"
+                name="sex"
+                value={formData.sex}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="">Select Sex</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
             {/* House Number */}
             <div className="mb-4">
               <label htmlFor="houseNumber" className="block mb-2">
-                House Number:
+                House Number<span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -157,11 +207,10 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
             {/* Street */}
             <div className="mb-4">
               <label htmlFor="street" className="block mb-2">
-                Street:
+                Street<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -174,28 +223,79 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
             {/* Barangay */}
             <div className="mb-4">
               <label htmlFor="barangay" className="block mb-2">
-                Barangay:
+                Barangay<span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
+              <select
                 id="barangay"
                 name="barangay"
                 value={formData.barangay}
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
-              />
+              >
+                <option value="">Select Barangay</option>
+                <option value="San Isidro Norte">San Isidro Norte</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="province" className="block mb-2">
+                Province<span className="text-red-500">*</span>
+              </label>
+              <select
+                id="province"
+                name="province"
+                value={formData.province}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="">Select Province</option>
+                <option value="Pangasinan">Pangasinan</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="cityMunicipality" className="block mb-2">
+                City Municipality<span className="text-red-500">*</span>
+              </label>
+              <select
+                id="cityMunicipality"
+                name="cityMunicipality"
+                value={formData.cityMunicipality}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="">Select City</option>
+                <option value="Binmaley">Binmaley</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="region" className="block mb-2">
+                Region<span className="text-red-500">*</span>
+              </label>
+              <select
+                id="region"
+                name="region"
+                value={formData.region}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                <option value="">Select Region</option>
+                <option value="Region 1">Region 1</option>
+              </select>
             </div>
 
             {/* Date of Birth */}
             <div className="mb-4">
               <label htmlFor="dateOfBirth" className="block mb-2">
-                Date of Birth:
+                Date of Birth<span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
@@ -207,11 +307,24 @@ export default function FourPsForm() {
                 className="w-full px-3 py-2 border rounded-md"
               />
             </div>
-
+            <div className="mb-4">
+              <label htmlFor="placeOfBirth" className="block mb-2">
+                Place of Birth<span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="placeOfBirth"
+                name="placeOfBirth"
+                value={formData.placeOfBirth}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md"
+              />
+            </div>
             {/* Contact Number */}
             <div className="mb-4">
               <label htmlFor="contactNumber" className="block mb-2">
-                Contact Number:
+                Contact Number<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -224,10 +337,6 @@ export default function FourPsForm() {
                 placeholder="Input"
               />
             </div>
-
-            {/* Application Status */}
-
-            {/* Submit button */}
             <div className="col-span-2">
               <button
                 type="submit"
@@ -253,9 +362,12 @@ export default function FourPsForm() {
                 >
                   &times;
                 </button>
-                <p className="text-center">{modalMessage}</p>
+                <div className="flex flex-col border-4 mb-2">
+                  <p className="text-center">userId: {account}</p>
+                </div>
+                <p className="text-center font-bold">{modalMessage}</p>
                 <button
-                  className="bg-[#561C24] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
+                  className="bg-[#0569B4] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
                   onClick={closeModal}
                 >
                   Close

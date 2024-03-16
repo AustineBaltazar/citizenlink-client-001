@@ -2,8 +2,8 @@ import React from "react";
 
 export default function AboutSystem() {
   return (
-    <div className="flex flex-col w-[100%] justify-center items-center">
-      <div className="bg-gray-200 flex w-[40rem] py-2 px-4">
+    <div className="flex flex-col w-full md:w-3/4 xl:w-1/2 mx-auto justify-center items-center">
+      <div className="bg-gray-200 flex w-full md:w-[30rem] py-2 px-4">
         <h1>
           Home / <b className="text-red-500">The System</b>
         </h1>
@@ -11,7 +11,7 @@ export default function AboutSystem() {
       <div className="flex flex-col items-center">
         <h1 className="pt-12 text-4xl font-bold">The System</h1>
       </div>
-      <div className="w-[60%] text-lg">
+      <div className="w-full w-[170%]  text-lg">
         <p className="pt-12">
           In the Philippines, social welfare programs such as the Pantawid
           Pamilyang Pilipino Program (4Ps) and the provision of benefits and
@@ -26,7 +26,7 @@ export default function AboutSystem() {
           healthcare, financial assistance, and discounts on various goods and
           services (Republic of the Philippines, 2010).
         </p>
-        <div className="pt-8  ">
+        <div className="pt-8">
           <p>
             The efficient and accurate management of these programs and services
             has long been a challenge. Manual management of beneficiary records
@@ -38,7 +38,7 @@ export default function AboutSystem() {
             and comprehensive web-based management system.
           </p>
         </div>
-        <div className="pt-8  ">
+        <div className="pt-8">
           <p>
             Web-based management systems have increasingly gained prominence in
             recent years due to their ability to streamline administrative
@@ -48,7 +48,7 @@ export default function AboutSystem() {
             welfare programs in various countries.
           </p>
         </div>
-        <div className="pt-8  ">
+        <div className="pt-8">
           <p>
             The proposed web-based management system for senior citizens and 4Ps
             beneficiaries in ABCD town aspires to offer a robust solution to

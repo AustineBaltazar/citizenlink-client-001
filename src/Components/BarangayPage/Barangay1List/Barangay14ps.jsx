@@ -60,27 +60,56 @@ export default function Barangay14ps() {
         `http://localhost:4000/api/4ps/forms/${selectedApplicant._id}`,
         updatedForm
       );
-      // Update the local forms state to reflect the changes
+
       setForms(
         forms.map((form) =>
           form._id === selectedApplicant._id ? updatedForm : form
         )
       );
-      setEditable(false); // Disable editing after update
-      setIsUpdated(true); // Set the state to indicate the form has been updated
+      setEditable(false);
+      setIsUpdated(true);
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleModalClose = () => {
-    setIsUpdated(false); // Reset the state when modal is closed
-    closeModal(); // Close the modal
+    setIsUpdated(false);
+    closeModal();
   };
 
   const filteredForms = forms.filter((form) =>
     `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const getStatusColorClass = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-blue-500  border-black text-white opacity-80";
+      case "on review":
+        return "bg-yellow-500  border-black text-white opacity-80";
+      case "incomplete":
+        return "bg-red-500 border-black text-white opacity-80";
+      case "not eligible":
+        return "bg-gray-500  border-black text-white opacity-80";
+      case "eligible":
+        return "bg-orange-500  border-black text-white opacity-80";
+      case "rejected":
+        return "bg-red-950  border-black text-white opacity-80";
+      case "approved":
+        return "bg-green-700  border-black text-white opacity-80";
+      case "updated":
+        return "bg-green-500 border-black text-white opacity-80";
+      default:
+        return "bg-white  border-black";
+    }
+  };
+
+  const sortedForms = filteredForms.slice().sort((a, b) => {
+    if (a.applicationStatus < b.applicationStatus) return -1;
+    if (a.applicationStatus > b.applicationStatus) return 1;
+    return 0;
+  });
 
   return (
     <div className="container mx-auto px-4">
@@ -111,7 +140,7 @@ export default function Barangay14ps() {
             </tr>
           </thead>
           <tbody>
-            {filteredForms.map((form) => (
+            {sortedForms.map((form) => (
               <tr key={form._id} className="border-b border-gray-300">
                 <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                 <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
@@ -119,7 +148,11 @@ export default function Barangay14ps() {
                   {form.cityMunicipality}
                 </td>
                 <td className="px-4 py-2 text-center">{form.barangay}</td>
-                <td className="px-4 py-2 text-center">
+                <td
+                  className={`px-4 py-2 text-center ${getStatusColorClass(
+                    form.applicationStatus
+                  )}`}
+                >
                   {form.applicationStatus}
                 </td>
 

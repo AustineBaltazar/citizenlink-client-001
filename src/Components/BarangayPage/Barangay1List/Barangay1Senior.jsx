@@ -84,6 +84,35 @@ export default function Barangay1Senior() {
     `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const getStatusColorClass = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-blue-500  border-black text-white opacity-80";
+      case "on review":
+        return "bg-yellow-500  border-black text-white opacity-80";
+      case "incomplete":
+        return "bg-red-500 border-black text-white opacity-80";
+      case "not eligible":
+        return "bg-gray-500  border-black text-white opacity-80";
+      case "eligible":
+        return "bg-orange-500  border-black text-white opacity-80";
+      case "rejected":
+        return "bg-red-950  border-black text-white opacity-80";
+      case "approved":
+        return "bg-green-700  border-black text-white opacity-80";
+      case "updated":
+        return "bg-green-500 border-black text-white opacity-80";
+      default:
+        return "bg-white  border-black";
+    }
+  };
+
+  const sortedForms = filteredForms.slice().sort((a, b) => {
+    if (a.applicationStatus < b.applicationStatus) return -1;
+    if (a.applicationStatus > b.applicationStatus) return 1;
+    return 0;
+  });
+
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
@@ -116,14 +145,18 @@ export default function Barangay1Senior() {
             </tr>
           </thead>
           <tbody>
-            {filteredForms.map((form) => (
-              <tr key={form._id} className="border-b border-gray-300">
+            {sortedForms.map((form) => (
+              <tr className="border border-gray-800">
                 <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                 <td className="px-4 py-2 text-center">{form.age}</td>
                 <td className="px-4 py-2 text-center">{form.sex}</td>
                 <td className="px-4 py-2 text-center">{form.contactNumber}</td>
                 <td className="px-4 py-2 text-center">{form.barangay}</td>
-                <td className="px-4 py-2 text-center">
+                <td
+                  className={`px-4 py-2 text-center ${getStatusColorClass(
+                    form.applicationStatus
+                  )}`}
+                >
                   {form.applicationStatus}
                 </td>
                 <td className="px-4 py-2 text-center">

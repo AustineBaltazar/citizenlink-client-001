@@ -3,11 +3,16 @@ import Image1 from "/img/image-long-1.png";
 
 export default function Empower() {
   return (
-    <div className="w-screen">
+    <div className="w-full">
       <style>
         {`
           html, body {
             overflow-x: hidden;
+          }
+          @media (min-width: 768px) {
+            html, body {
+              overflow-x: auto;
+            }
           }
         `}
       </style>

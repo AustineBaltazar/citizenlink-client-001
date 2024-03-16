@@ -8,7 +8,6 @@ export default function SeniorForm() {
     idNumber: "",
     medicineBookletNumber: "",
     purchaseDTIbooklet: "",
-    dateOfApplication: "",
     barangay: "",
     firstName: "",
     middleName: "",
@@ -28,6 +27,7 @@ export default function SeniorForm() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [account, setAccount] = useState();
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -42,16 +42,54 @@ export default function SeniorForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
+
+      // Make sure the token is available
+      if (!token) {
+        // Handle case where token is missing (e.g., redirect to login page)
+        return;
+      }
+
+      // Set the Authorization header with the token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       // Set loading to true when form is submitted
       setLoading(true);
       // Send POST request to your backend API with form data
       const response = await axios.post(
         "http://localhost:4000/api/senior/submit",
-        formData
+        formData,
+        config
       );
+      setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
       // Update modal message
       setModalMessage("Form submitted successfully");
+
+      setFormData({
+        typeOfApplication: "",
+        idNumber: "",
+        medicineBookletNumber: "",
+        purchaseDTIbooklet: "",
+        barangay: "",
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        age: "",
+        sex: "",
+        civilStatus: "",
+        nationality: "",
+        dateOfBirth: "",
+        placeOfBirth: "",
+        address: "",
+        picture: "",
+        contactPerson: "",
+        contactNumber: "",
+        applicationStatus: "pending",
+      });
       // Show modal
       setShowModal(true);
     } catch (error) {
@@ -81,7 +119,7 @@ export default function SeniorForm() {
           {/* Type of Application */}
           <div className="mb-4">
             <label htmlFor="typeOfApplication" className="block mb-2">
-              Type of Application:
+              Type of Application<span className="text-red-500">*</span>
             </label>
             <select
               id="typeOfApplication"
@@ -100,7 +138,7 @@ export default function SeniorForm() {
           {/* ID Number */}
           <div className="mb-4">
             <label htmlFor="idNumber" className="block mb-2">
-              ID Number:
+              ID Number
             </label>
             <input
               type="number"
@@ -115,7 +153,7 @@ export default function SeniorForm() {
           {/* Medicine Booklet Number */}
           <div className="mb-4">
             <label htmlFor="medicineBookletNumber" className="block mb-2">
-              Medicine Booklet Number:
+              Medicine Booklet Number
             </label>
             <input
               type="number"
@@ -130,7 +168,7 @@ export default function SeniorForm() {
           {/* Purchase DTI Booklet */}
           <div className="mb-4">
             <label htmlFor="purchaseDTIbooklet" className="block mb-2">
-              Purchase DTI Booklet:
+              Purchase DTI Booklet
             </label>
             <input
               type="number"
@@ -142,42 +180,10 @@ export default function SeniorForm() {
             />
           </div>
 
-          {/* Date of Application */}
-          <div className="mb-4">
-            <label htmlFor="dateOfApplication" className="block mb-2">
-              Date of Application:
-            </label>
-            <input
-              type="date"
-              id="dateOfApplication"
-              name="dateOfApplication"
-              value={formData.dateOfApplication}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md"
-            />
-          </div>
-
-          {/* Barangay */}
-          <div className="mb-4">
-            <label htmlFor="barangay" className="block mb-2">
-              Barangay:
-            </label>
-            <input
-              type="text"
-              id="barangay"
-              name="barangay"
-              value={formData.barangay}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md"
-            />
-          </div>
-
           {/* First Name */}
           <div className="mb-4">
             <label htmlFor="firstName" className="block mb-2">
-              First Name:
+              First Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -193,7 +199,7 @@ export default function SeniorForm() {
           {/* Middle Name */}
           <div className="mb-4">
             <label htmlFor="middleName" className="block mb-2">
-              Middle Name:
+              Middle Name
             </label>
             <input
               type="text"
@@ -208,7 +214,7 @@ export default function SeniorForm() {
           {/* Last Name */}
           <div className="mb-4">
             <label htmlFor="lastName" className="block mb-2">
-              Last Name:
+              Last Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -221,10 +227,29 @@ export default function SeniorForm() {
             />
           </div>
 
+          {/* Barangay */}
+
+          <div className="mb-4">
+            <label htmlFor="barangay" className="block mb-2">
+              Barangay<span className="text-red-500">*</span>
+            </label>
+            <select
+              id="barangay"
+              name="barangay"
+              value={formData.barangay}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="">Select Barangay</option>
+              <option value="San Isidro Norte">San Isidro Norte</option>
+            </select>
+          </div>
+
           {/* Age */}
           <div className="mb-4">
             <label htmlFor="age" className="block mb-2">
-              Age:
+              Age<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -240,7 +265,7 @@ export default function SeniorForm() {
           {/* Sex */}
           <div className="mb-4">
             <label htmlFor="sex" className="block mb-2">
-              Sex:
+              Sex<span className="text-red-500">*</span>
             </label>
             <select
               id="sex"
@@ -259,7 +284,7 @@ export default function SeniorForm() {
           {/* Civil Status */}
           <div className="mb-4">
             <label htmlFor="civilStatus" className="block mb-2">
-              Civil Status:
+              Civil Status<span className="text-red-500">*</span>
             </label>
             <select
               id="civilStatus"
@@ -279,7 +304,7 @@ export default function SeniorForm() {
           {/* Nationality */}
           <div className="mb-4">
             <label htmlFor="nationality" className="block mb-2">
-              Nationality:
+              Nationality<span className="text-red-500">*</span>
             </label>
             <select
               id="nationality"
@@ -298,7 +323,7 @@ export default function SeniorForm() {
           {/* Date of Birth */}
           <div className="mb-4">
             <label htmlFor="dateOfBirth" className="block mb-2">
-              Date of Birth:
+              Date of Birth<span className="text-red-500">*</span>
             </label>
             <input
               type="date"
@@ -314,7 +339,7 @@ export default function SeniorForm() {
           {/* Place of Birth */}
           <div className="mb-4">
             <label htmlFor="placeOfBirth" className="block mb-2">
-              Place of Birth:
+              Place of Birth<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -330,7 +355,7 @@ export default function SeniorForm() {
           {/* Address */}
           <div className="mb-4">
             <label htmlFor="address" className="block mb-2">
-              Address:
+              Address<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -346,7 +371,7 @@ export default function SeniorForm() {
           {/* Picture */}
           <div className="mb-4">
             <label htmlFor="picture" className="block mb-2">
-              Picture:
+              Picture<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -361,7 +386,7 @@ export default function SeniorForm() {
           {/* Contact Person */}
           <div className="mb-4">
             <label htmlFor="contactPerson" className="block mb-2">
-              Contact Person:
+              Contact Person<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -377,7 +402,7 @@ export default function SeniorForm() {
           {/* Contact Number */}
           <div className="mb-4">
             <label htmlFor="contactNumber" className="block mb-2">
-              Contact Number:
+              Contact Number<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -415,9 +440,12 @@ export default function SeniorForm() {
                 >
                   &times;
                 </button>
-                <p className="text-center">{modalMessage}</p>
+                <div className="flex flex-col border-4 mb-2">
+                  <p className="text-center">userId: {account}</p>
+                </div>
+                <p className="text-center ">{modalMessage}</p>
                 <button
-                  className="bg-[#561C24] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
+                  className="bg-[#0569B4] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
                   onClick={closeModal}
                 >
                   Close

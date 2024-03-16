@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import lock from "/img/padlock.png";
 import user from "/img/user.png";
 import barangay from "/img/barangay-logo.png";
 import axios from "axios";
 
-export default function Login({ setToken }) {
+export default function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState();
 
   const handleLogin = async () => {
     try {
@@ -17,16 +19,17 @@ export default function Login({ setToken }) {
       switch (prefix) {
         case "4ps30-":
         case "4ps05-":
-          endpoint = "http://localhost:4000/api/4ps/login"; // Adjust the endpoint for 4ps prefixes
+          endpoint = "http://localhost:4000/api/4ps/login";
           break;
         case "sen30-":
         case "sen05-":
-          endpoint = "http://localhost:4000/api/senior/login"; // Adjust the endpoint for sen prefixes
+          endpoint = "http://localhost:4000/api/senior/login";
           break;
         case "mun2417-":
         case "brgy30-":
+        case "brgy05-":
         case "reg1-":
-          endpoint = "http://localhost:4000/api/lgu/login"; // Adjust the endpoint for other prefixes
+          endpoint = "http://localhost:4000/api/lgu/login";
           break;
         default:
           setError("Invalid user ID prefix.");
@@ -38,21 +41,47 @@ export default function Login({ setToken }) {
         password,
       });
 
-      const token = response.data.token;
-
-      console.log(token);
-      setToken(token);
-      localStorage.setItem("token", token);
+      const datatoken = response.data.token;
+      setToken(datatoken);
+      localStorage.setItem("token", datatoken);
+      setLoggedIn(true);
     } catch (error) {
       console.log(error);
       setError("Invalid credentials. Please try again.");
     }
   };
 
-  const handleLogOut = () => {
-    setToken(null);
-    localStorage.removeItem("token");
-  };
+  useEffect(() => {
+    // Define prefix here
+    const prefix = userId.substring(0, userId.indexOf("-") + 1);
+
+    // Redirect if login is successful
+    if (loggedIn) {
+      switch (prefix) {
+        case "4ps30-":
+        case "4ps05-":
+        case "sen30-":
+        case "sen05-":
+          window.location.href = "/citizen/status";
+          break;
+        case "mun2417-":
+          window.location.href = "/lgu/dashboard";
+          break;
+        case "brgy30-":
+          window.location.href = "/barangay/dashboard";
+          break;
+        case "brgy05-":
+          window.location.href = "/barangay2/dashboard";
+          break;
+        case "reg1-":
+          window.location.href = "/regional/dashboard";
+          break;
+        default:
+          setError("Invalid user ID prefix.");
+          return;
+      }
+    }
+  }, [loggedIn, userId]); // Make sure to include userId as a dependency
 
   return (
     <div className="flex items-center flex-col  h-screen bg-gray-200">
@@ -104,7 +133,6 @@ export default function Login({ setToken }) {
           Login
         </button>
         {error && <p>{error}</p>}
-        <button onClick={handleLogOut}>Logout</button>
       </div>
     </div>
   );

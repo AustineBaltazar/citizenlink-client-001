@@ -3,8 +3,8 @@ import barangay from "/img/barangay-logo.png";
 
 export default function AboutTown() {
   return (
-    <div className="flex flex-col w-[100%] justify-center items-center">
-      <div className="bg-gray-200 flex w-[40rem] py-2 px-4">
+    <div className="flex flex-col w-full md:w-3/4 xl:w-1/2 mx-auto justify-center items-center">
+      <div className="bg-gray-200 flex w-full md:w-[40rem] py-2 px-4">
         <h1>
           <b className="text-red-500">Home</b> / The System
         </h1>
@@ -13,7 +13,7 @@ export default function AboutTown() {
         <h1 className="pt-10 text-4xl font-bold">Town of Binmaley</h1>
         <img src={barangay} alt="Logo" className="w-96 h-64" />
       </div>
-      <div className="w-[60%] text-lg">
+      <div className="w-full md:w-[150%] text-lg">
         <p>
           The Town of Binmaley stands as a hidden gem, inviting travelers to
           explore its rich culture, historical landmarks, and coastal beauty.
@@ -22,7 +22,7 @@ export default function AboutTown() {
           Philippines' traditional way of life.
         </p>
         <div>
-          <h1 className="pt-8 font-bold text-xl pb-2">Geograph and Economy</h1>
+          <h1 className="pt-8 font-bold text-xl pb-2">Geography and Economy</h1>
           <p>
             Binmaley's geography is characterized by flat terrain, making it a
             fertile ground for agriculture. Fields of rice sway with the wind, a

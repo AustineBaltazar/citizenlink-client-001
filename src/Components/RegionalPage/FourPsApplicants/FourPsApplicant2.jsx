@@ -12,10 +12,19 @@ const FourPsApplicant2 = () => {
       try {
         const response = await axios.get("http://localhost:4000/api/4ps/forms");
         const data = response.data;
-        const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "San Isidro Sur"
+
+        // Filter forms to include only those with application statuses 'eligible', 'rejected', or 'approved' and barangay 'San Isidro Norte'
+        const filteredForms = data.filter(
+          (form) =>
+            form.applicationStatus &&
+            form.applicationStatus !== "incomplete" &&
+            ["eligible", "rejected", "approved"].includes(
+              form.applicationStatus
+            ) &&
+            form.barangay === "Baybay Lopez"
         );
-        setForms(sanIsidroNorteForms);
+
+        setForms(filteredForms);
       } catch (error) {
         console.error(error);
       }
@@ -101,7 +110,7 @@ const FourPsApplicant2 = () => {
                         handleStatusChange(form._id, e.target.value)
                       }
                     >
-                      {["pending", "rejected", "approved"].map((status) => (
+                      {["eligible", "rejected", "approved"].map((status) => (
                         <option key={status} value={status}>
                           {status}
                         </option>

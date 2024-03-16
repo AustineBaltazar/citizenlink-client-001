@@ -10,18 +10,23 @@ function SideBarRegional() {
   };
 
   return (
-    <aside className="bg-[#6D2932] text-white w-[15%] relative">
+    <aside className="bg-[#6D2932] text-white w-full md:w-[15%]">
       <div className="container mx-auto px-4 py-4 flex flex-col justify-center items-center">
-        {/* Logo and text */}
         <div className="mb-4 text-center">
-          <img src={barangay} alt="Logo" className="w-64 h-32 mx-auto" />
-          <p className="text-xl  font-semibold">Regional Admin Panel</p>
+          <img
+            src={barangay}
+            alt="Logo"
+            className="w-24 h-24 md:w-auto md:h-36 rounded-full mx-auto"
+          />
+          <p className="text-lg md:text-2xl font-semibold">
+            Regional Admin Panel
+          </p>
         </div>
 
         {/* Links */}
-        <ul className="mt-8 text-xl">
+        <ul className="mt-8 text-xl md:text-xl">
           <li className="mb-2">
-            <Link to="/Regional">DashBoard</Link>
+            <Link to="/Regional/dashboard">DashBoard</Link>
           </li>
           {/* Dropdown */}
           <li className="relative">
@@ -61,11 +66,14 @@ function SideBarRegional() {
                     to="/Regional/Barangay2/FourPsApplicant2"
                     className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
                   >
-                    San Isidro Sur
+                    Baybay Lopez
                   </Link>
                 </li>
               </ul>
             )}
+          </li>
+          <li className="mb-2 mt-2">
+            <Link to="/Regional/add/muni">Add Staff</Link>
           </li>
         </ul>
       </div>

@@ -6,7 +6,7 @@ import image2 from "/img/senior-image.png";
 
 const Slider = () => {
   return (
-    <div className="w-screen">
+    <div className="w-full max-w-screen-2xl mx-auto">
       <style>
         {`
           html, body {
@@ -21,6 +21,7 @@ const Slider = () => {
         interval={2000}
         showStatus={false}
         showThumbs={false}
+        dynamicHeight={true}
       >
         <div>
           <img src={image2} alt="Image 2" className="w-full" />

@@ -5,9 +5,11 @@ export default function Status() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const { decodedToken } = useJwt(token);
 
-  const applicationStatus = decodedToken
-    ? decodedToken.applicationStatus.toUpperCase()
-    : null;
+  if (!decodedToken) {
+    return <div>Loading...</div>;
+  }
+
+  const applicationStatus = decodedToken.applicationStatus.toUpperCase();
 
   let celeb;
   let designCeleb;
@@ -19,9 +21,8 @@ export default function Status() {
   }
 
   return (
-    <div className="flex justify-center pt-16 min-h-screen bg-gray-200">
-      {/* First div */}
-      <div className="w-full max-w-md mx-4">
+    <div className="grid lg:grid-cols-2 justify-center gap-4 pt-16 min-h-screen bg-gray-200 mb-8">
+      <div className="w-full max-w-2xl mx-4 ">
         <div className="bg-[#6D2932] rounded-t-lg">
           <header className="p-4">
             <h1 className="text-xl font-bold text-white">
@@ -47,11 +48,12 @@ export default function Status() {
         </div>
       </div>
 
-      {/* Second div */}
-      <div className="w-full max-w-md mx-4 pb-16">
+      <div className="w-full max-w-xl mx-4">
         <div className="bg-[#6D2932] rounded-t-lg">
           <header className="p-4">
-            <h1 className="text-xl font-bold text-white">Lorem</h1>
+            <h1 className="text-xl font-bold text-white">
+              Application Statuses
+            </h1>
           </header>
         </div>
         <div className="bg-white shadow-md rounded-b-lg p-4">
@@ -59,7 +61,7 @@ export default function Status() {
             <thead>
               <tr>
                 <th className="py-2 px-4 bg-gray-100 border border-gray-300">
-                  applicationStatus
+                  Application Status
                 </th>
                 <th className="py-2 px-4 bg-gray-100 border border-gray-300">
                   Description
