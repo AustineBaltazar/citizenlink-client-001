@@ -1,6 +1,6 @@
 import React from "react";
 import Empower from "./Empower";
-import Thumb3 from "/img/facebook-thumb.png";
+import Thumb3 from "/img/bin.jpg";
 import facebook from "/img/facebook.png";
 import { Link, Outlet } from "react-router-dom";
 
@@ -32,7 +32,7 @@ export default function Benefits() {
               <h2>FOLLOW US ON FACEBOOK</h2>
             </div>
             <a
-              href="https://www.youtube.com/watch?v=1bkSjy2IQ2M"
+              href="https://www.facebook.com/MunicipalityofBinmaley"
               target="_blank"
               rel="noopener noreferrer"
             >

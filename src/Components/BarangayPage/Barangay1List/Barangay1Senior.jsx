@@ -9,6 +9,9 @@ export default function Barangay1Senior() {
   const [editable, setEditable] = useState(false); // State to track if fields are editable
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
+  const formsPerPage = 20; // Define formsPerPage here
+  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
+  const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -31,16 +34,16 @@ export default function Barangay1Senior() {
 
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
-    setUpdatedForm({ ...applicant }); // Set initial form data for editing
+    setUpdatedForm({ ...applicant });
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setSelectedApplicant(null);
-    setUpdatedForm(null); // Reset updatedForm state
+    setUpdatedForm(null);
     setModalOpen(false);
-    setEditable(false); // Reset editable state
-    setIsUpdated(false); // Reset isUpdated state
+    setEditable(false);
+    setIsUpdated(false);
   };
 
   const handleInputChange = (e) => {
@@ -49,11 +52,11 @@ export default function Barangay1Senior() {
   };
 
   const handleEditClick = () => {
-    setEditable(true); // Enable editing
+    setEditable(true);
   };
 
   const handleEditClick2 = () => {
-    setEditable(false); // Enable editing
+    setEditable(false);
   };
 
   const handleUpdateForm = async () => {
@@ -62,27 +65,50 @@ export default function Barangay1Senior() {
         `http://localhost:4000/api/senior/entries/${selectedApplicant._id}`,
         updatedForm
       );
-      // Update the local forms state to reflect the changes
+      // Update the application status to "updated" in the updatedForm
+      const updatedFormData = { ...updatedForm, applicationStatus: "updated" };
       setForms(
         forms.map((form) =>
-          form._id === selectedApplicant._id ? updatedForm : form
+          form._id === selectedApplicant._id ? updatedFormData : form
         )
       );
-      setEditable(false); // Disable editing after update
-      setIsUpdated(true); // Set the state to indicate the form has been updated
+      setEditable(false);
+      setIsUpdated(true);
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleModalClose = () => {
-    setIsUpdated(false); // Reset the state when modal is closed
-    closeModal(); // Close the modal
+    setIsUpdated(false);
+    closeModal();
   };
 
   const filteredForms = forms.filter((form) =>
-    `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    searchTerm
+      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      : true
   );
+
+  const handleStatusHeaderClick = () => {
+    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+  };
+
+  const handleStatusOptionClick = (status) => {
+    setSelectedStatus(status); // Update selected status
+    setShowDropdown(false); // Hide dropdown
+  };
+
+  const sortedForms = filteredForms
+    .filter(
+      (form) => !selectedStatus || form.applicationStatus === selectedStatus
+    ) // Filter forms based on selected status
+    .slice()
+    .sort((a, b) => {
+      if (a.applicationStatus < b.applicationStatus) return -1;
+      if (a.applicationStatus > b.applicationStatus) return 1;
+      return 0;
+    });
 
   const getStatusColorClass = (status) => {
     switch (status) {
@@ -107,16 +133,9 @@ export default function Barangay1Senior() {
     }
   };
 
-  const sortedForms = filteredForms.slice().sort((a, b) => {
-    if (a.applicationStatus < b.applicationStatus) return -1;
-    if (a.applicationStatus > b.applicationStatus) return 1;
-    return 0;
-  });
-
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
-        {/* Search bar */}
         <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse">
           <div className="mr-2 mt-1">
             <button className="rounded-l-full bg-[#0569B4] border border-white text-white px-2">
@@ -140,13 +159,53 @@ export default function Barangay1Senior() {
               <th className="px-4 py-2">Sex</th>
               <th className="px-4 py-2">Contact Number</th>
               <th className="px-4 py-2">Barangay</th>
-              <th className="px-4 py-2">Applicant Status</th>
+              <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
+                {/* Table header for status */}
+                Application Status{" "}
+                {showDropdown && (
+                  // Dropdown for status options
+                  <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
+                    {/* Option for showing all statuses */}
+                    <div
+                      key="all"
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                      onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
+                    >
+                      All
+                    </div>
+                    {/* Other status options */}
+                    {[
+                      "pending",
+                      "on review",
+                      "incomplete",
+                      "not eligible",
+                      "eligible",
+                      "rejected",
+                      "approved",
+                      "updated",
+                    ].map((status) => (
+                      <div
+                        key={status}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                        onClick={() => handleStatusOptionClick(status)}
+                      >
+                        {status}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </th>
               <th className="px-4 py-2">View Form</th>
             </tr>
           </thead>
           <tbody>
             {sortedForms.map((form) => (
-              <tr className="border border-gray-800">
+              <tr
+                key={form._id}
+                className={`px-4 py-2 text-center border border-gray-800 ${
+                  form.isAlive ? "" : "bg-gray-300 text-gray-500"
+                }`}
+              >
                 <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                 <td className="px-4 py-2 text-center">{form.age}</td>
                 <td className="px-4 py-2 text-center">{form.sex}</td>
@@ -171,6 +230,24 @@ export default function Barangay1Senior() {
             ))}
           </tbody>
         </table>
+        <ul className="flex justify-center mt-4">
+          {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
+            (_, index) => (
+              <li key={index} className="mx-1">
+                <button
+                  onClick={() => paginate(index + 1)}
+                  className={`${
+                    sortedForms === index + 1
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-300 text-gray-800"
+                  } px-4 py-2 rounded`}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
       </div>
       {/* Applicant Information Modal */}
       {modalOpen && selectedApplicant && (
@@ -335,45 +412,13 @@ export default function Barangay1Senior() {
                     readOnly={!editable}
                   />
                 </div>
-                <div>
-                  <p className="font-semibold">ID Number:</p>
-                  <input
-                    type="number"
-                    name="idNumber"
-                    value={updatedForm.idNumber}
-                    onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
-                    readOnly={!editable}
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold">Medicine Booklet Number:</p>
-                  <input
-                    type="number"
-                    name="medicineBookletNumber"
-                    value={updatedForm.medicineBookletNumber}
-                    onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
-                    readOnly={!editable}
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold">Purchase DTI booklet:</p>
-                  <input
-                    type="number"
-                    name="purchaseDTIbooklet"
-                    value={updatedForm.purchaseDTIbooklet}
-                    onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
-                    readOnly={!editable}
-                  />
-                </div>
+
                 <div>
                   <p className="font-semibold">Date Of Application:</p>
                   <input
                     type="text"
                     name="dateOfApplication"
-                    value={updatedForm.dateOfApplication}
+                    value={updatedForm.createdAt}
                     onChange={handleInputChange}
                     className="border px-2 border-black rounded-lg"
                     readOnly={!editable}

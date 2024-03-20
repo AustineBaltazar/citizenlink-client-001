@@ -11,7 +11,7 @@ export default function AboutSystem() {
       <div className="flex flex-col items-center">
         <h1 className="pt-12 text-4xl font-bold">The System</h1>
       </div>
-      <div className="w-full w-[170%]  text-lg">
+      <div className="w-full w-[200%]  text-lg">
         <p className="pt-12">
           In the Philippines, social welfare programs such as the Pantawid
           Pamilyang Pilipino Program (4Ps) and the provision of benefits and

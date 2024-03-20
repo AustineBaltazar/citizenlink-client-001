@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function SeniorForm() {
-  // State variables to store form data, modal visibility, and loading state
+export default function SeniorForm2() {
   const [formData, setFormData] = useState({
-    typeOfApplication: "",
-    idNumber: "",
-    medicineBookletNumber: "",
-    purchaseDTIbooklet: "",
+    typeOfApplication: "New",
+    oscaId: "",
     barangay: "",
+    email: "",
     firstName: "",
     middleName: "",
     lastName: "",
@@ -19,23 +17,32 @@ export default function SeniorForm() {
     dateOfBirth: "",
     placeOfBirth: "",
     address: "",
-    picture: "",
     contactPerson: "",
     contactNumber: "",
     applicationStatus: "pending",
+    picture: null,
   });
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState();
 
-  // Handle form field changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, files } = e.target;
+
+    if (files) {
+      // If the field is a file input, update the formData with the selected file
+      setFormData({
+        ...formData,
+        [name]: files[0], // Assuming single file upload
+      });
+    } else {
+      // For regular input fields, update formData as usual
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   // Handle form submission
@@ -56,12 +63,20 @@ export default function SeniorForm() {
           Authorization: `Bearer ${token}`,
         },
       };
+
       // Set loading to true when form is submitted
       setLoading(true);
+
+      // Create form data object to send files along with other form fields
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
       // Send POST request to your backend API with form data
       const response = await axios.post(
         "http://localhost:4000/api/senior/submit",
-        formData,
+        formDataToSend,
         config
       );
       setAccount(response.data.userId);
@@ -69,12 +84,12 @@ export default function SeniorForm() {
       // Update modal message
       setModalMessage("Form submitted successfully");
 
+      // Clear form data except for picture
       setFormData({
-        typeOfApplication: "",
-        idNumber: "",
-        medicineBookletNumber: "",
-        purchaseDTIbooklet: "",
+        typeOfApplication: "New",
+        oscaId: "",
         barangay: "",
+        email: "",
         firstName: "",
         middleName: "",
         lastName: "",
@@ -85,11 +100,12 @@ export default function SeniorForm() {
         dateOfBirth: "",
         placeOfBirth: "",
         address: "",
-        picture: "",
         contactPerson: "",
         contactNumber: "",
         applicationStatus: "pending",
+        picture: null,
       });
+
       // Show modal
       setShowModal(true);
     } catch (error) {
@@ -113,73 +129,9 @@ export default function SeniorForm() {
 
   return (
     <div className="bg-gray-100  p-8">
-      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
+      <h2 className="text-2xl font-bold mb-4 text-indigo-500">Senior Form</h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
-          {/* Type of Application */}
-          <div className="mb-4">
-            <label htmlFor="typeOfApplication" className="block mb-2">
-              Type of Application<span className="text-red-500">*</span>
-            </label>
-            <select
-              id="typeOfApplication"
-              name="typeOfApplication"
-              value={formData.typeOfApplication}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md"
-            >
-              <option value="">Select Type</option>
-              <option value="New">New</option>
-              <option value="Replacement">Replacement</option>
-            </select>
-          </div>
-
-          {/* ID Number */}
-          <div className="mb-4">
-            <label htmlFor="idNumber" className="block mb-2">
-              ID Number
-            </label>
-            <input
-              type="number"
-              id="idNumber"
-              name="idNumber"
-              value={formData.idNumber}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
-            />
-          </div>
-
-          {/* Medicine Booklet Number */}
-          <div className="mb-4">
-            <label htmlFor="medicineBookletNumber" className="block mb-2">
-              Medicine Booklet Number
-            </label>
-            <input
-              type="number"
-              id="medicineBookletNumber"
-              name="medicineBookletNumber"
-              value={formData.medicineBookletNumber}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
-            />
-          </div>
-
-          {/* Purchase DTI Booklet */}
-          <div className="mb-4">
-            <label htmlFor="purchaseDTIbooklet" className="block mb-2">
-              Purchase DTI Booklet
-            </label>
-            <input
-              type="number"
-              id="purchaseDTIbooklet"
-              name="purchaseDTIbooklet"
-              value={formData.purchaseDTIbooklet}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
-            />
-          </div>
-
           {/* First Name */}
           <div className="mb-4">
             <label htmlFor="firstName" className="block mb-2">
@@ -191,6 +143,7 @@ export default function SeniorForm() {
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              placeholder="First Name"
               required
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -205,6 +158,7 @@ export default function SeniorForm() {
               type="text"
               id="middleName"
               name="middleName"
+              placeholder="Middle Name"
               value={formData.middleName}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md"
@@ -220,9 +174,42 @@ export default function SeniorForm() {
               type="text"
               id="lastName"
               name="lastName"
+              placeholder="Last Name"
               value={formData.lastName}
               onChange={handleChange}
               required
+              className="w-full px-3 py-2 border rounded-md"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="email" className="block mb-2">
+              Email<span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email" // Use type="email" for email input
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@example.com" // Placeholder text for email input
+              required
+              className="w-full px-3 py-2 border rounded-md"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="oscaId" className="block mb-2">
+              OSCA ID
+            </label>
+            <input
+              type="number"
+              id="oscaId"
+              name="oscaId"
+              required
+              placeholder="eg. 0000"
+              value={formData.oscaId}
+              onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
@@ -237,6 +224,7 @@ export default function SeniorForm() {
               id="barangay"
               name="barangay"
               value={formData.barangay}
+              placeholder="Select Barangay"
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-md"
@@ -255,6 +243,7 @@ export default function SeniorForm() {
               type="number"
               id="age"
               name="age"
+              placeholder="Age"
               value={formData.age}
               onChange={handleChange}
               required
@@ -347,6 +336,7 @@ export default function SeniorForm() {
               name="placeOfBirth"
               value={formData.placeOfBirth}
               onChange={handleChange}
+              placeholder="City / Town"
               required
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -363,21 +353,21 @@ export default function SeniorForm() {
               name="address"
               value={formData.address}
               onChange={handleChange}
+              placeholder="House/Unit Number, Street Name, Barangay/District, City/Municipality, Province "
               required
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
 
-          {/* Picture */}
           <div className="mb-4">
             <label htmlFor="picture" className="block mb-2">
-              Picture<span className="text-red-500">*</span>
+              Picture
             </label>
             <input
-              type="text"
+              type="file"
               id="picture"
               name="picture"
-              value={formData.picture}
+              accept="image/*"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -394,6 +384,7 @@ export default function SeniorForm() {
               name="contactPerson"
               value={formData.contactPerson}
               onChange={handleChange}
+              placeholder="Name of Contact Person"
               required
               className="w-full px-3 py-2 border rounded-md"
             />
@@ -409,6 +400,7 @@ export default function SeniorForm() {
               id="contactNumber"
               name="contactNumber"
               value={formData.contactNumber}
+              placeholder="Number of the Contact Person"
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border rounded-md"

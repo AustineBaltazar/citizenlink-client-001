@@ -7,7 +7,9 @@ const SeniorApplicants1 = () => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const formsPerPage = 20; // Define formsPerPage here
+  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
+  const [showDropdown, setShowDropdown] = useState(false); // State
   useEffect(() => {
     const fetchForms = async () => {
       try {
@@ -37,21 +39,26 @@ const SeniorApplicants1 = () => {
   }, []);
 
   const handleStatusChange = async (id, newStatus) => {
-    try {
-      await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
-        applicationStatus: newStatus,
-      });
-      // Assuming successful update, update the local state to reflect changes
-      setForms(
-        forms.map((form) =>
-          form._id === id ? { ...form, applicationStatus: newStatus } : form
-        )
-      );
-    } catch (error) {
-      console.error("Error updating status:", error);
+    const confirmed = window.confirm(
+      "Are you sure you want to change the application status?"
+    );
+
+    if (confirmed) {
+      try {
+        await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
+          applicationStatus: newStatus,
+        });
+        // Assuming successful update, update the local state to reflect changes
+        setForms(
+          forms.map((form) =>
+            form._id === id ? { ...form, applicationStatus: newStatus } : form
+          )
+        );
+      } catch (error) {
+        console.error("Error updating status:", error);
+      }
     }
   };
-
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
     setModalOpen(true);
@@ -63,8 +70,53 @@ const SeniorApplicants1 = () => {
   };
 
   const filteredForms = forms.filter((form) =>
-    `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    searchTerm
+      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      : true
   );
+
+  const handleStatusHeaderClick = () => {
+    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+  };
+
+  const handleStatusOptionClick = (status) => {
+    setSelectedStatus(status); // Update selected status
+    setShowDropdown(false); // Hide dropdown
+  };
+
+  const sortedForms = filteredForms
+    .filter(
+      (form) => !selectedStatus || form.applicationStatus === selectedStatus
+    ) // Filter forms based on selected status
+    .slice()
+    .sort((a, b) => {
+      if (a.applicationStatus < b.applicationStatus) return -1;
+      if (a.applicationStatus > b.applicationStatus) return 1;
+      return 0;
+    });
+
+  const getStatusColorClass = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-blue-500  border-black text-white opacity-80";
+      case "on review":
+        return "bg-yellow-500  border-black text-white opacity-80";
+      case "incomplete":
+        return "bg-red-500 border-black text-white opacity-80";
+      case "not eligible":
+        return "bg-gray-500  border-black text-white opacity-80";
+      case "eligible":
+        return "bg-orange-500  border-black text-white opacity-80";
+      case "rejected":
+        return "bg-red-950  border-black text-white opacity-80";
+      case "approved":
+        return "bg-green-700  border-black text-white opacity-80";
+      case "updated":
+        return "bg-green-500 border-black text-white opacity-80";
+      default:
+        return "bg-white  border-black";
+    }
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -93,13 +145,44 @@ const SeniorApplicants1 = () => {
                 <th className="px-4 py-2">Contact Number</th>
                 <th className="px-4 py-2">Barangay</th>
 
-                <th className="px-4 py-2">Applicant Status</th>
+                <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
+                  {/* Table header for status */}
+                  Application Status{" "}
+                  {showDropdown && (
+                    // Dropdown for status options
+                    <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
+                      {/* Option for showing all statuses */}
+                      <div
+                        key="all"
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                        onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
+                      >
+                        All
+                      </div>
+                      {/* Other status options */}
+                      {["eligible", "rejected", "approved"].map((status) => (
+                        <div
+                          key={status}
+                          className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                          onClick={() => handleStatusOptionClick(status)}
+                        >
+                          {status}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </th>
                 <th className="px-4 py-2">View Form</th>
               </tr>
             </thead>
             <tbody>
-              {filteredForms.map((form) => (
-                <tr key={form._id} className="border-b border-gray-300">
+              {sortedForms.map((form) => (
+                <tr
+                  key={form._id}
+                  className={`px-4 py-2 text-center border border-gray-800 ${
+                    form.isAlive ? "" : "bg-gray-300 text-gray-500"
+                  }`}
+                >
                   <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                   <td className="px-4 py-2 text-center">{form.age}</td>
                   <td className="px-4 py-2 text-center">{form.sex}</td>
@@ -108,9 +191,14 @@ const SeniorApplicants1 = () => {
                   </td>
                   <td className="px-4 py-2 text-center">{form.barangay}</td>
 
-                  <td className="px-4 py-2 text-center">
+                  <td
+                    className={`px-4 py-2 text-center ${getStatusColorClass(
+                      form.applicationStatus
+                    )}`}
+                  >
                     <select
                       value={form.applicationStatus}
+                      className="text-black"
                       onChange={(e) =>
                         handleStatusChange(form._id, e.target.value)
                       }
@@ -134,6 +222,24 @@ const SeniorApplicants1 = () => {
               ))}
             </tbody>
           </table>
+          <ul className="flex justify-center mt-4">
+            {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
+              (_, index) => (
+                <li key={index} className="mx-1">
+                  <button
+                    onClick={() => paginate(index + 1)}
+                    className={`${
+                      sortedForms === index + 1
+                        ? "bg-gray-700 text-white"
+                        : "bg-gray-300 text-gray-800"
+                    } px-4 py-2 rounded`}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              )
+            )}
+          </ul>
         </div>
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">

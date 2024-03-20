@@ -115,6 +115,8 @@ const Dashboard4 = lazy(() => import("./Components/BarangayPage2/Dashboard4"));
 
 import ProtectedRoute from "./Components/ProtectedRoute";
 import Loading from "./Components/Loading";
+import ResetPassword from "./Components/ResetPassword";
+import ForgotPassword from "./Components/ForgotPassword";
 
 function App() {
   return (
@@ -123,7 +125,11 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/noAccess" element={<NoAccess />} />
-
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/reset-password/:resetIdentifier"
+            element={<ResetPassword />}
+          />
           <Route path="/" element={<UserLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="news" element={<News />} />
@@ -178,7 +184,7 @@ function App() {
                 <Route path="citizen2" element={<Citizen2Profile />} />
                 <Route path="muni" element={<MunProfile />} />
               </Route>
-              co
+
               <Route path="Barangay1" element={<Barangay1 />}>
                 <Route path="FourPsApplicant1" element={<FourPsApplicant1 />} />
                 <Route

@@ -3,7 +3,7 @@ import lock from "/img/padlock.png";
 import user from "/img/user.png";
 import barangay from "/img/barangay-logo.png";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 export default function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -123,16 +123,22 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          {error && <p className="text-red-500 font-semibold">{error}</p>}
         </form>
       </div>
-      <div className="mt-4 flex justify-center">
+      <div className="mt-4 flex justify-center flex-col">
         <button
           onClick={handleLogin}
           className="bg-[#6D2932] text-white font-bold py-2 px-12 rounded-md"
         >
           Login
         </button>
-        {error && <p>{error}</p>}
+        <div className="mt-2">
+          {/* Link to the Forgot Password page */}
+          <Link to="/forgot-password" className="text-blue-500 underline">
+            Forgot Password?
+          </Link>
+        </div>
       </div>
     </div>
   );

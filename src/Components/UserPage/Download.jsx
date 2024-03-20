@@ -1,9 +1,27 @@
 import React from "react";
 import Empower from "./Empower";
 import facebook from "/img/facebook.png";
-import Thumb3 from "/img/facebook-thumb.png";
+import Thumb3 from "/img/bin.jpg";
+
+const FOURPS_FILE_URL = "http://localhost:5173/4psForms.pdf";
+const SENIOR_FILE_URL = "http://localhost:5173/SENIORCITIZENSFORMS.pdf";
 
 export default function Download() {
+  const downloadFileAtURL = (url) => {
+    fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobURL = window.URL.createObjectURL(new Blob([blob]));
+        const fileName = url.split("/").pop();
+        const aTag = document.createElement("a");
+        aTag.href = blobURL;
+        aTag.setAttribute("download", fileName);
+        document.body.appendChild(aTag);
+        aTag.click();
+        aTag.remove(); // Change to aTag.remove()
+      });
+  };
+
   return (
     <div className="px-4 sm:px-8 md:px-16">
       <Empower />
@@ -19,13 +37,23 @@ export default function Download() {
           </div>
           <div className="border-b-2 ml-4 sm:ml-8 md:ml-32 mr-4 sm:mr-8 md:mr-32 flex justify-between">
             <h1 className="w-fit px-4 rounded-sm">4P's Registration Form</h1>
-            <button className="px-4 rounded-sm hover:text-red-500 text-blue-400">
+            <button
+              onClick={() => {
+                downloadFileAtURL(FOURPS_FILE_URL);
+              }}
+              className="px-4 rounded-sm hover:text-red-500 text-blue-400"
+            >
               Download
             </button>
           </div>
           <div className="border-b-2 ml-4 sm:ml-8 md:ml-32 mr-4 sm:mr-8 md:mr-32 flex justify-between mb-16 md:mb-32">
             <h1 className="w-fit px-4 rounded-sm">Senior Registration Form</h1>
-            <button className="px-4 rounded-sm hover:text-red-500 text-blue-400">
+            <button
+              onClick={() => {
+                downloadFileAtURL(SENIOR_FILE_URL);
+              }}
+              className="px-4 rounded-sm hover:text-red-500 text-blue-400"
+            >
               Download
             </button>
           </div>
@@ -37,7 +65,7 @@ export default function Download() {
               <h2>FOLLOW US ON FACEBOOK</h2>
             </div>
             <a
-              href="https://www.youtube.com/watch?v=1bkSjy2IQ2M"
+              href="https://www.facebook.com/MunicipalityofBinmaley"
               target="_blank"
               rel="noopener noreferrer"
             >

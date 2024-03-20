@@ -9,6 +9,12 @@ export default function CitizenSecondNav() {
   const [showChoices, setShowChoices] = useState(false);
   const [myData, setMyData] = useState([]);
   const [showModal, setShowModal] = useState(false); // State to control the modal
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // State to control the change password modal
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const nav = useNavigate();
 
   const { decodedToken } = useJwt(token);
@@ -63,6 +69,51 @@ export default function CitizenSecondNav() {
     setShowModal(true);
   };
 
+  const handleChangePasswordClick = () => {
+    // Show the change password modal when Change Password is clicked
+    setShowChangePasswordModal(true);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "currentPassword") setCurrentPassword(value);
+    else if (name === "newPassword") setNewPassword(value);
+    else if (name === "confirmPassword") setConfirmPassword(value);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        "http://localhost:4000/api/4ps/change-password",
+        { currentPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSuccessMessage(response.data.message);
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.error);
+      } else {
+        setErrorMessage("An unexpected error occurred");
+      }
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowChangePasswordModal(false);
+    // Reset state values
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setErrorMessage("");
+    setSuccessMessage("");
+  };
+
   return (
     <>
       <header className="bg-[#6D2932] text-white py-7">
@@ -75,18 +126,26 @@ export default function CitizenSecondNav() {
           </button>
           {showChoices && (
             <div className="absolute top-full left-25 bg-white p-2 rounded shadow-md z-10 flex flex-col">
-              <button
-                onClick={handleLogOut}
-                className="p-1 rounded-sm hover:bg-red-300 text-black"
-              >
-                Log out
-              </button>
               <div>
                 <button
                   onClick={handleViewProfileClick}
                   className="p-1 rounded-sm hover:bg-blue-300 text-black "
                 >
                   View Info
+                </button>
+              </div>
+              <button
+                onClick={handleChangePasswordClick} // New option for changing password
+                className="p-1 rounded-sm hover:bg-green-300 text-black"
+              >
+                Change Password
+              </button>
+              <div>
+                <button
+                  onClick={handleLogOut}
+                  className="p-1 rounded-sm hover:bg-red-300 text-black"
+                >
+                  Log out
                 </button>
               </div>
             </div>
@@ -357,6 +416,60 @@ export default function CitizenSecondNav() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {showChangePasswordModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
+          <div>
+            <h1 className="text-2xl text-white bg-[#6D2932] rounded-t-lg p-2">
+              Change Password
+            </h1>
+            <form onSubmit={handleSubmit} className="bg-white rounded-b-lg p-4">
+              <div>
+                <label htmlFor="currentPassword">Current Password:</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  className="border ml-2 rounded-lg border-gray-500 mt-1"
+                  name="currentPassword"
+                  value={currentPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="newPassword">New Password:</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  className="border ml-2 rounded-lg border-gray-500 mt-1"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="flex mt-2">
+                <button
+                  type="submit"
+                  className="border px-2  bg-[#6D2932] rounded-sl text-white font-bold hover:bg-red-800 py-1 mr-2"
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={handleCloseModal}
+                  className="border px-2  bg-[#6D2932] rounded-sl text-white font-bold hover:bg-red-800 py-1"
+                >
+                  Close
+                </button>
+              </div>
+              {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+              {successMessage && (
+                <p style={{ color: "green" }}>{successMessage}</p>
+              )}
+            </form>
           </div>
         </div>
       )}

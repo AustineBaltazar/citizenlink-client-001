@@ -9,6 +9,9 @@ export default function Barangay14ps() {
   const [editable, setEditable] = useState(false); // State to track if fields are editable
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
+  const formsPerPage = 20; // Define formsPerPage here
+  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
+  const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -43,7 +46,20 @@ export default function Barangay14ps() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedForm({ ...updatedForm, [name]: value });
+    // If the input field is for dateOfBirth, format the value to "yyyy-MM-dd"
+    const formattedValue = name === "dateOfBirth" ? formatDate(value) : value;
+    setUpdatedForm({ ...updatedForm, [name]: formattedValue });
+  };
+
+  const formatDate = (dateString) => {
+    // Check if the provided string is in the ISO format
+    if (dateString.includes("T")) {
+      // If it's in ISO format, extract the date part and return
+      return dateString.split("T")[0];
+    } else {
+      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
+      return dateString;
+    }
   };
 
   const handleEditClick = () => {
@@ -56,14 +72,21 @@ export default function Barangay14ps() {
 
   const handleUpdateForm = async () => {
     try {
+      // Ensure that the dateOfBirth field is properly formatted before sending the update
+      const formattedUpdatedForm = {
+        ...updatedForm,
+        dateOfBirth: formatDate(updatedForm.dateOfBirth),
+        applicationStatus: "updated",
+      };
+
       await axios.put(
         `http://localhost:4000/api/4ps/forms/${selectedApplicant._id}`,
-        updatedForm
+        formattedUpdatedForm
       );
 
       setForms(
         forms.map((form) =>
-          form._id === selectedApplicant._id ? updatedForm : form
+          form._id === selectedApplicant._id ? formattedUpdatedForm : form
         )
       );
       setEditable(false);
@@ -79,8 +102,30 @@ export default function Barangay14ps() {
   };
 
   const filteredForms = forms.filter((form) =>
-    `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    searchTerm
+      ? `${form.firstname}`.toLowerCase().includes(searchTerm.toLowerCase())
+      : true
   );
+
+  const handleStatusHeaderClick = () => {
+    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+  };
+
+  const handleStatusOptionClick = (status) => {
+    setSelectedStatus(status); // Update selected status
+    setShowDropdown(false); // Hide dropdown
+  };
+
+  const sortedForms = filteredForms
+    .filter(
+      (form) => !selectedStatus || form.applicationStatus === selectedStatus
+    ) // Filter forms based on selected status
+    .slice()
+    .sort((a, b) => {
+      if (a.applicationStatus < b.applicationStatus) return -1;
+      if (a.applicationStatus > b.applicationStatus) return 1;
+      return 0;
+    });
 
   const getStatusColorClass = (status) => {
     switch (status) {
@@ -104,12 +149,6 @@ export default function Barangay14ps() {
         return "bg-white  border-black";
     }
   };
-
-  const sortedForms = filteredForms.slice().sort((a, b) => {
-    if (a.applicationStatus < b.applicationStatus) return -1;
-    if (a.applicationStatus > b.applicationStatus) return 1;
-    return 0;
-  });
 
   return (
     <div className="container mx-auto px-4">
@@ -135,7 +174,42 @@ export default function Barangay14ps() {
               <th className="px-4 py-2">Birthday</th>
               <th className="px-4 py-2">Town</th>
               <th className="px-4 py-2">Barangay</th>
-              <th className="px-4 py-2">Applicant Status</th>
+              <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
+                {/* Table header for status */}
+                Application Status{" "}
+                {showDropdown && (
+                  // Dropdown for status options
+                  <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
+                    {/* Option for showing all statuses */}
+                    <div
+                      key="all"
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                      onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
+                    >
+                      All
+                    </div>
+                    {/* Other status options */}
+                    {[
+                      "pending",
+                      "on review",
+                      "incomplete",
+                      "not eligible",
+                      "eligible",
+                      "rejected",
+                      "approved",
+                      "updated",
+                    ].map((status) => (
+                      <div
+                        key={status}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+                        onClick={() => handleStatusOptionClick(status)}
+                      >
+                        {status}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </th>
               <th className="px-4 py-2">View Info</th>
             </tr>
           </thead>
@@ -168,6 +242,24 @@ export default function Barangay14ps() {
             ))}
           </tbody>
         </table>
+        <ul className="flex justify-center mt-4">
+          {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
+            (_, index) => (
+              <li key={index} className="mx-1">
+                <button
+                  onClick={() => paginate(index + 1)}
+                  className={`${
+                    sortedForms === index + 1
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-300 text-gray-800"
+                  } px-4 py-2 rounded`}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
       </div>
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">

@@ -75,6 +75,9 @@ function SideBarRegional() {
           <li className="mb-2 mt-2">
             <Link to="/Regional/add/muni">Add Staff</Link>
           </li>
+          <li className="mb-2">
+            <Link to="/">Home</Link>
+          </li>
         </ul>
       </div>
     </aside>

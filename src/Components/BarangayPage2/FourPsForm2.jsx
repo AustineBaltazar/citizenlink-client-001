@@ -7,6 +7,7 @@ export default function FourPsForm() {
     surname: "",
     firstname: "",
     middlename: "",
+    email: "",
     suffix: "",
     houseNumber: "",
     street: "",
@@ -70,6 +71,7 @@ export default function FourPsForm() {
         surname: "",
         firstname: "",
         middlename: "",
+        email: "",
         suffix: "",
         houseNumber: "",
         street: "",
@@ -108,7 +110,7 @@ export default function FourPsForm() {
   return (
     <div className="bg-gray-100  ">
       <div className="w-full max-w-full p-8">
-        <h2 className="text-2xl mb-4 font-bold text-[#0569B4] ">4Ps Form</h2>
+        <h2 className="text-2xl mb-4 font-bold text-indigo-500 ">4Ps Form</h2>
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
           <form onSubmit={handleSubmit} className=" gap-4">
@@ -125,7 +127,7 @@ export default function FourPsForm() {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Last Name"
               />
             </div>
             {/* Firstname */}
@@ -141,7 +143,7 @@ export default function FourPsForm() {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="First Name"
               />
             </div>
             {/* Middlename */}
@@ -156,7 +158,7 @@ export default function FourPsForm() {
                 value={formData.middlename}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Middle Name"
               />
             </div>
             {/* Suffix */}
@@ -171,7 +173,22 @@ export default function FourPsForm() {
                 value={formData.suffix}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Enter Suffix,(e.g., Jr., Sr., III)"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-1">
+                Email
+              </label>
+              <input
+                type="email" // Use type="email" for email input
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="example@example.com" // Placeholder text for email input
+                required
+                className="w-full px-3 py-2 border rounded-md"
               />
             </div>
             <div className="mb-4">
@@ -204,7 +221,7 @@ export default function FourPsForm() {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Enter House Number"
               />
             </div>
             {/* Street */}
@@ -220,7 +237,7 @@ export default function FourPsForm() {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Enter Street Name"
               />
             </div>
             {/* Barangay */}
@@ -318,6 +335,7 @@ export default function FourPsForm() {
                 value={formData.placeOfBirth}
                 onChange={handleChange}
                 required
+                placeholder="City / Town"
                 className="w-full px-3 py-2 border rounded-md"
               />
             </div>
@@ -334,7 +352,7 @@ export default function FourPsForm() {
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Input"
+                placeholder="Enter Phone Number or Mobile Number"
               />
             </div>
             <div className="col-span-2">

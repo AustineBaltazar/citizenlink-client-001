@@ -4,11 +4,20 @@ import Logo from "/img/barangay-logo.png";
 
 const AddStaff = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    middleName: "",
+    suffix: "",
+    position: "",
+    dateOfBirth: "",
     accessLevel: "barangay",
     password: "",
     barangay: "", // Initialize with an empty string
   });
+
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,38 +31,134 @@ const AddStaff = () => {
         formData
       );
       console.log(response.data);
+      setSuccessModalVisible(true);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        middleName: "",
+        suffix: "",
+        position: "",
+        dateOfBirth: "",
+        accessLevel: "barangay",
+        password: "",
+        barangay: "", // Initialize with an empty string
+      });
       // Handle success, maybe redirect to login page or display a success message
     } catch (error) {
       console.error("Registration failed:", error);
+      setErrorModalVisible(true);
       // Handle error, display error message to the user
     }
+  };
+
+  const closeModal = () => {
+    setSuccessModalVisible(false);
+    setErrorModalVisible(false);
   };
 
   return (
     <div className="flex justify-center items-center h-full">
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
-        <header className="bg-[#2D7144] text-white px-2">Add Staff</header>
+        <header className="bg-[#2D7144] text-white px-2 py-2">Add Staff</header>
         <div className="flex justify-center items-center">
-          <div className="">
-            <img className="w-64 h-38" src={Logo} alt="Logo" />
-          </div>
-          <div className="w-full p-8">
+          <div className="w-full p-4">
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Name:
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  First Name:
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Last Name:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Middle Name:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="middleName"
+                  value={formData.middleName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Suffix:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="suffix"
+                  value={formData.suffix}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Email
+                </label>
+                <input
+                  type="email" // Use type="email" for email input
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="example@example.com" // Placeholder text for email input
+                  required
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Position:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="position"
+                  value={formData.position}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
+                  Date of Birth:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
                   Password:
                 </label>
                 <input
@@ -65,8 +170,8 @@ const AddStaff = () => {
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              <div className="mb-2">
+                <label className="block text-gray-700 text-sm font-bold mb-1">
                   Barangay:
                 </label>
                 <select
@@ -93,6 +198,38 @@ const AddStaff = () => {
           </div>
         </div>
       </div>
+      {successModalVisible && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+          <div className="bg-white rounded-lg p-8 z-10">
+            <h2 className="text-lg font-bold mb-4">Success!</h2>
+            <p>Your registration was successful.</p>
+            <button
+              className="bg-[#2D7144] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Error Modal */}
+      {errorModalVisible && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+          <div className="bg-white rounded-lg p-8 z-10">
+            <h2 className="text-lg font-bold mb-4">Error!</h2>
+            <p>Registration failed. Please try again later.</p>
+            <button
+              className="bg-[#2D7144] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -14,11 +14,48 @@ export default function Status() {
   let celeb;
   let designCeleb;
   if (decodedToken.applicationStatus === "approved") {
-    celeb = "CONGRATULATION!";
+    celeb = "CONGRATULATIONS!";
+    designCeleb = "bg-[#008000] text-white rounded-lg";
   }
-  if (decodedToken.applicationStatus === "approved") {
-    designCeleb = "bg-[#008000] text-white rounded-lg   ";
+
+  const pending =
+    "Records are submitted, and to be interviewed by the regionals.";
+  const forReview =
+    "Applicant is interviewed, and to be reviewed by the municipal";
+  const inComplete =
+    "Some documents are missing. Please complete the needful document/s";
+  const inCorrect =
+    "Some records didn't match the documents(e.g., birth certificate)";
+  const notQualified = "Applicant did not reach the requirement/s. Learn more.";
+  const Eligible = "Records are complete, and to be reviewed by the regionals.";
+  const notEligible =
+    "Applicant is not eligible to register. Learn more(link to how to apply page";
+  const qualified = "Your application status is now approved";
+
+  function getDescription(status) {
+    switch (status) {
+      case "PENDING":
+        return pending;
+      case "ON REVIEW":
+        return forReview;
+      case "INCOMPLETE":
+        return inComplete;
+      case "NOT ELIGIBLE":
+        return notEligible;
+      case "ELIGIBLE":
+        return Eligible;
+      case "REJECTED":
+        return notQualified;
+      case "APPROVED":
+        return qualified;
+      case "UPDATED":
+        return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices eros nec justo consequat, ut fringilla mauris fermentum.";
+      default:
+        return "";
+    }
   }
+
+  console.log(decodedToken);
 
   return (
     <div className="grid lg:grid-cols-2 justify-center gap-4 pt-16 min-h-screen bg-gray-200 mb-8">
@@ -39,12 +76,7 @@ export default function Status() {
           <h1 className="text-2xl mb-2 text-green-600 font-bold mb-4 flex justify-center">
             {celeb}
           </h1>
-          <p className="mb-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-            tenetur accusantium nesciunt sapiente eveniet non molestias aperiam
-            corporis adipisci, veniam quaerat vitae voluptates dolor odio saepe
-            exercitationem dolores rerum. Quia.
-          </p>
+          <p className="mb-4">{getDescription(applicationStatus)}</p>
         </div>
       </div>
 
@@ -76,9 +108,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {pending}
                 </td>
               </tr>
               <tr>
@@ -88,9 +118,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {forReview}
                 </td>
               </tr>
               <tr>
@@ -100,9 +128,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {inComplete}
                 </td>
               </tr>
               <tr>
@@ -112,9 +138,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {notEligible}
                 </td>
               </tr>
               <tr>
@@ -124,9 +148,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {Eligible}
                 </td>
               </tr>
               <tr>
@@ -136,9 +158,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {notQualified}
                 </td>
               </tr>
               <tr>
@@ -148,9 +168,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {qualified}
                 </td>
               </tr>
               <tr>
