@@ -73,7 +73,7 @@ function ForgotPassword() {
           className="bg-[#6D2932] hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           disabled={isLoading}
         >
-          {isLoading ? "Loading..." : "Reset Password"}
+          {isLoading ? "Loading..." : "Submit"}
         </button>
         <div className=" mt-4">
           <Link

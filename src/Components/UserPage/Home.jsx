@@ -15,6 +15,7 @@ import padlock from "/img/padlock.png";
 import calendar from "/img/calendar.png";
 import { useNavigate } from "react-router-dom";
 import LinksManager from "./LinksManager";
+import RelevantArticle from "./RelevantArticle";
 export default function Home() {
   const navigate = useNavigate();
   const handleButtonClick = () => {
@@ -46,54 +47,11 @@ export default function Home() {
             <h2>LIST OF NEWS</h2>
           </div>
           <div>
-            <h3 className="bg-[#6D2932] w-fit px-4 mt-6 text-white border rounded-md  mb-6 ">
+            <h3 className="bg-[#6D2932] w-fit px-4 mt-6 text-white border rounded-md  mb-2 ">
               Relevant Articles
             </h3>
           </div>
-          <ul className="mb-8">
-            {" "}
-            <li className="mb-2">
-              <a
-                href="https://www.oscaportal.com/read.php?url=Who-are-eligible-for-the-DSWD-senior-citizen-social"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-red-700 transition-colors duration-300"
-              >
-                1. Gov't asks for small sacrifice from senior citizens
-              </a>
-            </li>
-            <li className="mb-2">
-              <a
-                href="https://www.oscaportal.com/read.php?url=DSWD-Social-Pension-Program-for-Indigent-Senior-Citizens-2017"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-red-700 transition-colors duration-300"
-              >
-                2. DSWD Socail Pension Program for indigent Senior Citizen 2017
-              </a>
-            </li>
-            <li className="mb-2">
-              <a
-                href="https://www.oscaportal.com/read.php?url=Govt-asks-for-small-sacrifice-from-senior-citizens"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-red-700 transition-colors duration-300"
-              >
-                3. Newly form commission for elders in the Philippines
-              </a>
-            </li>
-            <li className="mb-2">
-              <a
-                href="https://www.oscaportal.com/read.php?url=2019/09/21/Newly-Formed-Commission-for-Elders-in-the-Philippines.html "
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-red-700 transition-colors duration-300"
-              >
-                4. Who are elegible for DSWD senior citizen social pension
-                program?
-              </a>
-            </li>
-          </ul>
+          <RelevantArticle />
         </div>
 
         <div className="bg-white p-4 m-2">

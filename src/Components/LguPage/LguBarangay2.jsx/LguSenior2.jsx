@@ -63,7 +63,9 @@ export default function LguSenior2() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -278,7 +280,7 @@ export default function LguSenior2() {
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
             <div className="bg-white rounded-2xl shadow-lg">
-              <h1 className="text-xl font-semibold bg-[#E8D8C4] text-black py-4 px-2 rounded-t-2xl flex justify-center ">
+              <h1 className="text-xl font-semibold bg-[#2D7144] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
                 Applicant Information
               </h1>
               <div className="p-8">
@@ -339,27 +341,16 @@ export default function LguSenior2() {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">ID Number:</p>
+                    <p className="font-semibold">OSCA ID:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.idNumber}
+                      {selectedApplicant.oscaId}
                     </p>
                   </div>
-                  <div>
-                    <p className="font-semibold">Medicine Booklet Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.medicineBookletNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Purchase DTI booklet:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.purchaseDTIbooklet}
-                    </p>
-                  </div>
+
                   <div>
                     <p className="font-semibold">Date Of Application:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.dateOfApplication}
+                      {selectedApplicant.createdAt}
                     </p>
                   </div>
                   <div>
@@ -402,7 +393,7 @@ export default function LguSenior2() {
 
                 <button
                   onClick={closeModal}
-                  className="bg-[#E8D8C4] hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  className="bg-[#2D7144] hover:bg-gray-400 p-2 text-white border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>

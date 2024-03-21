@@ -63,7 +63,9 @@ export default function LguSenior1() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -237,6 +239,7 @@ export default function LguSenior1() {
                           "incomplete",
                           "not eligible",
                           "eligible",
+                          "updated",
                         ].map((status) => (
                           <option key={status} value={status}>
                             {status}
@@ -339,27 +342,16 @@ export default function LguSenior1() {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">ID Number:</p>
+                    <p className="font-semibold">OSCA ID:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.idNumber}
+                      {selectedApplicant.oscaId}
                     </p>
                   </div>
-                  <div>
-                    <p className="font-semibold">Medicine Booklet Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.medicineBookletNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Purchase DTI booklet:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.purchaseDTIbooklet}
-                    </p>
-                  </div>
+
                   <div>
                     <p className="font-semibold">Date Of Application:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.dateOfApplication}
+                      {selectedApplicant.createdAt}
                     </p>
                   </div>
                   <div>

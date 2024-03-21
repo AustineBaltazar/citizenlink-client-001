@@ -60,7 +60,9 @@ export default function Lgu4ps1() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstname} ${form.surname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -128,7 +130,7 @@ export default function Lgu4ps1() {
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
               <tr className="bg-[#2D7144] text-white">
-                <th className="px-4 py-2">First Name</th>
+                <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Birthday</th>
                 <th className="px-4 py-2">Town</th>
                 <th className="px-4 py-2">Barangay</th>
@@ -200,6 +202,7 @@ export default function Lgu4ps1() {
                           "incomplete",
                           "not eligible",
                           "eligible",
+                          "updated",
                         ].map((status) => (
                           <option key={status} value={status}>
                             {status}

@@ -69,7 +69,9 @@ const FourPsApplicant2 = () => {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstname} ${form.surname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 

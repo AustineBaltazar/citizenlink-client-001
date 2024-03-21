@@ -70,7 +70,9 @@ const FourPsApplicant1 = () => {
   // Function to filter forms based on search term
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstname} ${form.surname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -244,19 +246,19 @@ const FourPsApplicant1 = () => {
                   <div>
                     <p className="font-semibold">First Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.firstName}
+                      {selectedApplicant.firstname}
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold">Middle Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.middleName}
+                      {selectedApplicant.middlename}
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold">Surname:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.surName}
+                      {selectedApplicant.surname}
                     </p>
                   </div>
                   <div>

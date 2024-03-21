@@ -41,13 +41,7 @@ export default function SecondaryHeader() {
             >
               About
             </Link>
-            <Link
-              to="/news"
-              className="text-white hover:text-cyan-500 transition-colors duration-300"
-              onClick={hideDropdown}
-            >
-              News
-            </Link>
+
             <Link
               to="benefits/benefit1"
               className="text-white hover:text-cyan-500 transition-colors duration-300"

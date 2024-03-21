@@ -23,7 +23,7 @@ const LinksManager = () => {
 
   const fetchLinks = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/link");
+      const response = await axios.get("http://localhost:4000/api/link2");
       setLinks(response.data);
     } catch (error) {
       console.error("Error fetching links:", error);
@@ -33,7 +33,7 @@ const LinksManager = () => {
   const createLink = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/link/add",
+        "http://localhost:4000/api/link2/add",
         newLink
       );
       setLinks([...links, response.data]);
@@ -45,7 +45,10 @@ const LinksManager = () => {
 
   const updateLink = async (id, updatedLink) => {
     try {
-      await axios.put(`http://localhost:4000/api/link/edit/${id}`, updatedLink);
+      await axios.put(
+        `http://localhost:4000/api/link2/edit/${id}`,
+        updatedLink
+      );
       setEditLinkId(null); // Exit edit mode
       // Update the links in state directly without fetching them again from the server
       setLinks(
@@ -60,7 +63,7 @@ const LinksManager = () => {
 
   const deleteLink = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/link/${id}`);
+      await axios.delete(`http://localhost:4000/api/link2/${id}`);
       setLinks(links.filter((link) => link._id !== id));
     } catch (error) {
       console.error("Error deleting link:", error);

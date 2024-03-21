@@ -46,9 +46,7 @@ export default function Barangay14ps() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // If the input field is for dateOfBirth, format the value to "yyyy-MM-dd"
-    const formattedValue = name === "dateOfBirth" ? formatDate(value) : value;
-    setUpdatedForm({ ...updatedForm, [name]: formattedValue });
+    setUpdatedForm({ ...updatedForm, [name]: value });
   };
 
   const formatDate = (dateString) => {
@@ -103,7 +101,9 @@ export default function Barangay14ps() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstname}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstname} ${form.surname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -170,7 +170,7 @@ export default function Barangay14ps() {
         <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-[#0569B4] text-white">
-              <th className="px-4 py-2">First Name</th>
+              <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Birthday</th>
               <th className="px-4 py-2">Town</th>
               <th className="px-4 py-2">Barangay</th>
@@ -393,7 +393,7 @@ export default function Barangay14ps() {
                 <div>
                   <p className="font-semibold">Date Of Birth:</p>
                   <input
-                    type="date"
+                    type="text"
                     name="dateOfBirth"
                     value={updatedForm.dateOfBirth}
                     onChange={handleInputChange}
@@ -417,6 +417,12 @@ export default function Barangay14ps() {
                   <p className="font-semibold">Applicant Status:</p>
                   <p className="border px-2 border-black rounded-lg">
                     {updatedForm.applicationStatus}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold">Date of Application</p>
+                  <p className="border px-2 border-black rounded-lg">
+                    {updatedForm.createdAt}
                   </p>
                 </div>
               </div>

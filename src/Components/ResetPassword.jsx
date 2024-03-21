@@ -5,12 +5,19 @@ import axios from "axios";
 function ResetPassword() {
   const { resetIdentifier } = useParams();
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false); // State to control showing the success modal
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      // Check if passwords match
+      setMessage("Passwords do not match");
+      setIsError(true);
+      return;
+    }
     try {
       await axios.post(
         `http://localhost:4000/api/smtp/reset-password/${resetIdentifier}`,
@@ -18,7 +25,7 @@ function ResetPassword() {
       );
       setMessage("Password reset successfully!");
       setIsError(false);
-      setShowSuccessModal(true); // Show the success modal upon successful password reset
+      setShowSuccessModal(true);
     } catch (error) {
       setMessage(error.response.data.error);
       setIsError(true);
@@ -27,7 +34,6 @@ function ResetPassword() {
 
   const handleModalClose = () => {
     setShowSuccessModal(false);
-    // Redirect to the login page upon closing the modal
     window.location.href = "/login";
   };
 
@@ -57,6 +63,16 @@ function ResetPassword() {
             placeholder="Enter your new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <input
+            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="password"
+            placeholder="Confirm your new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </div>

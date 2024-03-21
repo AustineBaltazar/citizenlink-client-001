@@ -72,7 +72,9 @@ const SeniorApplicant2 = () => {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -306,27 +308,16 @@ const SeniorApplicant2 = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">ID Number:</p>
+                    <p className="font-semibold">OSCA ID:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.idNumber}
+                      {selectedApplicant.oscaId}
                     </p>
                   </div>
-                  <div>
-                    <p className="font-semibold">Medicine Booklet Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.medicineBookletNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Purchase DTI booklet:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.purchaseDTIbooklet}
-                    </p>
-                  </div>
+
                   <div>
                     <p className="font-semibold">Date Of Application:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.dateOfApplication}
+                      {selectedApplicant.createdAt}
                     </p>
                   </div>
                   <div>

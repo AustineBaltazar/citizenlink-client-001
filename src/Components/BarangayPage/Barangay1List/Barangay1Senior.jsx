@@ -50,6 +50,16 @@ export default function Barangay1Senior() {
     const { name, value } = e.target;
     setUpdatedForm({ ...updatedForm, [name]: value });
   };
+  const formatDate = (dateString) => {
+    // Check if the provided string is in the ISO format
+    if (dateString.includes("T")) {
+      // If it's in ISO format, extract the date part and return
+      return dateString.split("T")[0];
+    } else {
+      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
+      return dateString;
+    }
+  };
 
   const handleEditClick = () => {
     setEditable(true);
@@ -61,15 +71,21 @@ export default function Barangay1Senior() {
 
   const handleUpdateForm = async () => {
     try {
+      // Ensure that the dateOfBirth field is properly formatted before sending the update
+      const formattedUpdatedForm = {
+        ...updatedForm,
+        dateOfBirth: formatDate(updatedForm.dateOfBirth),
+        applicationStatus: "updated",
+      };
+
       await axios.put(
         `http://localhost:4000/api/senior/entries/${selectedApplicant._id}`,
-        updatedForm
+        formattedUpdatedForm
       );
-      // Update the application status to "updated" in the updatedForm
-      const updatedFormData = { ...updatedForm, applicationStatus: "updated" };
+
       setForms(
         forms.map((form) =>
-          form._id === selectedApplicant._id ? updatedFormData : form
+          form._id === selectedApplicant._id ? formattedUpdatedForm : form
         )
       );
       setEditable(false);
@@ -86,7 +102,9 @@ export default function Barangay1Senior() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 

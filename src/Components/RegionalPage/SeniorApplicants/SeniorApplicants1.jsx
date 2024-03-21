@@ -71,7 +71,9 @@ const SeniorApplicants1 = () => {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -250,21 +252,15 @@ const SeniorApplicants1 = () => {
               <div className="p-8">
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="font-semibold">Type Of Application</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.typeOfApplication}
-                    </p>
-                  </div>
-                  <div>
                     <p className="font-semibold">First Name:</p>
                     <p className="border px-2 border-black rounded-lg">
                       {selectedApplicant.firstName}
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">Last Name:</p>
+                    <p className="font-semibold">Middle Name:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.lastName}
+                      {selectedApplicant.middleName}
                     </p>
                   </div>
 
@@ -305,27 +301,15 @@ const SeniorApplicants1 = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="font-semibold">ID Number:</p>
+                    <p className="font-semibold">OSCA ID:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.idNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Medicine Booklet Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.medicineBookletNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Purchase DTI booklet:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.purchaseDTIbooklet}
+                      {selectedApplicant.oscaId}
                     </p>
                   </div>
                   <div>
                     <p className="font-semibold">Date Of Application:</p>
                     <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.dateOfApplication}
+                      {selectedApplicant.createdAt}
                     </p>
                   </div>
                   <div>

@@ -130,6 +130,7 @@ function App() {
             path="/reset-password/:resetIdentifier"
             element={<ResetPassword />}
           />
+
           <Route path="/" element={<UserLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="news" element={<News />} />

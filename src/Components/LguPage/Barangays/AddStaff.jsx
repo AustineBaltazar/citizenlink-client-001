@@ -58,7 +58,7 @@ const AddStaff = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full mt-12">
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
         <header className="bg-[#2D7144] text-white px-2 py-2">Add Staff</header>
         <div className="flex justify-center items-center">
@@ -100,7 +100,6 @@ const AddStaff = () => {
                   name="middleName"
                   value={formData.middleName}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="mb-2">
@@ -113,7 +112,6 @@ const AddStaff = () => {
                   name="suffix"
                   value={formData.suffix}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="mb-4">

@@ -50,6 +50,16 @@ export default function Barangay1Senior() {
     const { name, value } = e.target;
     setUpdatedForm({ ...updatedForm, [name]: value });
   };
+  const formatDate = (dateString) => {
+    // Check if the provided string is in the ISO format
+    if (dateString.includes("T")) {
+      // If it's in ISO format, extract the date part and return
+      return dateString.split("T")[0];
+    } else {
+      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
+      return dateString;
+    }
+  };
 
   const handleEditClick = () => {
     setEditable(true); // Enable editing
@@ -61,15 +71,21 @@ export default function Barangay1Senior() {
 
   const handleUpdateForm = async () => {
     try {
+      // Ensure that the dateOfBirth field is properly formatted before sending the update
+      const formattedUpdatedForm = {
+        ...updatedForm,
+        dateOfBirth: formatDate(updatedForm.dateOfBirth),
+        applicationStatus: "updated",
+      };
+
       await axios.put(
         `http://localhost:4000/api/senior/entries/${selectedApplicant._id}`,
-        updatedForm
+        formattedUpdatedForm
       );
-      // Update the application status to "updated" in the updatedForm
-      const updatedFormData = { ...updatedForm, applicationStatus: "updated" };
+
       setForms(
         forms.map((form) =>
-          form._id === selectedApplicant._id ? updatedFormData : form
+          form._id === selectedApplicant._id ? formattedUpdatedForm : form
         )
       );
       setEditable(false);
@@ -78,7 +94,6 @@ export default function Barangay1Senior() {
       console.error(error);
     }
   };
-
   const handleModalClose = () => {
     setIsUpdated(false); // Reset the state when modal is closed
     closeModal(); // Close the modal
@@ -86,7 +101,9 @@ export default function Barangay1Senior() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstName} ${form.lastName}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -252,7 +269,7 @@ export default function Barangay1Senior() {
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <div className="bg-white rounded-2xl shadow-lg">
-            <h1 className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
+            <h1 className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-center ">
               Update Applicant Information
             </h1>
             <div className="p-8">
@@ -445,7 +462,7 @@ export default function Barangay1Senior() {
                 {!editable && (
                   <button
                     onClick={handleEditClick}
-                    className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                    className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                   >
                     Edit
                   </button>
@@ -454,13 +471,13 @@ export default function Barangay1Senior() {
                   <>
                     <button
                       onClick={handleUpdateForm}
-                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Update
                     </button>
                     <button
                       onClick={handleEditClick2}
-                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Close Edit
                     </button>
@@ -468,7 +485,7 @@ export default function Barangay1Senior() {
                 )}
                 <button
                   onClick={closeModal}
-                  className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
+                  className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
                 >
                   Close
                 </button>
@@ -484,7 +501,7 @@ export default function Barangay1Senior() {
             <h2 className="text-xl font-semibold mb-4">Updated</h2>
             <button
               onClick={handleModalClose}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-indigo-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Close
             </button>

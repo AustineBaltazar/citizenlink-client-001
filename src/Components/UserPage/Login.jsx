@@ -84,7 +84,7 @@ export default function Login() {
   }, [loggedIn, userId]); // Make sure to include userId as a dependency
 
   return (
-    <div className="flex items-center flex-col  h-screen bg-gray-200">
+    <div className="flex items-center justify-center flex-col  h-screen bg-gray-200">
       <div className="flex flex-col items-center">
         <div className="">
           <img src={barangay} alt="Logo" className="w-62 h-64 pl-5" />

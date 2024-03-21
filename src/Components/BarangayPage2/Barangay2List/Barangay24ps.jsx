@@ -103,7 +103,9 @@ export default function Barangay14ps() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      ? `${form.firstname} ${form.surname}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -170,7 +172,7 @@ export default function Barangay14ps() {
         <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-indigo-500 text-white">
-              <th className="px-4 py-2">First Name</th>
+              <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Birthday</th>
               <th className="px-4 py-2">Town</th>
               <th className="px-4 py-2">Barangay</th>
@@ -266,7 +268,7 @@ export default function Barangay14ps() {
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
           <div className="bg-white  rounded-2xl shadow-lg">
-            <h1 className="text-xl font-semibold  bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
+            <h1 className="text-xl font-semibold  bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-center ">
               Applicant Information
             </h1>
             <div className="p-8">
@@ -395,7 +397,7 @@ export default function Barangay14ps() {
                 <div>
                   <p className="font-semibold">Date Of Birth:</p>
                   <input
-                    type="date"
+                    type="text"
                     name="dateOfBirth"
                     value={updatedForm.dateOfBirth}
                     onChange={handleInputChange}
@@ -426,7 +428,7 @@ export default function Barangay14ps() {
                 {!editable && (
                   <button
                     onClick={handleEditClick}
-                    className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                    className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                   >
                     Edit
                   </button>
@@ -435,13 +437,13 @@ export default function Barangay14ps() {
                   <>
                     <button
                       onClick={handleUpdateForm}
-                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Update
                     </button>
                     <button
                       onClick={handleEditClick2}
-                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Close Edit
                     </button>
@@ -449,7 +451,7 @@ export default function Barangay14ps() {
                 )}
                 <button
                   onClick={closeModal}
-                  className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
+                  className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
                 >
                   Close
                 </button>
@@ -464,7 +466,7 @@ export default function Barangay14ps() {
             <h2 className="text-xl font-semibold mb-4">Updated</h2>
             <button
               onClick={handleModalClose}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-indigo-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Close
             </button>

@@ -101,7 +101,6 @@ const CreateMunicipal = () => {
                   placeholder="Enter MiddleName"
                   value={formData.middleName}
                   onChange={handleChange}
-                  required
                 />
               </div>
 
@@ -115,7 +114,6 @@ const CreateMunicipal = () => {
                   name="suffix"
                   value={formData.suffix}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="mb-4">
