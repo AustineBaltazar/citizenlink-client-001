@@ -15,7 +15,7 @@ const AddStaff = () => {
     password: "",
     barangay: "", // Initialize with an empty string
   });
-
+  const [userId, setUserId] = useState(""); // Add state for userId
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
 
@@ -35,19 +35,22 @@ const AddStaff = () => {
       setFormData({
         firstName: "",
         lastName: "",
-        email: "",
         middleName: "",
+        email: "",
         suffix: "",
         position: "",
         dateOfBirth: "",
-        accessLevel: "barangay",
+        accessLevel: "municipal",
         password: "",
-        barangay: "", // Initialize with an empty string
       });
+      const { userId } = response.data; // Extract userId from response
+      setUserId(userId); // Set userId state
       // Handle success, maybe redirect to login page or display a success message
     } catch (error) {
       console.error("Registration failed:", error);
       setErrorModalVisible(true);
+      // Extract and set error message state
+      setMessage(error.response.data.message);
       // Handle error, display error message to the user
     }
   };
@@ -58,7 +61,7 @@ const AddStaff = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full mt-12">
+    <div className="flex justify-center items-center h-full mt-12 mb-12">
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
         <header className="bg-[#2D7144] text-white px-2 py-2">Add Staff</header>
         <div className="flex justify-center items-center">
@@ -66,12 +69,13 @@ const AddStaff = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  First Name:
+                  First Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   name="firstName"
+                  placeholder="Enter FirstName"
                   value={formData.firstName}
                   onChange={handleChange}
                   required
@@ -79,13 +83,14 @@ const AddStaff = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Last Name:
+                  Last Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   name="lastName"
                   value={formData.lastName}
+                  placeholder="Enter LastName"
                   onChange={handleChange}
                   required
                 />
@@ -98,25 +103,27 @@ const AddStaff = () => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   name="middleName"
+                  placeholder="Enter MiddleName"
                   value={formData.middleName}
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Suffix:
+                  Suffix
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   name="suffix"
+                  placeholder="Enter suffix"
                   value={formData.suffix}
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Email
+                  Email<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email" // Use type="email" for email input
@@ -131,7 +138,7 @@ const AddStaff = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Position:
+                  Position
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -139,12 +146,11 @@ const AddStaff = () => {
                   name="position"
                   value={formData.position}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Date of Birth:
+                  Date of Birth<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -157,12 +163,13 @@ const AddStaff = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Password:
+                  Password<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="password"
                   name="password"
+                  placeholder="Enter Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -202,8 +209,9 @@ const AddStaff = () => {
           <div className="bg-white rounded-lg p-8 z-10">
             <h2 className="text-lg font-bold mb-4">Success!</h2>
             <p>Your registration was successful.</p>
+            <p>User ID: {userId}</p> {/* Display userId */}
             <button
-              className="bg-[#2D7144] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+              className="bg-[#2D7144]  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
               onClick={closeModal}
             >
               Close
@@ -220,7 +228,7 @@ const AddStaff = () => {
             <h2 className="text-lg font-bold mb-4">Error!</h2>
             <p>Registration failed. Please try again later.</p>
             <button
-              className="bg-[#2D7144] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+              className="bg-[#2D7144]  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
               onClick={closeModal}
             >
               Close

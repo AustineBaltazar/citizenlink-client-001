@@ -9,9 +9,10 @@ export default function Barangay1Senior() {
   const [editable, setEditable] = useState(false); // State to track if fields are editable
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
-  const formsPerPage = 20; // Define formsPerPage here
+  const formsPerPage = 15;
   const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
   const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -138,18 +139,20 @@ export default function Barangay1Senior() {
         return "bg-white  border-black";
     }
   };
-
   const sortedForms = filteredForms
     .filter(
       (form) => !selectedStatus || form.applicationStatus === selectedStatus
-    ) // Filter forms based on selected status
-    .slice()
+    )
+    .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
       if (a.applicationStatus < b.applicationStatus) return -1;
       if (a.applicationStatus > b.applicationStatus) return 1;
       return 0;
     });
 
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
@@ -171,17 +174,21 @@ export default function Barangay1Senior() {
         <table className="table-auto border-collapse border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-indigo-500 text-white">
+              <th className="px-4 py-2">No.</th>
               <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Age</th>
+              <th className="px-4 py-2">User ID</th>
+              <th className="px-4 py-2">Osca ID</th>
+              <th className="px-4 py-2 flex-col flex">
+                Birthdate{" "}
+                <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
+              </th>
               <th className="px-4 py-2">Sex</th>
-              <th className="px-4 py-2">Contact Number</th>
-              <th className="px-4 py-2">Barangay</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                 {/* Table header for status */}
                 Application Status{" "}
                 {showDropdown && (
                   // Dropdown for status options
-                  <div className="absolute bg-white rounded-md shadow-lg mt-1 text-gray-500 w-40 z-10">
+                  <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
                     {/* Option for showing all statuses */}
                     <div
                       key="all"
@@ -212,22 +219,18 @@ export default function Barangay1Senior() {
                   </div>
                 )}
               </th>
-              <th className="px-4 py-2">View Form</th>
+              <th className="px-4 py-2">View Info</th>
             </tr>
           </thead>
           <tbody>
-            {sortedForms.map((form) => (
-              <tr
-                key={form._id}
-                className={`px-4 py-2 text-center border border-gray-800 ${
-                  form.isAlive ? "" : "bg-gray-300 text-gray-500"
-                }`}
-              >
+            {sortedForms.map((form, index) => (
+              <tr key={form._id} className="border-b border-gray-300">
+                <td className="px-4 py-2 text-center">{index + 1}</td>
                 <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
-                <td className="px-4 py-2 text-center">{form.age}</td>
+                <td className="px-4 py-2 text-center">{form.userId}</td>
+                <td className="px-4 py-2 text-center">{form.oscaId}</td>
+                <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
                 <td className="px-4 py-2 text-center">{form.sex}</td>
-                <td className="px-4 py-2 text-center">{form.contactNumber}</td>
-                <td className="px-4 py-2 text-center">{form.barangay}</td>
                 <td
                   className={`px-4 py-2 text-center ${getStatusColorClass(
                     form.applicationStatus
@@ -248,211 +251,217 @@ export default function Barangay1Senior() {
           </tbody>
         </table>
         <ul className="flex justify-center mt-4">
-          {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
-            (_, index) => (
-              <li key={index} className="mx-1">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className={`${
-                    sortedForms === index + 1
-                      ? "bg-gray-700 text-white"
-                      : "bg-gray-300 text-gray-800"
-                  } px-4 py-2 rounded`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            )
-          )}
+          {Array.from({
+            length: Math.ceil(filteredForms.length / formsPerPage),
+          }).map((_, index) => (
+            <li key={index} className="mx-1">
+              <button
+                onClick={() => setCurrentPage(index + 1)}
+                className={`${
+                  currentPage === index + 1
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-300 text-gray-800"
+                } px-4 py-2 rounded`}
+              >
+                {index + 1}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
       {modalOpen && selectedApplicant && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white rounded-2xl shadow-lg">
-            <h1 className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-center ">
-              Update Applicant Information
-            </h1>
-            <div className="p-8">
-              <div className="grid grid-cols-3 gap-4">
-                <div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+            <div className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-between">
+              <h1 className="flex justify-center items-center">
+                Applicant Information
+              </h1>
+              <div className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden">
+                <img
+                  src={`http://localhost:4000/${selectedApplicant.picture}`}
+                  alt="Picture"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="p-4 overflow-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col">
                   <p className="font-semibold">First Name:</p>
                   <input
                     type="text"
                     name="firstName"
                     value={updatedForm.firstName}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Middle Name:</p>
                   <input
                     type="text"
                     name="middleName"
                     value={updatedForm.middleName}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Last Name:</p>
                   <input
                     type="text"
                     name="lastName"
                     value={updatedForm.lastName}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Age:</p>
                   <input
                     type="number"
                     name="age"
                     value={updatedForm.age}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Sex:</p>
                   <input
                     type="text"
                     name="sex"
                     value={updatedForm.sex}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Civil Status:</p>
                   <input
                     type="text"
                     name="civilStatus"
                     value={updatedForm.civilStatus}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Nationality:</p>
                   <input
                     type="text"
                     name="nationality"
                     value={updatedForm.nationality}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Date Of Birth:</p>
                   <input
                     type="text"
                     name="dateOfBirth"
                     value={updatedForm.dateOfBirth}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Place Of Birth:</p>
                   <input
                     type="text"
                     name="placeOfBirth"
                     value={updatedForm.placeOfBirth}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Address:</p>
                   <input
                     type="text"
                     name="address"
                     value={updatedForm.address}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
-                  <p className="font-semibold">Picture:</p>
-                  <input
-                    type="text"
-                    name="picture"
-                    value={updatedForm.picture}
-                    onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
-                    readOnly={!editable}
-                  />
-                </div>
-                <div>
+
+                <div className="flex flex-col">
                   <p className="font-semibold">Contact Person:</p>
                   <input
                     type="text"
                     name="contactPerson"
                     value={updatedForm.contactPerson}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Contact Number:</p>
                   <input
                     type="number"
                     name="contactNumber"
                     value={updatedForm.contactNumber}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
-                  <p className="font-semibold">OSCA ID:</p>
+                <div className="flex flex-col">
+                  <p className="font-semibold">OSCA ID</p>
                   <input
-                    type="number"
+                    type="text"
                     name="oscaId"
                     value={updatedForm.oscaId}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+
+                <div className="flex flex-col">
                   <p className="font-semibold">Date Of Application:</p>
                   <input
                     type="text"
                     name="dateOfApplication"
                     value={updatedForm.createdAt}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Barangay:</p>
                   <input
                     type="text"
                     name="barangay"
                     value={updatedForm.barangay}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
+                  <p className="font-semibold">Email:</p>
+                  <p className="border-b border-gray-400">
+                    {updatedForm.email}
+                  </p>
+                </div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Applicant Status:</p>
-                  <p className="border px-2 border-black rounded-lg">
+                  <p className="border-b border-gray-400">
                     {updatedForm.applicationStatus}
                   </p>
                 </div>
@@ -462,7 +471,7 @@ export default function Barangay1Senior() {
                 {!editable && (
                   <button
                     onClick={handleEditClick}
-                    className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                    className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                   >
                     Edit
                   </button>
@@ -471,13 +480,13 @@ export default function Barangay1Senior() {
                   <>
                     <button
                       onClick={handleUpdateForm}
-                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Update
                     </button>
                     <button
                       onClick={handleEditClick2}
-                      className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
+                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mr-2"
                     >
                       Close Edit
                     </button>
@@ -485,7 +494,7 @@ export default function Barangay1Senior() {
                 )}
                 <button
                   onClick={closeModal}
-                  className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
+                  className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg"
                 >
                   Close
                 </button>

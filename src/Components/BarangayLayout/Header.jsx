@@ -126,20 +126,20 @@ function Header() {
                 {welcomeMessage}
               </h1>
               {showDropdown && (
-                <div className="absolute right-0 mt-2 bg-white p-2 shadow-lg rounded-md">
+                <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md mr-4">
                   <ul className="text-black">
                     <li>
                       <button
                         onClick={handleViewProfile}
-                        className="text-black px-4 py-2 mt-2 hover:text-black hover:bg-gray-200 rounded-md font-semibold"
+                        className="dropdown-item hover:bg-gray-100 px-4 py-2 w-full text-left whitespace-nowrap"
                       >
                         View Profile
                       </button>
                     </li>
                     <li>
                       <button
-                        onClick={handleChangePasswordClick} // New option for changing password
-                        className="text-black px- py-2 mt-2 hover:text-black hover:bg-gray-200 rounded-md font-semibold"
+                        onClick={handleChangePasswordClick}
+                        className="dropdown-item hover:bg-gray-100 px-4 py-2 w-full text-left whitespace-nowrap"
                       >
                         Change Password
                       </button>
@@ -147,7 +147,7 @@ function Header() {
                     <li>
                       <button
                         onClick={handleLogOut}
-                        className="text-black px-4 py-2 mt-2 hover:text-black hover:bg-gray-200 rounded-md font-semibold"
+                        className="dropdown-item hover:bg-gray-100 px-4 py-2 w-full text-left whitespace-nowrap"
                       >
                         Log out
                       </button>

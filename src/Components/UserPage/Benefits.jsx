@@ -12,12 +12,18 @@ export default function Benefits() {
       <div className="flex flex-col md:flex-row mt-5 mb-16">
         <div className="md:w-2/3 md:mr-8">
           <div className="border-b-2 flex px text-lg">
-            <nav className="bg-[#6D2932] w-fit text-white px-4 py-2">
+            <nav className=" w-fit text-white ">
               <Link
-                className="mr-4 hover:text-cyan-500 transition-colors duration-300"
+                className="mr-1 bg-[#6D2932] px-4 py-1 hover:text-cyan-500 transition-colors duration-300"
                 to="benefit1"
               >
                 Benefits of Senior Citizens
+              </Link>
+              <Link
+                className="mr-4 bg-[#6D2932] px-4 py-1 hover:text-cyan-500 transition-colors duration-300"
+                to="benefit2"
+              >
+                Benefits of 4ps
               </Link>
             </nav>
           </div>

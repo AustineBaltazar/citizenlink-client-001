@@ -243,7 +243,7 @@ export default function SeniorForm() {
               type="number"
               id="age"
               name="age"
-              placeholder="Age"
+              placeholder="Age 60+"
               value={formData.age}
               onChange={handleChange}
               required

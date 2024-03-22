@@ -5,10 +5,10 @@ export default function Benefits1() {
     <>
       {" "}
       <ul className="list-disc list-inside p-4">
-        <h1 className="ml-5 font-bold flex justify-center underline mb-4">
+        <h1 className="ml-5 font-bold flex justify-center underline mb-4 ">
           BENEFITS OF SENIOR CITIZENS
         </h1>
-        <h1 className="ml-5 font-bold">20% DISCOUNTS</h1>
+        <h1 className="ml-5 font-bold text-red-700">20% DISCOUNTS</h1>
         <li>Medical-related privileges</li>
         <ul className="list-disc list-inside ">
           <li>Medicine and drug purchases</li>
@@ -41,7 +41,9 @@ export default function Benefits1() {
             </li>
           </ul>
         </ul>
-        <h1 className="ml-5 mb-4 mt-4 font-bold">UTILITY DISCOUNT</h1>
+        <h1 className="ml-5 mb-4 mt-4 font-bold text-red-700">
+          UTILITY DISCOUNT
+        </h1>
         <ul className="list-disc list-inside ">
           <li>
             Grant of a minimum of 5% discount relative to the monthly use of
@@ -50,7 +52,7 @@ export default function Benefits1() {
             100 kWh and 30 m³.
           </li>
         </ul>
-        <h1 className="ml-5 font-bold">EXEMPTIONS</h1>
+        <h1 className="ml-5 font-bold text-red-700">EXEMPTIONS</h1>
         <ul className="list-disc list-inside ">
           <li>Tax exemption</li>
           <li>
@@ -64,12 +66,12 @@ export default function Benefits1() {
             DA, TESDA, and DOST-TRC.
           </li>
         </ul>
-        <h1 className="ml-5 font-bold">FREEBIES</h1>
+        <h1 className="ml-5 font-bold text-red-700">FREEBIES</h1>
         <ul className="list-disc list-inside ">
           <li>Free medical and dental services</li>
           <li className="mb-4">Free vaccinations</li>
         </ul>
-        <h1 className="ml-5 font-bold">GOVERNMENT ASSISTANCE</h1>
+        <h1 className="ml-5 font-bold text-red-700">GOVERNMENT ASSISTANCE</h1>
         <ul className="list-disc list-inside ">
           <li>Social Pension</li>
           <li>
@@ -94,7 +96,7 @@ export default function Benefits1() {
             surviving relative who took care of the deceased senior citizen.
           </li>
         </ul>
-        <h1 className="ml-5 font-bold">OTHERS</h1>
+        <h1 className="ml-5 font-bold text-red-700">OTHERS</h1>
         <ul className="list-disc list-inside ">
           <li>Express lanes</li>
           <li>

@@ -6,7 +6,9 @@ const FourPsApplicant1 = () => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const formsPerPage = 20; // Define formsPerPage here
+  const formsPerPage = 15; // Define formsPerPage here
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
   const [showDropdown, setShowDropdown] = useState(false); // State
   useEffect(() => {
@@ -88,8 +90,8 @@ const FourPsApplicant1 = () => {
   const sortedForms = filteredForms
     .filter(
       (form) => !selectedStatus || form.applicationStatus === selectedStatus
-    ) // Filter forms based on selected status
-    .slice()
+    )
+    .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
       if (a.applicationStatus < b.applicationStatus) return -1;
       if (a.applicationStatus > b.applicationStatus) return 1;
@@ -119,6 +121,10 @@ const FourPsApplicant1 = () => {
     }
   };
 
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="px-4">
       <div className="container mx-auto  bg-white">
@@ -142,10 +148,11 @@ const FourPsApplicant1 = () => {
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r ">
             <thead className="bg-[#6D2932] text-white">
               <tr>
+                <th className="px-4 py-2">No.</th>
                 <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">User ID</th>
                 <th className="px-4 py-2">Birthday</th>
-                <th className="px-4 py-2">Town</th>
-                <th className="px-4 py-2">Barangay</th>
+                <th className="px-4 py-2">Sex</th>
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
                   Application Status{" "}
@@ -177,14 +184,14 @@ const FourPsApplicant1 = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedForms.map((form) => (
+              {sortedForms.map((form, index) => (
                 <tr key={form._id} className="border-b border-gray-300">
+                  <td className="px-4 py-2 text-center">{index + 1}</td>
                   <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
+                  <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">
-                    {form.cityMunicipality}
-                  </td>
-                  <td className="px-4 py-2 text-center">{form.barangay}</td>
+                  <td className="px-4 py-2 text-center">{form.sex}</td>
+
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(
                       form.applicationStatus
@@ -217,122 +224,140 @@ const FourPsApplicant1 = () => {
             </tbody>
           </table>
           <ul className="flex justify-center mt-4">
-            {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
-              (_, index) => (
-                <li key={index} className="mx-1">
-                  <button
-                    onClick={() => paginate(index + 1)}
-                    className={`${
-                      sortedForms === index + 1
-                        ? "bg-gray-700 text-white"
-                        : "bg-gray-300 text-gray-800"
-                    } px-4 py-2 rounded`}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              )
-            )}
+            {Array.from({
+              length: Math.ceil(filteredForms.length / formsPerPage),
+            }).map((_, index) => (
+              <li key={index} className="mx-1">
+                <button
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`${
+                    currentPage === index + 1
+                      ? "bg-gray-700 text-white"
+                      : "bg-gray-300 text-gray-800"
+                  } px-4 py-2 rounded`}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
         {modalOpen && selectedApplicant && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white  rounded-2xl shadow-lg">
-              <h1 className="text-xl font-semibold  bg-[#6D2932] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
-                Applicant Information
-              </h1>
-              <div className="p-8">
-                <div className="grid grid-cols-3 gap-8">
-                  <div>
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+            <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+              <div className="text-xl font-semibold bg-[#6D2932] text-white py-4 px-2 rounded-t-2xl flex justify-between">
+                <h1 className="flex justify-center items-center">
+                  Applicant Information
+                </h1>
+              </div>
+              <div className="p-4 overflow-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col">
                     <p className="font-semibold">First Name:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.firstname}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Middle Name:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.middlename}
+                    <p
+                      className={`border-b ${
+                        !selectedApplicant.middlename ? "text-gray-300" : ""
+                      } border-gray-400`}
+                    >
+                      {selectedApplicant.middlename
+                        ? selectedApplicant.middlename
+                        : "n/a"}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Surname:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.surname}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Suffix:</p>
-                    <p className="border px-2 border-black rounded-lg">
-                      {selectedApplicant.suffix}
+                    <p
+                      className={`border-b ${
+                        !selectedApplicant.suffix ? "text-gray-300" : ""
+                      } border-gray-400`}
+                    >
+                      {selectedApplicant.suffix
+                        ? selectedApplicant.suffix
+                        : "n/a"}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">House Number:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.houseNumber}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Street:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.street}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Barangay:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.barangay}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">City Municipality:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.cityMunicipality}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Province:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.province}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Region:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.region}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Postal:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.postal}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Date Of Birth:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.dateOfBirth}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">ContactNumber:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.contactNumber}
                     </p>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
+                    <p className="font-semibold">Email:</p>
+                    <p className="border-b border-gray-400">
+                      {selectedApplicant.email}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">Applicant Status:</p>
-                    <p className="border px-2 border-black rounded-lg">
+                    <p className="border-b border-gray-400">
                       {selectedApplicant.applicationStatus}
                     </p>
                   </div>
-
-                  {/* Add additional fields as needed */}
                 </div>
                 <button
                   onClick={closeModal}
-                  className="bg-[#6D2932] hover:bg-gray-400 p-2 border border-black rounded-lg mt-4 text-white  "
+                  className="bg-[#6D2932] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>

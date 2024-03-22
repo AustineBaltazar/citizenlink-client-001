@@ -9,6 +9,7 @@ const News = lazy(() => import("./Components/UserPage/News"));
 const Benefits = lazy(() => import("./Components/UserPage/Benefits"));
 const Download = lazy(() => import("./Components/UserPage/Download"));
 const Benefit1 = lazy(() => import("./Components/Benefits/Benefits1"));
+
 const About = lazy(() => import("./Components/UserPage/About"));
 const AboutSystem = lazy(() => import("./Components/Abouts/AboutSystem"));
 const AboutTown = lazy(() => import("./Components/Abouts/AboutTown"));
@@ -117,6 +118,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Loading from "./Components/Loading";
 import ResetPassword from "./Components/ResetPassword";
 import ForgotPassword from "./Components/ForgotPassword";
+import Benefits2 from "./Components/Benefits/Benefits2";
 
 function App() {
   return (
@@ -136,7 +138,7 @@ function App() {
             <Route path="news" element={<News />} />
             <Route path="benefits" element={<Benefits />}>
               <Route path="benefit1" element={<Benefit1 />} />
-              <Route path="news" element={<News />} />
+              <Route path="benefit2" element={<Benefits2 />} />
             </Route>
             <Route path="download" element={<Download />} />
             <Route path="/about" element={<About />}>

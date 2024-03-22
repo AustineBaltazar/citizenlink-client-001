@@ -32,10 +32,16 @@ const LinksManager = () => {
 
   const createLink = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/link2/add",
-        newLink
-      );
+      const linkToAdd =
+        newLink.link.startsWith("http://") ||
+        newLink.link.startsWith("https://")
+          ? newLink.link
+          : `http://${newLink.link}`;
+
+      const response = await axios.post("http://localhost:4000/api/link2/add", {
+        ...newLink,
+        link: linkToAdd,
+      });
       setLinks([...links, response.data]);
       setNewLink({ link: "", description: "" });
     } catch (error) {
@@ -45,12 +51,17 @@ const LinksManager = () => {
 
   const updateLink = async (id, updatedLink) => {
     try {
-      await axios.put(
-        `http://localhost:4000/api/link2/edit/${id}`,
-        updatedLink
-      );
-      setEditLinkId(null); // Exit edit mode
-      // Update the links in state directly without fetching them again from the server
+      const linkToUpdate =
+        updatedLink.link.startsWith("http://") ||
+        updatedLink.link.startsWith("https://")
+          ? updatedLink.link
+          : `http://${updatedLink.link}`;
+
+      await axios.put(`http://localhost:4000/api/link2/edit/${id}`, {
+        ...updatedLink,
+        link: linkToUpdate,
+      });
+      setEditLinkId(null);
       setLinks(
         links.map((link) =>
           link._id === id ? { ...link, ...updatedLink } : link

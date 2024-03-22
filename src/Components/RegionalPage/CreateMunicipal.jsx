@@ -15,6 +15,7 @@ const CreateMunicipal = () => {
     accessLevel: "municipal",
     password: "",
   });
+  const [userId, setUserId] = useState(""); // Add state for userId
 
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
@@ -43,10 +44,14 @@ const CreateMunicipal = () => {
         accessLevel: "municipal",
         password: "",
       });
+      const { userId } = response.data; // Extract userId from response
+      setUserId(userId); // Set userId state
       // Handle success, maybe redirect to login page or display a success message
     } catch (error) {
       console.error("Registration failed:", error);
       setErrorModalVisible(true);
+      // Extract and set error message state
+      setMessage(error.response.data.message);
       // Handle error, display error message to the user
     }
   };
@@ -64,7 +69,7 @@ const CreateMunicipal = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  First Name:
+                  First Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -78,7 +83,7 @@ const CreateMunicipal = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Last Name:
+                  Last Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -106,19 +111,20 @@ const CreateMunicipal = () => {
 
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Suffix:
+                  Suffix
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="text"
                   name="suffix"
+                  placeholder="Enter suffix"
                   value={formData.suffix}
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Email
+                  Email<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email" // Use type="email" for email input
@@ -133,7 +139,7 @@ const CreateMunicipal = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Position:
+                  Position
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -141,12 +147,11 @@ const CreateMunicipal = () => {
                   name="position"
                   value={formData.position}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Date of Birth:
+                  Date of Birth<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -159,7 +164,7 @@ const CreateMunicipal = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700 text-sm font-bold mb-1">
-                  Password:
+                  Password<span className="text-red-500">*</span>
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -184,12 +189,11 @@ const CreateMunicipal = () => {
           </div>
         </div>
       </div>
-      {successModalVisible && (
+      {errorModalVisible && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
           <div className="bg-white rounded-lg p-8 z-10">
-            <h2 className="text-lg font-bold mb-4">Success!</h2>
-            <p>Your registration was successful.</p>
+            <h2 className="text-lg font-bold mb-4">Error!</h2>
             <button
               className="bg-[#6D2932] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
               onClick={closeModal}
@@ -201,12 +205,13 @@ const CreateMunicipal = () => {
       )}
 
       {/* Error Modal */}
-      {errorModalVisible && (
+      {successModalVisible && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
           <div className="bg-white rounded-lg p-8 z-10">
-            <h2 className="text-lg font-bold mb-4">Error!</h2>
-            <p>Registration failed. Please try again later.</p>
+            <h2 className="text-lg font-bold mb-4">Success!</h2>
+            <p>Your registration was successful.</p>
+            <p>User ID: {userId}</p> {/* Display userId */}
             <button
               className="bg-[#6D2932] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
               onClick={closeModal}

@@ -177,7 +177,7 @@ export default function FourPsForm() {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-1">
-                Email
+                Email<span className="text-red-500">*</span>
               </label>
               <input
                 type="email" // Use type="email" for email input

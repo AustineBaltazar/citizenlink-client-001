@@ -9,9 +9,10 @@ export default function Barangay14ps() {
   const [editable, setEditable] = useState(false); // State to track if fields are editable
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
-  const formsPerPage = 20; // Define formsPerPage here
+  const formsPerPage = 15; // Define formsPerPage here
   const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
   const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
+  const [currentPage, setCurrentPage] = useState(1); // State to track current page
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -65,7 +66,7 @@ export default function Barangay14ps() {
   };
 
   const handleEditClick2 = () => {
-    setEditable(true); // Enable editing
+    setEditable(false); // Enable editing
   };
 
   const handleUpdateForm = async () => {
@@ -120,7 +121,7 @@ export default function Barangay14ps() {
     .filter(
       (form) => !selectedStatus || form.applicationStatus === selectedStatus
     ) // Filter forms based on selected status
-    .slice()
+    .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
       if (a.applicationStatus < b.applicationStatus) return -1;
       if (a.applicationStatus > b.applicationStatus) return 1;
@@ -150,6 +151,10 @@ export default function Barangay14ps() {
     }
   };
 
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
@@ -170,10 +175,14 @@ export default function Barangay14ps() {
         <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-[#0569B4] text-white">
+              <th className="px-4 py-2">No.</th>
               <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Birthday</th>
-              <th className="px-4 py-2">Town</th>
-              <th className="px-4 py-2">Barangay</th>
+              <th className="px-4 py-2">User ID</th>
+              <th className="px-4 py-2 flex-col flex">
+                Birthdate{" "}
+                <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
+              </th>
+              <th className="px-4 py-2">Sex</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                 {/* Table header for status */}
                 Application Status{" "}
@@ -214,14 +223,15 @@ export default function Barangay14ps() {
             </tr>
           </thead>
           <tbody>
-            {sortedForms.map((form) => (
+            {sortedForms.map((form, index) => (
               <tr key={form._id} className="border-b border-gray-300">
-                <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
-                <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
                 <td className="px-4 py-2 text-center">
-                  {form.cityMunicipality}
+                  {(currentPage - 1) * formsPerPage + index + 1}
                 </td>
-                <td className="px-4 py-2 text-center">{form.barangay}</td>
+                <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
+                <td className="px-4 py-2 text-center">{form.userId}</td>
+                <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
+                <td className="px-4 py-2 text-center">{form.sex}</td>
                 <td
                   className={`px-4 py-2 text-center ${getStatusColorClass(
                     form.applicationStatus
@@ -229,7 +239,6 @@ export default function Barangay14ps() {
                 >
                   {form.applicationStatus}
                 </td>
-
                 <td className="px-4 py-2 text-center">
                   <button
                     onClick={() => handleApplicantClick(form)}
@@ -243,185 +252,192 @@ export default function Barangay14ps() {
           </tbody>
         </table>
         <ul className="flex justify-center mt-4">
-          {Array.from({ length: Math.ceil(forms.length / formsPerPage) }).map(
-            (_, index) => (
-              <li key={index} className="mx-1">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className={`${
-                    sortedForms === index + 1
-                      ? "bg-gray-700 text-white"
-                      : "bg-gray-300 text-gray-800"
-                  } px-4 py-2 rounded`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            )
-          )}
+          {Array.from({
+            length: Math.ceil(filteredForms.length / formsPerPage),
+          }).map((_, index) => (
+            <li key={index} className="mx-1">
+              <button
+                onClick={() => paginate(index + 1)}
+                className={`${
+                  currentPage === index + 1
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-300 text-gray-800"
+                } px-4 py-2 rounded`}
+              >
+                {index + 1}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
       {modalOpen && selectedApplicant && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white  rounded-2xl shadow-lg">
-            <h1 className="text-xl font-semibold  bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-center ">
-              Applicant Information
-            </h1>
-            <div className="p-8">
-              <div className="grid grid-cols-3 gap-8">
-                <div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+            <div className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-between">
+              <h1 className="flex justify-center items-center">
+                Applicant Information
+              </h1>
+            </div>
+            <div className="p-4 overflow-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col">
                   <p className="font-semibold">First Name:</p>
                   <input
                     type="text"
                     name="firstname"
                     value={updatedForm.firstname}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable} // Enable/disable editing based on editable state
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Middle Name:</p>
                   <input
                     type="text"
                     name="middlename"
                     value={updatedForm.middlename}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Surname:</p>
                   <input
                     type="text"
                     name="surname"
                     value={updatedForm.surname}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Suffix:</p>
                   <input
                     type="text"
                     name="suffix"
                     value={updatedForm.suffix}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">House Number:</p>
                   <input
                     type="number"
                     name="houseNumber"
                     value={updatedForm.houseNumber}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Street:</p>
                   <input
                     type="text"
                     name="street"
                     value={updatedForm.street}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Barangay:</p>
                   <input
                     type="text"
                     name="barangay"
                     value={updatedForm.barangay}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">City Municipality:</p>
                   <input
                     type="text"
                     name="cityMunicipality"
                     value={updatedForm.cityMunicipality}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Province:</p>
                   <input
                     type="text"
                     name="province"
                     value={updatedForm.province}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Region:</p>
                   <input
                     type="text"
                     name="region"
                     value={updatedForm.region}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Postal:</p>
                   <input
                     type="text"
                     name="postal"
                     value={updatedForm.postal}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Date Of Birth:</p>
                   <input
                     type="text"
                     name="dateOfBirth"
                     value={updatedForm.dateOfBirth}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">ContactNumber:</p>
                   <input
                     type="text"
                     name="contactNumber"
                     value={updatedForm.contactNumber}
                     onChange={handleInputChange}
-                    className="border px-2 border-black rounded-lg"
+                    className="border-b border-gray-400"
                     readOnly={!editable}
                   />
                 </div>
-
-                <div>
+                <div className="flex flex-col">
+                  <p className="font-semibold">Email:</p>
+                  <p className="border-b border-gray-400">
+                    {updatedForm.email}
+                  </p>
+                </div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Applicant Status:</p>
-                  <p className="border px-2 border-black rounded-lg">
+                  <p className="border-b border-gray-400">
                     {updatedForm.applicationStatus}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <p className="font-semibold">Date of Application</p>
-                  <p className="border px-2 border-black rounded-lg">
+                  <p className="border-b border-gray-400">
                     {updatedForm.createdAt}
                   </p>
                 </div>

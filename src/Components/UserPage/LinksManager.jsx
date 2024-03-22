@@ -32,9 +32,16 @@ const LinksManager = () => {
 
   const createLink = async () => {
     try {
+      // Check if the link starts with http:// or https://, if not, prepend it
+      const linkToAdd =
+        newLink.link.startsWith("http://") ||
+        newLink.link.startsWith("https://")
+          ? newLink.link
+          : `http://${newLink.link}`;
+
       const response = await axios.post(
         "http://localhost:4000/api/link/add",
-        newLink
+        { ...newLink, link: linkToAdd } // Use the validated link
       );
       setLinks([...links, response.data]);
       setNewLink({ link: "", description: "" });
@@ -45,7 +52,17 @@ const LinksManager = () => {
 
   const updateLink = async (id, updatedLink) => {
     try {
-      await axios.put(`http://localhost:4000/api/link/edit/${id}`, updatedLink);
+      // Check if the updated link starts with http:// or https://, if not, prepend it
+      const linkToUpdate =
+        updatedLink.link.startsWith("http://") ||
+        updatedLink.link.startsWith("https://")
+          ? updatedLink.link
+          : `http://${updatedLink.link}`;
+
+      await axios.put(
+        `http://localhost:4000/api/link/edit/${id}`,
+        { ...updatedLink, link: linkToUpdate } // Use the validated link
+      );
       setEditLinkId(null); // Exit edit mode
       // Update the links in state directly without fetching them again from the server
       setLinks(
