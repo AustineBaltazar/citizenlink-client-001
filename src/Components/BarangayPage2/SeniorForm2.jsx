@@ -31,13 +31,11 @@ export default function SeniorForm2() {
     const { name, value, files } = e.target;
 
     if (files) {
-      // If the field is a file input, update the formData with the selected file
       setFormData({
         ...formData,
-        [name]: files[0], // Assuming single file upload
+        [name]: files[0],
       });
     } else {
-      // For regular input fields, update formData as usual
       setFormData({
         ...formData,
         [name]: value,
@@ -45,35 +43,28 @@ export default function SeniorForm2() {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
 
-      // Make sure the token is available
       if (!token) {
-        // Handle case where token is missing (e.g., redirect to login page)
         return;
       }
 
-      // Set the Authorization header with the token
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
 
-      // Set loading to true when form is submitted
       setLoading(true);
 
-      // Create form data object to send files along with other form fields
       const formDataToSend = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
 
-      // Send POST request to your backend API with form data
       const response = await axios.post(
         "http://localhost:4000/api/senior/submit",
         formDataToSend,
@@ -81,10 +72,9 @@ export default function SeniorForm2() {
       );
       setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
-      // Update modal message
+
       setModalMessage("Form submitted successfully");
 
-      // Clear form data except for picture
       setFormData({
         typeOfApplication: "New",
         oscaId: "",
@@ -106,16 +96,14 @@ export default function SeniorForm2() {
         picture: null,
       });
 
-      // Show modal
       setShowModal(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Update modal message
+
       setModalMessage("Error submitting form");
-      // Show modal
+
       setShowModal(true);
     } finally {
-      // Close modal and reset loading state after 1.5 seconds
       setTimeout(() => {
         setLoading(false);
       }, 1500);
@@ -243,7 +231,7 @@ export default function SeniorForm2() {
               type="number"
               id="age"
               name="age"
-              placeholder="Age 65+"
+              placeholder="Age 60+"
               value={formData.age}
               onChange={handleChange}
               required

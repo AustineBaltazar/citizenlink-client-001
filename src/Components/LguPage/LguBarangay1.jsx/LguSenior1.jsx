@@ -9,8 +9,8 @@ export default function LguSenior1() {
   const [searchTerm, setSearchTerm] = useState("");
   const formsPerPage = 15;
 
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State to track visib
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function LguSenior1() {
         await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
           applicationStatus: newStatus,
         });
-        // Assuming successful update, update the local state to reflect changes
+
         setForms(
           forms.map((form) =>
             form._id === id ? { ...form, applicationStatus: newStatus } : form
@@ -73,12 +73,12 @@ export default function LguSenior1() {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const sortedForms = filteredForms

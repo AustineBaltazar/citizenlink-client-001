@@ -7,9 +7,9 @@ function Header2() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const { decodedToken } = useJwt(token);
   const [myData, setMyData] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false); // State for dropdown visibility
-  const [selectedUser, setSelectedUser] = useState(null); // State for selected user profile
-  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // State to control the change password modal
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -20,10 +20,8 @@ function Header2() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Check if the token is valid and not expired
         if (!decodedToken) return;
 
-        // Fetch all users
         const response = await axios.get("http://localhost:4000/api/lgu/users");
         setMyData(response.data);
       } catch (error) {
@@ -31,7 +29,6 @@ function Header2() {
       }
     };
 
-    // Fetch users only if the token is valid
     if (decodedToken) {
       fetchUsers();
     }
@@ -62,7 +59,6 @@ function Header2() {
   };
 
   const handleChangePasswordClick = () => {
-    // Show the change password modal when Change Password is clicked
     setShowChangePasswordModal(true);
   };
 
@@ -98,7 +94,7 @@ function Header2() {
 
   const handleCloseModal = () => {
     setShowChangePasswordModal(false);
-    // Reset state values
+
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -121,7 +117,7 @@ function Header2() {
             <div className="relative">
               <h1
                 className="cursor-pointer"
-                onClick={() => setShowDropdown(!showDropdown)} // Toggle dropdown visibility
+                onClick={() => setShowDropdown(!showDropdown)}
               >
                 {welcomeMessage}
               </h1>

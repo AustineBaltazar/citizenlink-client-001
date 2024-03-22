@@ -6,12 +6,12 @@ export default function Barangay14ps() {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editable, setEditable] = useState(false); // State to track if fields are editable
+  const [editable, setEditable] = useState(false);
   const [updatedForm, setUpdatedForm] = useState(null);
-  const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
+  const [isUpdated, setIsUpdated] = useState(false);
   const formsPerPage = 15;
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State to track vi
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -33,48 +33,43 @@ export default function Barangay14ps() {
 
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
-    setUpdatedForm({ ...applicant }); // Set initial form data for editing
+    setUpdatedForm({ ...applicant });
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setSelectedApplicant(null);
-    setUpdatedForm(null); // Reset updatedForm state
+    setUpdatedForm(null);
     setModalOpen(false);
-    setEditable(false); // Reset editable state
-    setIsUpdated(false); // Reset isUpdated state
+    setEditable(false);
+    setIsUpdated(false);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // If the input field is for dateOfBirth, format the value to "yyyy-MM-dd"
+
     const formattedValue = name === "dateOfBirth" ? formatDate(value) : value;
     setUpdatedForm({ ...updatedForm, [name]: formattedValue });
   };
 
-  // Function to format date to "yyyy-MM-dd"
   const formatDate = (dateString) => {
-    // Check if the provided string is in the ISO format
     if (dateString.includes("T")) {
-      // If it's in ISO format, extract the date part and return
       return dateString.split("T")[0];
     } else {
-      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
       return dateString;
     }
   };
 
   const handleEditClick = () => {
-    setEditable(true); // Enable editing
+    setEditable(true);
   };
 
   const handleEditClick2 = () => {
-    setEditable(false); // Enable editing
+    setEditable(false);
   };
 
   const handleUpdateForm = async () => {
     try {
-      // Ensure that the dateOfBirth field is properly formatted before sending the update
       const formattedUpdatedForm = {
         ...updatedForm,
         dateOfBirth: formatDate(updatedForm.dateOfBirth),
@@ -112,12 +107,12 @@ export default function Barangay14ps() {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const getStatusColorClass = (status) => {

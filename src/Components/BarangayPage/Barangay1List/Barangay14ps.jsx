@@ -6,13 +6,13 @@ export default function Barangay14ps() {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editable, setEditable] = useState(false); // State to track if fields are editable
+  const [editable, setEditable] = useState(false);
   const [updatedForm, setUpdatedForm] = useState(null);
-  const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
-  const formsPerPage = 15; // Define formsPerPage here
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
-  const [currentPage, setCurrentPage] = useState(1); // State to track current page
+  const [isUpdated, setIsUpdated] = useState(false);
+  const formsPerPage = 15;
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -33,16 +33,16 @@ export default function Barangay14ps() {
 
   const handleApplicantClick = (applicant) => {
     setSelectedApplicant(applicant);
-    setUpdatedForm({ ...applicant }); // Set initial form data for editing
+    setUpdatedForm({ ...applicant });
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setSelectedApplicant(null);
-    setUpdatedForm(null); // Reset updatedForm state
+    setUpdatedForm(null);
     setModalOpen(false);
-    setEditable(false); // Reset editable state
-    setIsUpdated(false); // Reset isUpdated state
+    setEditable(false);
+    setIsUpdated(false);
   };
 
   const handleInputChange = (e) => {
@@ -51,27 +51,23 @@ export default function Barangay14ps() {
   };
 
   const formatDate = (dateString) => {
-    // Check if the provided string is in the ISO format
     if (dateString.includes("T")) {
-      // If it's in ISO format, extract the date part and return
       return dateString.split("T")[0];
     } else {
-      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
       return dateString;
     }
   };
 
   const handleEditClick = () => {
-    setEditable(true); // Enable editing
+    setEditable(true);
   };
 
   const handleEditClick2 = () => {
-    setEditable(false); // Enable editing
+    setEditable(false);
   };
 
   const handleUpdateForm = async () => {
     try {
-      // Ensure that the dateOfBirth field is properly formatted before sending the update
       const formattedUpdatedForm = {
         ...updatedForm,
         dateOfBirth: formatDate(updatedForm.dateOfBirth),
@@ -109,18 +105,18 @@ export default function Barangay14ps() {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const sortedForms = filteredForms
     .filter(
       (form) => !selectedStatus || form.applicationStatus === selectedStatus
-    ) // Filter forms based on selected status
+    )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
       if (a.applicationStatus < b.applicationStatus) return -1;
@@ -184,20 +180,17 @@ export default function Barangay14ps() {
               </th>
               <th className="px-4 py-2">Sex</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
-                {/* Table header for status */}
                 Application Status{" "}
                 {showDropdown && (
-                  // Dropdown for status options
                   <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
-                    {/* Option for showing all statuses */}
                     <div
                       key="all"
                       className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                      onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
+                      onClick={() => handleStatusOptionClick(null)}
                     >
                       All
                     </div>
-                    {/* Other status options */}
+
                     {[
                       "pending",
                       "on review",

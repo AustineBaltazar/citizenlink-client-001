@@ -15,7 +15,7 @@ const CreateMunicipal = () => {
     accessLevel: "municipal",
     password: "",
   });
-  const [userId, setUserId] = useState(""); // Add state for userId
+  const [userId, setUserId] = useState("");
 
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
@@ -44,15 +44,13 @@ const CreateMunicipal = () => {
         accessLevel: "municipal",
         password: "",
       });
-      const { userId } = response.data; // Extract userId from response
-      setUserId(userId); // Set userId state
-      // Handle success, maybe redirect to login page or display a success message
+      const { userId } = response.data;
+      setUserId(userId);
     } catch (error) {
       console.error("Registration failed:", error);
       setErrorModalVisible(true);
-      // Extract and set error message state
+
       setMessage(error.response.data.message);
-      // Handle error, display error message to the user
     }
   };
 

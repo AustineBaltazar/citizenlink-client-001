@@ -13,7 +13,6 @@ function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      // Check if passwords match
       setMessage("Passwords do not match");
       setIsError(true);
       return;

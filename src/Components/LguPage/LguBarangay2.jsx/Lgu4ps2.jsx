@@ -9,8 +9,8 @@ export default function Lgu4ps2() {
   const formsPerPage = 15;
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State to track visib
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   useEffect(() => {
     const fetchForms = async () => {
       try {
@@ -38,7 +38,7 @@ export default function Lgu4ps2() {
         await axios.put(`http://localhost:4000/api/4ps/forms/${id}`, {
           applicationStatus: newStatus,
         });
-        // Assuming successful update, update the local state to reflect changes
+
         setForms(
           forms.map((form) =>
             form._id === id ? { ...form, applicationStatus: newStatus } : form
@@ -69,12 +69,12 @@ export default function Lgu4ps2() {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const sortedForms = filteredForms

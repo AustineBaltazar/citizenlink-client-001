@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function FourPsForm() {
-  // State variables to store form data, modal visibility, and loading state
   const [formData, setFormData] = useState({
     surname: "",
     firstname: "",
@@ -24,10 +23,9 @@ export default function FourPsForm() {
   });
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState();
 
-  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -36,27 +34,23 @@ export default function FourPsForm() {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
 
-      // Make sure the token is available
       if (!token) {
-        // Handle case where token is missing (e.g., redirect to login page)
         return;
       }
 
-      // Set the Authorization header with the token
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-      // Set loading to true when form is submitted
+
       setLoading(true);
-      // Send POST request to your backend API with form data
+
       const response = await axios.post(
         "http://localhost:4000/api/4ps/submit",
         formData,
@@ -64,7 +58,7 @@ export default function FourPsForm() {
       );
       setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
-      // Update modal message
+
       setModalMessage("Form submitted successfully");
       setFormData({
         surname: "",
@@ -85,22 +79,21 @@ export default function FourPsForm() {
         placeOfBirth: "",
         applicationStatus: "pending",
       });
-      // Show modal
+
       setShowModal(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Update modal message
+
       setModalMessage("Error submitting form");
-      // Show modal
+
       setShowModal(true);
     } finally {
-      // Set loading to false after 1.5 seconds
       setTimeout(() => {
         setLoading(false);
       }, 1500);
     }
   };
-  // Close modal
+
   const closeModal = () => {
     setShowModal(false);
     setModalMessage("");
@@ -113,7 +106,6 @@ export default function FourPsForm() {
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
           <form onSubmit={handleSubmit} className=" gap-4">
-            {/* Surname */}
             <div className="mb-4">
               <label htmlFor="surname" className="block mb-2">
                 Surname<span className="text-red-500">*</span>

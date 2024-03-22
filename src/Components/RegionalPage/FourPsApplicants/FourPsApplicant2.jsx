@@ -6,18 +6,17 @@ const FourPsApplicant2 = () => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const formsPerPage = 15; // Define formsPerPage here
+  const formsPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   useEffect(() => {
     const fetchForms = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/4ps/forms");
         const data = response.data;
 
-        // Filter forms to include only those with application statuses 'eligible', 'rejected', or 'approved' and barangay 'San Isidro Norte'
         const filteredForms = data.filter(
           (form) =>
             form.applicationStatus &&
@@ -47,7 +46,7 @@ const FourPsApplicant2 = () => {
         await axios.put(`http://localhost:4000/api/4ps/forms/${id}`, {
           applicationStatus: newStatus,
         });
-        // Assuming successful update, update the local state to reflect changes
+
         setForms(
           forms.map((form) =>
             form._id === id ? { ...form, applicationStatus: newStatus } : form
@@ -78,12 +77,12 @@ const FourPsApplicant2 = () => {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const sortedForms = filteredForms

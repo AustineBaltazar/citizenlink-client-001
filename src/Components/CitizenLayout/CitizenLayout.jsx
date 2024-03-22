@@ -10,10 +10,6 @@ const CitizenLayout = () => {
       <NavUser />
       <SecondaryHeader />
       <div className="container flex-1 mx-auto px-4 sm:px-6 lg:px-8 ">
-        {/* 
-          Adjust the padding according to your design requirements 
-          Here, I've used Tailwind's responsive padding classes.
-        */}
         <Outlet />
       </div>
       <Footer />

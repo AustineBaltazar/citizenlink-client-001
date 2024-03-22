@@ -22,18 +22,14 @@ export default function CitizenSecondNav() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Check if the token is valid and not expired
         if (!decodedToken) return;
 
         const userId = decodedToken.userId;
 
-        // Determine whether the user is from 4ps or senior
         const is4psUser = userId.startsWith("4ps");
 
-        // Fetch users from the backend based on the user's role
         const response = await axios.get(`http://localhost:4000/api/4ps/users`);
 
-        // Filter users based on the current user's userId
         const filteredUsers = response.data.filter(
           (user) => user.userId === userId
         );
@@ -44,7 +40,6 @@ export default function CitizenSecondNav() {
       }
     };
 
-    // Fetch users only if the token is valid
     if (decodedToken) {
       fetchUsers();
     }
@@ -65,12 +60,10 @@ export default function CitizenSecondNav() {
   };
 
   const handleViewProfileClick = () => {
-    // Show the modal when View Profile is clicked
     setShowModal(true);
   };
 
   const handleChangePasswordClick = () => {
-    // Show the change password modal when Change Password is clicked
     setShowChangePasswordModal(true);
   };
 
@@ -106,7 +99,7 @@ export default function CitizenSecondNav() {
 
   const handleCloseModal = () => {
     setShowChangePasswordModal(false);
-    // Reset state values
+
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -135,7 +128,7 @@ export default function CitizenSecondNav() {
                 </button>
               </div>
               <button
-                onClick={handleChangePasswordClick} // New option for changing password
+                onClick={handleChangePasswordClick}
                 className="p-1 rounded-sm hover:bg-green-300 text-black"
               >
                 Change Password

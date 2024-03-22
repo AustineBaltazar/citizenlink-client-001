@@ -6,12 +6,12 @@ export default function Barangay1Senior() {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editable, setEditable] = useState(false); // State to track if fields are editable
+  const [editable, setEditable] = useState(false);
   const [updatedForm, setUpdatedForm] = useState(null);
-  const [isUpdated, setIsUpdated] = useState(false); // State to track if the form is updated
+  const [isUpdated, setIsUpdated] = useState(false);
   const formsPerPage = 15;
-  const [selectedStatus, setSelectedStatus] = useState(null); // State to track selected status
-  const [showDropdown, setShowDropdown] = useState(false); // State to track visibility of dropdown
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     const fetchForms = async () => {
@@ -51,12 +51,9 @@ export default function Barangay1Senior() {
     setUpdatedForm({ ...updatedForm, [name]: value });
   };
   const formatDate = (dateString) => {
-    // Check if the provided string is in the ISO format
     if (dateString.includes("T")) {
-      // If it's in ISO format, extract the date part and return
       return dateString.split("T")[0];
     } else {
-      // If it's not in ISO format, assume it's already in "yyyy-MM-dd" format
       return dateString;
     }
   };
@@ -71,7 +68,6 @@ export default function Barangay1Senior() {
 
   const handleUpdateForm = async () => {
     try {
-      // Ensure that the dateOfBirth field is properly formatted before sending the update
       const formattedUpdatedForm = {
         ...updatedForm,
         dateOfBirth: formatDate(updatedForm.dateOfBirth),
@@ -109,12 +105,12 @@ export default function Barangay1Senior() {
   );
 
   const handleStatusHeaderClick = () => {
-    setShowDropdown(!showDropdown); // Toggle visibility of dropdown
+    setShowDropdown(!showDropdown);
   };
 
   const handleStatusOptionClick = (status) => {
-    setSelectedStatus(status); // Update selected status
-    setShowDropdown(false); // Hide dropdown
+    setSelectedStatus(status);
+    setShowDropdown(false);
   };
 
   const sortedForms = filteredForms
@@ -185,20 +181,17 @@ export default function Barangay1Senior() {
               </th>
               <th className="px-4 py-2">Sex</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
-                {/* Table header for status */}
                 Application Status{" "}
                 {showDropdown && (
-                  // Dropdown for status options
                   <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
-                    {/* Option for showing all statuses */}
                     <div
                       key="all"
                       className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                      onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
+                      onClick={() => handleStatusOptionClick(null)}
                     >
                       All
                     </div>
-                    {/* Other status options */}
+
                     {[
                       "pending",
                       "on review",
@@ -225,7 +218,12 @@ export default function Barangay1Senior() {
           </thead>
           <tbody>
             {sortedForms.map((form, index) => (
-              <tr key={form._id} className="border-b border-gray-300">
+              <tr
+                key={form._id}
+                className={`px-4 py-2 text-center border border-gray-800 ${
+                  form.isAlive ? "" : "bg-gray-300 text-gray-500"
+                }`}
+              >
                 <td className="px-4 py-2 text-center">{index + 1}</td>
                 <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                 <td className="px-4 py-2 text-center">{form.userId}</td>

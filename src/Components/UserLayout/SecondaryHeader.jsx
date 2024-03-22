@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Corrected import statement
+import { jwtDecode } from "jwt-decode";
 
 export default function SecondaryHeader() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    decodeToken(); // Decode the token when component mounts
+    decodeToken();
   }, []);
 
   const decodeToken = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
-      setUserRole(decodedToken.role); // Extract and store the user role from the decoded token
+      setUserRole(decodedToken.role);
     }
   };
 
@@ -57,7 +57,7 @@ export default function SecondaryHeader() {
               Download
             </Link>
           </div>
-          <div>
+          <div className="mr-32">
             {userRole === "regional" && (
               <Link
                 to="/regional/dashboard"

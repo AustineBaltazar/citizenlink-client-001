@@ -7,7 +7,7 @@ const Barangay2profile = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/lgu/users"); // Assuming your API endpoint is '/api/users'
+        const response = await axios.get("http://localhost:4000/api/lgu/users");
         const filteredUsers = response.data.filter((user) =>
           user.userId.startsWith("brgy05-")
         );

@@ -22,8 +22,8 @@ function ForgotPassword() {
       );
       setMessage("Password reset link sent successfully!");
       setIsError(false);
-      setUserId(""); // Clear userId state
-      setEmail(""); // Clear email state
+      setUserId("");
+      setEmail("");
       console.log(response.data);
     } catch (error) {
       if (error.response && error.response.data) {

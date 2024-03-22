@@ -52,10 +52,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    // Define prefix here
     const prefix = userId.substring(0, userId.indexOf("-") + 1);
 
-    // Redirect if login is successful
     if (loggedIn) {
       switch (prefix) {
         case "4ps30-":
@@ -81,7 +79,7 @@ export default function Login() {
           return;
       }
     }
-  }, [loggedIn, userId]); // Make sure to include userId as a dependency
+  }, [loggedIn, userId]);
 
   return (
     <div className="flex items-center justify-center flex-col  h-screen bg-gray-200">
@@ -134,7 +132,6 @@ export default function Login() {
           Login
         </button>
         <div className="mt-2">
-          {/* Link to the Forgot Password page */}
           <Link to="/forgot-password" className="text-blue-500 underline">
             Forgot Password?
           </Link>

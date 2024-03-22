@@ -19,18 +19,19 @@ export default function Status() {
   }
 
   const pending =
-    "Records are submitted, and to be interviewed by the regionals.";
+    "Records are submitted, and to be interviewed by the Regionals.";
   const forReview =
-    "Applicant is interviewed, and to be reviewed by the municipal";
+    "Applicant is interviewed, and to be reviewed by the Municipal";
   const inComplete =
     "Some documents are missing. Please complete the needful document/s";
   const inCorrect =
     "Some records didn't match the documents(e.g., birth certificate)";
-  const notQualified = "Applicant did not reach the requirement/s. Learn more.";
-  const Eligible = "Records are complete, and to be reviewed by the regionals.";
-  const notEligible =
-    "Applicant is not eligible to register. Learn more(link to how to apply page";
+  const notQualified = "Applicant did not reach the requirement/s. ";
+  const Eligible = "Records are complete, and to be reviewed by the Regionals.";
+  const notEligible = "Applicant is not eligible to register. ";
   const qualified = "Your application status is now approved";
+  const updated =
+    "Record/s are updated and transfered back to Municipal for another review.";
 
   function getDescription(status) {
     switch (status) {
@@ -49,7 +50,7 @@ export default function Status() {
       case "APPROVED":
         return qualified;
       case "UPDATED":
-        return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices eros nec justo consequat, ut fringilla mauris fermentum.";
+        return updated;
       default:
         return "";
     }
@@ -178,9 +179,7 @@ export default function Status() {
                   </h1>
                 </td>
                 <td className="py-2 px-4 border border-gray-300 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  ultrices eros nec justo consequat, ut fringilla mauris
-                  fermentum.
+                  {updated}
                 </td>
               </tr>
             </tbody>
