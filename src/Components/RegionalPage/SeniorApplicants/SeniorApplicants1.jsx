@@ -75,7 +75,8 @@ const SeniorApplicants1 = () => {
     searchTerm
       ? `${form.firstName} ${form.lastName}`
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()) ||
+        form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -94,8 +95,10 @@ const SeniorApplicants1 = () => {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      if (a.applicationStatus < b.applicationStatus) return -1;
-      if (a.applicationStatus > b.applicationStatus) return 1;
+      const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
     });
 
@@ -140,7 +143,7 @@ const SeniorApplicants1 = () => {
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 text-black"
               />
             </div>
           </div>
@@ -155,7 +158,7 @@ const SeniorApplicants1 = () => {
                   Birthdate{" "}
                   <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
                 </th>
-                <th className="px-4 py-2">Sex</th>
+                <th className="px-4 py-2">Gender</th>
 
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
@@ -312,7 +315,7 @@ const SeniorApplicants1 = () => {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Sex:</p>
+                    <p className="font-semibold">Gender:</p>
                     <p className="border-b border-gray-400">
                       {selectedApplicant.sex}
                     </p>

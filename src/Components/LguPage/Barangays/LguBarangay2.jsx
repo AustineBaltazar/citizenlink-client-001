@@ -77,7 +77,7 @@ export default function LguBarangay2() {
               to="/Lgu/Barangay2/FourPsApplicant2"
               className="inline-block bg-[#2D7144] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l  "
             >
-              4ps Form
+              4ps Records
             </Link>
           </li>
           <li>
@@ -85,7 +85,7 @@ export default function LguBarangay2() {
               to="/Lgu/Barangay2/SeniorApplicant2"
               className="inline-block bg-[#2D7144] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r"
             >
-              Senior Form
+              Senior Records
             </Link>
           </li>
         </ul>

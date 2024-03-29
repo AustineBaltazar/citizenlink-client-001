@@ -13,10 +13,7 @@ export default function NavFooter() {
           <Link to="/about" className="text-white hover:text-blue-500">
             About
           </Link>
-          <span className="text-white font-bold">|</span>
-          <Link to="news" className="text-white hover:text-blue-500">
-            News
-          </Link>
+
           <span className="text-white">|</span>
           <Link to="benefits" className="text-white hover:text-blue-500">
             Benefits

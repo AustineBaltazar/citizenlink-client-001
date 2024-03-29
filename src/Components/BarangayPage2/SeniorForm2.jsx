@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function SeniorForm2() {
+export default function SeniorForm() {
   const [formData, setFormData] = useState({
     typeOfApplication: "New",
     oscaId: "",
@@ -10,7 +10,6 @@ export default function SeniorForm2() {
     firstName: "",
     middleName: "",
     lastName: "",
-    age: "",
     sex: "",
     civilStatus: "",
     nationality: "",
@@ -26,55 +25,105 @@ export default function SeniorForm2() {
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState();
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (files) {
+    if (name === "dateOfBirth") {
       setFormData({
         ...formData,
-        [name]: files[0],
+        dateOfBirth: value,
       });
+
+      if (value) {
+        // Extract day, month, and year from the input value
+        const [day, month, year] = value.split("/");
+
+        // Check if all parts of the date are present
+        if (day && month && year) {
+          // Calculate age from the date of birth
+          const today = new Date();
+          const birthDate = new Date(`${year}-${month}-${day}`);
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (
+            monthDiff < 0 ||
+            (monthDiff === 0 && today.getDate() < birthDate.getDate())
+          ) {
+            age--;
+          }
+
+          setFormData({
+            ...formData,
+            age: age.toString(), // Convert age to string before assigning
+          });
+        }
+      }
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      // For other form fields
+      if (files) {
+        setFormData({
+          ...formData,
+          [name]: files[0],
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [name]: value,
+        });
+
+        if (errors[name]) {
+          setErrors({
+            ...errors,
+            [name]: "",
+          });
+        }
+      }
     }
   };
 
+  // Handle form submission
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      // Clone formData object to prevent mutation
+      const formDataCopy = { ...formData };
 
-      if (!token) {
-        return;
+      // Calculate age from date of birth
+      if (formDataCopy.dateOfBirth) {
+        const [day, month, year] = formDataCopy.dateOfBirth.split("/");
+        const birthDate = new Date(`${year}-${month}-${day}`);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
+          age--;
+        }
+        // Add calculated age to formDataCopy
+        formDataCopy.age = age.toString();
       }
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      setLoading(true);
-
+      // Convert formDataCopy to FormData
       const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
+      Object.entries(formDataCopy).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
 
       const response = await axios.post(
         "http://localhost:4000/api/senior/submit",
-        formDataToSend,
-        config
+        formDataToSend
       );
       setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
 
       setModalMessage("Form submitted successfully");
-
+      setShowModal(true);
+      setErrors({}); // Reset errors state
       setFormData({
         typeOfApplication: "New",
         oscaId: "",
@@ -83,7 +132,6 @@ export default function SeniorForm2() {
         firstName: "",
         middleName: "",
         lastName: "",
-        age: "",
         sex: "",
         civilStatus: "",
         nationality: "",
@@ -95,14 +143,27 @@ export default function SeniorForm2() {
         applicationStatus: "pending",
         picture: null,
       });
-
-      setShowModal(true);
     } catch (error) {
       console.error("Error submitting form:", error);
 
-      setModalMessage("Error submitting form");
-
-      setShowModal(true);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorMessage = error.response.data.error;
+        if (errorMessage.includes("Email")) {
+          setErrors((prevErrors) => ({ ...prevErrors, email: errorMessage }));
+        } else if (errorMessage.includes("Age")) {
+          setErrors((prevErrors) => ({ ...prevErrors, age: errorMessage }));
+        } else if (errorMessage.includes("Address")) {
+          setErrors((prevErrors) => ({ ...prevErrors, address: errorMessage }));
+        } else if (errorMessage.includes("OSCA")) {
+          setErrors((prevErrors) => ({ ...prevErrors, oscaId: errorMessage }));
+        } else {
+          setModalMessage("Error submitting form");
+          setShowModal(true);
+        }
+      } else {
+        setModalMessage("Error submitting form");
+        setShowModal(true);
+      }
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -117,7 +178,7 @@ export default function SeniorForm2() {
 
   return (
     <div className="bg-gray-100  p-8">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-500">Senior Form</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
           {/* First Name */}
@@ -133,8 +194,13 @@ export default function SeniorForm2() {
               onChange={handleChange}
               placeholder="First Name"
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.firstName && "border-red-500"
+              }`}
             />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+            )}
           </div>
 
           {/* Middle Name */}
@@ -149,8 +215,13 @@ export default function SeniorForm2() {
               placeholder="Middle Name"
               value={formData.middleName}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.middleName && "border-red-500"
+              }`}
             />
+            {errors.middleName && (
+              <p className="text-red-500 text-sm mt-1">{errors.middleName}</p>
+            )}
           </div>
 
           {/* Last Name */}
@@ -166,44 +237,60 @@ export default function SeniorForm2() {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.lastName && "border-red-500"
+              }`}
             />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+            )}
           </div>
 
+          {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="block mb-2">
               Email<span className="text-red-500">*</span>
             </label>
             <input
-              type="email" // Use type="email" for email input
+              type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="example@example.com" // Placeholder text for email input
+              placeholder="example@example.com"
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.email && "border-red-500"
+              }`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
+          {/* OSCA ID */}
           <div className="mb-4">
             <label htmlFor="oscaId" className="block mb-2">
-              OSCA ID
+              OSCA ID<span className="text-red-500">*</span>
             </label>
             <input
               type="number"
               id="oscaId"
-              name="oscaId"
               required
+              name="oscaId"
               placeholder="eg. 0000"
               value={formData.oscaId}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.oscaId && "border-red-500"
+              }`}
             />
+            {errors.oscaId && (
+              <p className="text-red-500 text-sm mt-1">{errors.oscaId}</p>
+            )}
           </div>
 
           {/* Barangay */}
-
           <div className="mb-4">
             <label htmlFor="barangay" className="block mb-2">
               Barangay<span className="text-red-500">*</span>
@@ -212,37 +299,24 @@ export default function SeniorForm2() {
               id="barangay"
               name="barangay"
               value={formData.barangay}
-              placeholder="Select Barangay"
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.barangay && "border-red-500"
+              }`}
             >
               <option value="">Select Barangay</option>
               <option value="Baybay Lopez">Baybay Lopez</option>
             </select>
-          </div>
-
-          {/* Age */}
-          <div className="mb-4">
-            <label htmlFor="age" className="block mb-2">
-              Age<span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              placeholder="Age 60+"
-              value={formData.age}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border rounded-md"
-            />
+            {errors.barangay && (
+              <p className="text-red-500 text-sm mt-1">{errors.barangay}</p>
+            )}
           </div>
 
           {/* Sex */}
           <div className="mb-4">
             <label htmlFor="sex" className="block mb-2">
-              Sex<span className="text-red-500">*</span>
+              Gender<span className="text-red-500">*</span>
             </label>
             <select
               id="sex"
@@ -250,12 +324,17 @@ export default function SeniorForm2() {
               value={formData.sex}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.sex && "border-red-500"
+              }`}
             >
-              <option value="">Select Sex</option>
+              <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
+            {errors.sex && (
+              <p className="text-red-500 text-sm mt-1">{errors.sex}</p>
+            )}
           </div>
 
           {/* Civil Status */}
@@ -269,13 +348,18 @@ export default function SeniorForm2() {
               value={formData.civilStatus}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.civilStatus && "border-red-500"
+              }`}
             >
               <option value="">Select Civil Status</option>
               <option value="single">Single</option>
               <option value="married">Married</option>
               <option value="Other">Other</option>
             </select>
+            {errors.civilStatus && (
+              <p className="text-red-500 text-sm mt-1">{errors.civilStatus}</p>
+            )}
           </div>
 
           {/* Nationality */}
@@ -289,12 +373,17 @@ export default function SeniorForm2() {
               value={formData.nationality}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.nationality && "border-red-500"
+              }`}
             >
               <option value="">Select Nationality</option>
               <option value="Filipino">Filipino</option>
               <option value="Other">Other</option>
             </select>
+            {errors.nationality && (
+              <p className="text-red-500 text-sm mt-1">{errors.nationality}</p>
+            )}
           </div>
 
           {/* Date of Birth */}
@@ -309,8 +398,13 @@ export default function SeniorForm2() {
               value={formData.dateOfBirth}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.dateOfBirth && "border-red-500"
+              }`}
             />
+            {errors.dateOfBirth && (
+              <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>
+            )}
           </div>
 
           {/* Place of Birth */}
@@ -326,8 +420,13 @@ export default function SeniorForm2() {
               onChange={handleChange}
               placeholder="City / Town"
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.placeOfBirth && "border-red-500"
+              }`}
             />
+            {errors.placeOfBirth && (
+              <p className="text-red-500 text-sm mt-1">{errors.placeOfBirth}</p>
+            )}
           </div>
 
           {/* Address */}
@@ -343,22 +442,13 @@ export default function SeniorForm2() {
               onChange={handleChange}
               placeholder="House/Unit Number, Street Name, Barangay/District, City/Municipality, Province "
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.address && "border-red-500"
+              }`}
             />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="picture" className="block mb-2">
-              Picture
-            </label>
-            <input
-              type="file"
-              id="picture"
-              name="picture"
-              accept="image/*"
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md"
-            />
+            {errors.address && (
+              <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+            )}
           </div>
 
           {/* Contact Person */}
@@ -374,8 +464,15 @@ export default function SeniorForm2() {
               onChange={handleChange}
               placeholder="Name of Contact Person"
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.contactPerson && "border-red-500"
+              }`}
             />
+            {errors.contactPerson && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.contactPerson}
+              </p>
+            )}
           </div>
 
           {/* Contact Number */}
@@ -391,8 +488,34 @@ export default function SeniorForm2() {
               placeholder="Number of the Contact Person"
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border rounded-md"
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.contactNumber && "border-red-500"
+              }`}
             />
+            {errors.contactNumber && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.contactNumber}
+              </p>
+            )}
+          </div>
+          {/* Picture */}
+          <div className="mb-4">
+            <label htmlFor="picture" className="block mb-2">
+              Picture
+            </label>
+            <input
+              type="file"
+              id="picture"
+              name="picture"
+              accept="image/*"
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-md ${
+                errors.picture && "border-red-500"
+              }`}
+            />
+            {errors.picture && (
+              <p className="text-red-500 text-sm mt-1">{errors.picture}</p>
+            )}
           </div>
 
           {/* Submit button */}

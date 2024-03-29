@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function SeniorForm() {
+export default function OnlineSenior() {
   const [formData, setFormData] = useState({
     typeOfApplication: "New",
     oscaId: "",
-    barangay: "",
+    barangay: "Baybay Lopez",
     email: "",
     firstName: "",
     middleName: "",
@@ -18,7 +18,8 @@ export default function SeniorForm() {
     address: "",
     contactPerson: "",
     contactNumber: "",
-    applicationStatus: "pending",
+    applicationStatus: "on review",
+    applicationMethod: "online",
     _1x1Picture: null,
     validDocs: null,
   });
@@ -89,6 +90,7 @@ export default function SeniorForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Clone formData object to prevent mutation
       const formDataCopy = { ...formData };
 
       // Calculate age from date of birth
@@ -127,7 +129,7 @@ export default function SeniorForm() {
       setFormData({
         typeOfApplication: "New",
         oscaId: "",
-        barangay: "",
+        barangay: "Baybay Lopez",
         email: "",
         firstName: "",
         middleName: "",
@@ -140,7 +142,8 @@ export default function SeniorForm() {
         address: "",
         contactPerson: "",
         contactNumber: "",
-        applicationStatus: "pending",
+        applicationStatus: "on review",
+        applicationMethod: "online",
         _1x1Picture: null,
         validDocs: null,
       });
@@ -178,7 +181,7 @@ export default function SeniorForm() {
   };
 
   return (
-    <div className="bg-gray-100  p-8">
+    <div className=" px-20 py-2">
       <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
@@ -288,29 +291,6 @@ export default function SeniorForm() {
             />
             {errors.oscaId && (
               <p className="text-red-500 text-sm mt-1">{errors.oscaId}</p>
-            )}
-          </div>
-
-          {/* Barangay */}
-          <div className="mb-4">
-            <label htmlFor="barangay" className="block mb-2">
-              Barangay<span className="text-red-500">*</span>
-            </label>
-            <select
-              id="barangay"
-              name="barangay"
-              value={formData.barangay}
-              onChange={handleChange}
-              required
-              className={`w-full px-3 py-2 border rounded-md ${
-                errors.barangay && "border-red-500"
-              }`}
-            >
-              <option value="">Select Barangay</option>
-              <option value="San Isidro Norte">San Isidro Norte</option>
-            </select>
-            {errors.barangay && (
-              <p className="text-red-500 text-sm mt-1">{errors.barangay}</p>
             )}
           </div>
 

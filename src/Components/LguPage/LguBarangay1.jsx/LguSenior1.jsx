@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import AcceptedApplicantsTable from "./AcceptedApplicantsTable";
 
 export default function LguSenior1() {
   const [forms, setForms] = useState([]);
@@ -12,6 +13,15 @@ export default function LguSenior1() {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -68,7 +78,8 @@ export default function LguSenior1() {
     searchTerm
       ? `${form.firstName} ${form.lastName}`
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()) ||
+        form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -87,8 +98,10 @@ export default function LguSenior1() {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      if (a.applicationStatus < b.applicationStatus) return -1;
-      if (a.applicationStatus > b.applicationStatus) return 1;
+      const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
     });
 
@@ -140,8 +153,19 @@ export default function LguSenior1() {
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#2D7144] border-l border-black border-r border-t flex flex-row-reverse ">
-            <div className="mr-2 mt-1">
+          <div className="bg-[#2D7144] border-l border-black border-r border-t flex  justify-between px-2 py-2">
+            <div>
+              <button
+                onClick={handleOpenModal}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+              >
+                Show Accepted Applicants
+              </button>
+            </div>
+            {isModalOpen && (
+              <AcceptedApplicantsTable handleCloseModal={handleCloseModal} />
+            )}
+            <div>
               <button className="rounded-l-full bg-[#2D7144] border border-white text-white px-2">
                 search
               </button>
@@ -166,7 +190,7 @@ export default function LguSenior1() {
                   Birthdate{" "}
                   <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
                 </th>
-                <th className="px-4 py-2">Sex</th>
+                <th className="px-4 py-2">Gender</th>
 
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
@@ -208,7 +232,13 @@ export default function LguSenior1() {
             </thead>
             <tbody>
               {sortedForms
-                .filter((form) => form.applicationStatus !== "eligible")
+                .filter(
+                  (form) =>
+                    form.applicationStatus !== "eligible" &&
+                    form.applicationStatus !== "on review" &&
+                    form.applicationStatus !== "incomplete" &&
+                    form.applicationStatus !== "rejected"
+                )
                 .map((form, index) => (
                   <tr
                     key={form._id}
@@ -252,6 +282,7 @@ export default function LguSenior1() {
                           "not eligible",
                           "eligible",
                           "updated",
+                          "approved",
                         ].map((status) => (
                           <option key={status} value={status}>
                             {status}
@@ -350,7 +381,7 @@ export default function LguSenior1() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Sex:</p>
+                    <p className="font-semibold">Gender:</p>
                     <p className="border-b border-gray-400">
                       {selectedApplicant.sex}
                     </p>

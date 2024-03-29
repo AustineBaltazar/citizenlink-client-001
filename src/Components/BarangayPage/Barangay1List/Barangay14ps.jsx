@@ -47,7 +47,7 @@ export default function Barangay14ps() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedForm({ ...updatedForm, [name]: value });
+    setSearchTerm(value);
   };
 
   const formatDate = (dateString) => {
@@ -100,7 +100,8 @@ export default function Barangay14ps() {
     searchTerm
       ? `${form.firstname} ${form.surname}`
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()) ||
+        form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -119,8 +120,10 @@ export default function Barangay14ps() {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      if (a.applicationStatus < b.applicationStatus) return -1;
-      if (a.applicationStatus > b.applicationStatus) return 1;
+      const nameA = `${a.firstname} ${a.surname}`.toUpperCase();
+      const nameB = `${b.firstname} ${b.surname}`.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
     });
 
@@ -161,10 +164,10 @@ export default function Barangay14ps() {
             </button>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search by Name or User ID"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+              onChange={handleInputChange}
+              className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60"
             />
           </div>
         </div>
@@ -178,7 +181,7 @@ export default function Barangay14ps() {
                 Birthdate{" "}
                 <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
               </th>
-              <th className="px-4 py-2">Sex</th>
+              <th className="px-4 py-2">Gender</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                 Application Status{" "}
                 {showDropdown && (
@@ -216,32 +219,34 @@ export default function Barangay14ps() {
             </tr>
           </thead>
           <tbody>
-            {sortedForms.map((form, index) => (
-              <tr key={form._id} className="border-b border-gray-300">
-                <td className="px-4 py-2 text-center">
-                  {(currentPage - 1) * formsPerPage + index + 1}
-                </td>
-                <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
-                <td className="px-4 py-2 text-center">{form.userId}</td>
-                <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                <td className="px-4 py-2 text-center">{form.sex}</td>
-                <td
-                  className={`px-4 py-2 text-center ${getStatusColorClass(
-                    form.applicationStatus
-                  )}`}
-                >
-                  {form.applicationStatus}
-                </td>
-                <td className="px-4 py-2 text-center">
-                  <button
-                    onClick={() => handleApplicantClick(form)}
-                    className="px-2 bg-gray-200 border rounded-sl border-black"
+            {sortedForms
+              .filter((form) => form.applicationStatus !== "on review")
+              .map((form, index) => (
+                <tr key={form._id} className="border-b border-gray-300">
+                  <td className="px-4 py-2 text-center">
+                    {(currentPage - 1) * formsPerPage + index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
+                  <td className="px-4 py-2 text-center">{form.userId}</td>
+                  <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
+                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td
+                    className={`px-4 py-2 text-center ${getStatusColorClass(
+                      form.applicationStatus
+                    )}`}
                   >
-                    View Info
-                  </button>
-                </td>
-              </tr>
-            ))}
+                    {form.applicationStatus}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
+                      View Info
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <ul className="flex justify-center mt-4">

@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AcceptedApplicantsTable from "./Accept4ps";
-export default function Lgu4ps2() {
+
+export default function Lgu4ps1() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const formsPerPage = 15;
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -27,7 +18,7 @@ export default function Lgu4ps2() {
         const response = await axios.get("http://localhost:4000/api/4ps/forms");
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
-          (form) => form.barangay === "Baybay Lopez"
+          (form) => form.barangay === "San Isidro Norte"
         );
         setForms(sanIsidroNorteForms);
       } catch (error) {
@@ -131,20 +122,9 @@ export default function Lgu4ps2() {
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#2D7144] border-l border-black border-r border-t flex  justify-between px-2 py-2">
-            <div>
-              <button
-                onClick={handleOpenModal}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-              >
-                Show Accepted Applicants
-              </button>
-            </div>
-            {isModalOpen && (
-              <AcceptedApplicantsTable handleCloseModal={handleCloseModal} />
-            )}
-            <div>
-              <button className="rounded-l-full bg-[#2D7144] border border-white text-white px-2">
+          <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse ">
+            <div className="mr-2 mt-1">
+              <button className="rounded-l-full bg-[#0569B4] border border-white text-white px-2">
                 search
               </button>
               <input
@@ -156,10 +136,9 @@ export default function Lgu4ps2() {
               />
             </div>
           </div>
-
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
-              <tr className="bg-[#2D7144] text-white">
+              <tr className="bg-[#0569B4] text-white">
                 <th className="px-4 py-2">No.</th>
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">User ID</th>
@@ -170,38 +149,10 @@ export default function Lgu4ps2() {
                 <th className="px-4 py-2">Gender</th>
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
-                  Application Status{" "}
+                  Verify
                   {showDropdown && (
                     // Dropdown for status options
-                    <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
-                      {/* Option for showing all statuses */}
-                      <div
-                        key="all"
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                        onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
-                      >
-                        All
-                      </div>
-                      {/* Other status options */}
-                      {[
-                        "pending",
-                        "on review",
-                        "incomplete",
-                        "not eligible",
-                        "eligible",
-                        "rejected",
-                        "approved",
-                        "updated",
-                      ].map((status) => (
-                        <div
-                          key={status}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                          onClick={() => handleStatusOptionClick(status)}
-                        >
-                          {status}
-                        </div>
-                      ))}
-                    </div>
+                    <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10"></div>
                   )}
                 </th>
                 <th className="px-4 py-2">View Info</th>
@@ -212,9 +163,12 @@ export default function Lgu4ps2() {
                 .filter(
                   (form) =>
                     form.applicationStatus !== "eligible" &&
-                    form.applicationStatus !== "on review" &&
+                    form.applicationStatus !== "pending" &&
                     form.applicationStatus !== "incomplete" &&
-                    form.applicationStatus !== "rejected"
+                    form.applicationStatus !== "eligible" &&
+                    form.applicationStatus !== "rejected" &&
+                    form.applicationStatus !== "approved" &&
+                    form.applicationStatus !== "updated"
                 )
                 .map((form, index) => (
                   <tr key={form._id} className="border-b border-gray-300">
@@ -224,34 +178,25 @@ export default function Lgu4ps2() {
                     <td className="px-4 py-2 text-center">
                       {form.dateOfBirth}
                     </td>
-                    <td className="px-4 py-2 text-center">{form.sex}</td>
-                    <td
-                      className={`px-4 py-2 text-center ${getStatusColorClass(
-                        form.applicationStatus
-                      )}`}
-                    >
-                      <select
-                        value={form.applicationStatus}
-                        className="text-black"
-                        onChange={(e) =>
-                          handleStatusChange(form._id, e.target.value)
-                        }
+                    <td className="px-4 py-2 text-center">{form.gender}</td>
+
+                    <td className="px-4 py-2 text-center">
+                      <button
+                        onClick={() => handleStatusChange(form._id, "pending")}
+                        className="bg-green-500 text-white px-2 py-1 rounded-full mr-2"
                       >
-                        {[
-                          "pending",
-                          "on review",
-                          "incomplete",
-                          "not eligible",
-                          "eligible",
-                          "updated",
-                          "approved",
-                        ].map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
+                        Accept
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(form._id, "incomplete")
+                        }
+                        className="bg-red-500 text-white px-2 py-1 rounded-full"
+                      >
+                        Reject
+                      </button>
                     </td>
+
                     <td className="px-4 py-2 text-center">
                       <button
                         onClick={() => handleApplicantClick(form)}
@@ -286,7 +231,7 @@ export default function Lgu4ps2() {
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
             <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
-              <div className="text-xl font-semibold bg-[#2D7144] text-white py-4 px-2 rounded-t-2xl flex justify-between">
+              <div className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-between">
                 <h1 className="flex justify-center items-center">
                   Applicant Information
                 </h1>
@@ -398,7 +343,7 @@ export default function Lgu4ps2() {
                 </div>
                 <button
                   onClick={closeModal}
-                  className="bg-[#2D7144] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>

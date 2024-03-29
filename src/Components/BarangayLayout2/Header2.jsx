@@ -38,7 +38,17 @@ function Header2() {
     window.location.reload();
   };
 
-  const welcomeMessage = decodedToken ? ` ${decodedToken.name}` : "Welcome";
+  const welcomeMessage = decodedToken ? (
+    <h1
+      className="text-xl cursor-pointer"
+      onClick={() => setShowDropdown(!showDropdown)}
+    >
+      {decodedToken.name}{" "}
+      <span className="text-gray-600 hover:text-gray-800">&#128274;</span>
+    </h1>
+  ) : (
+    <h1 className="text-xl">Welcome</h1>
+  );
 
   const handleLogOut = () => {
     localStorage.removeItem("token");

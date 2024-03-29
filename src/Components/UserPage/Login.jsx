@@ -4,6 +4,7 @@ import user from "/img/user.png";
 import barangay from "/img/barangay-logo.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+
 export default function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +13,11 @@ export default function Login() {
   const [token, setToken] = useState();
 
   const handleLogin = async () => {
+    if (!userId || !password) {
+      setError("Please enter both User ID and Password.");
+      return;
+    }
+
     try {
       const prefix = userId.substring(0, userId.indexOf("-") + 1);
       let endpoint = "";
@@ -47,7 +53,17 @@ export default function Login() {
       setLoggedIn(true);
     } catch (error) {
       console.log(error);
-      setError("Invalid credentials. Please try again.");
+      if (error.response) {
+        if (error.response.status === 404) {
+          setError("User ID does not exist.");
+        } else if (error.response.status === 401) {
+          setError("Password is incorrect.");
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please check your network connection.");
+      }
     }
   };
 
@@ -82,7 +98,7 @@ export default function Login() {
   }, [loggedIn, userId]);
 
   return (
-    <div className="flex items-center justify-center flex-col  h-screen bg-gray-200">
+    <div className="flex items-center justify-center flex-col h-screen bg-gray-200">
       <div className="flex flex-col items-center">
         <div className="">
           <img src={barangay} alt="Logo" className="w-62 h-64 pl-5" />
@@ -104,6 +120,7 @@ export default function Login() {
               value={userId}
               className="border p-2 w-64 rounded-xl "
               onChange={(e) => setUserId(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4 flex flex-col justify-center items-center">
@@ -119,6 +136,7 @@ export default function Login() {
               value={password}
               className="border rounded-xl p-2 w-64"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           {error && <p className="text-red-500 font-semibold">{error}</p>}

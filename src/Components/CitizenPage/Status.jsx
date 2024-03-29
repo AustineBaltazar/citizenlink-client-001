@@ -13,7 +13,7 @@ export default function Status() {
 
   let celeb;
   let designCeleb;
-  if (decodedToken.applicationStatus === "approved") {
+  if (decodedToken.applicationStatus === "APPROVED") {
     celeb = "CONGRATULATIONS!";
     designCeleb = "bg-[#008000] text-white rounded-lg";
   }
@@ -23,7 +23,7 @@ export default function Status() {
   const forReview =
     "Applicant is interviewed, and to be reviewed by the Municipal";
   const inComplete =
-    "Some documents are missing. Please complete the needful document/s";
+    "Some information is missing or does not match the valid documents.";
   const inCorrect =
     "Some records didn't match the documents(e.g., birth certificate)";
   const notQualified = "Applicant did not reach the requirement/s. ";
@@ -31,14 +31,19 @@ export default function Status() {
   const notEligible = "Applicant is not eligible to register. ";
   const qualified = "Your application status is now approved";
   const updated =
-    "Record/s are updated and transfered back to Municipal for another review.";
+    "Record/s are updated and transferred back to Municipal for another review.";
 
   function getDescription(status) {
     switch (status) {
       case "PENDING":
         return pending;
       case "ON REVIEW":
-        return forReview;
+        return (
+          <>
+            <h3>You have registered online.</h3>
+            <h5>Please wait for the Barangay to confirm your application.</h5>
+          </>
+        );
       case "INCOMPLETE":
         return inComplete;
       case "NOT ELIGIBLE":
@@ -56,7 +61,28 @@ export default function Status() {
     }
   }
 
-  console.log(decodedToken);
+  function getStatusColor(status) {
+    switch (status) {
+      case "PENDING":
+        return "bg-gray-500";
+      case "ON REVIEW":
+        return "bg-[#9B755E]";
+      case "INCOMPLETE":
+        return "bg-[#F28E2C]";
+      case "NOT ELIGIBLE":
+        return "bg-[#F28E2C]";
+      case "ELIGIBLE":
+        return "bg-emerald-300";
+      case "REJECTED":
+        return "bg-red-500";
+      case "APPROVED":
+        return "bg-[#008000]";
+      case "UPDATED":
+        return "bg-[#068CB6]";
+      default:
+        return "";
+    }
+  }
 
   return (
     <div className="grid lg:grid-cols-2 justify-center gap-4 pt-16 min-h-screen bg-gray-200 mb-8">
@@ -69,7 +95,9 @@ export default function Status() {
           </header>
         </div>
         <div className="bg-white shadow-md rounded-b-lg p-4">
-          <div className={designCeleb}>
+          <div
+            className={`${designCeleb} ${getStatusColor(applicationStatus)}`}
+          >
             <h1 className="text-3xl mb-2 flex justify-center font-bold mb-2">
               {applicationStatus}
             </h1>

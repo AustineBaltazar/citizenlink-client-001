@@ -114,11 +114,36 @@ const LguDashboard = lazy(() => import("./Components/LguPage/Dashboard2"));
 const Dashboard3 = lazy(() => import("./Components/BarangayPage/Dashboard3"));
 const Dashboard4 = lazy(() => import("./Components/BarangayPage2/Dashboard4"));
 
-import ProtectedRoute from "./Components/ProtectedRoute";
-import Loading from "./Components/Loading";
-import ResetPassword from "./Components/ResetPassword";
-import ForgotPassword from "./Components/ForgotPassword";
-import Benefits2 from "./Components/Benefits/Benefits2";
+const ProtectedRoute = lazy(() => import("./Components/ProtectedRoute"));
+const Loading = lazy(() => import("./Components/Loading"));
+const ResetPassword = lazy(() => import("./Components/ResetPassword"));
+const ForgotPassword = lazy(() => import("./Components/ForgotPassword"));
+const Benefits2 = lazy(() => import("./Components/Benefits/Benefits2"));
+const ApplyNow = lazy(() => import("./Components/UserPage/ApplyNow"));
+const _4psSIN = lazy(() => import("./Components/UserPage/4psSIN"));
+const SeniorSIN = lazy(() => import("./Components/UserPage/SeniorSIN"));
+const _4psBAY = lazy(() => import("./Components/UserPage/4psBAY"));
+const SeniorBAY = lazy(() => import("./Components/UserPage/SeniorBAY"));
+
+const OnlineNav = lazy(() =>
+  import("./Components/BarangayPage2/OnlineApplicants/Onlinenav")
+);
+const Online4ps = lazy(() =>
+  import("./Components/BarangayPage2/OnlineApplicants/Online4ps")
+);
+const OnlineSenior = lazy(() =>
+  import("./Components/BarangayPage2/OnlineApplicants/OnlineSenior")
+);
+
+const OnlineNav1 = lazy(() =>
+  import("./Components/BarangayPage/OnlineApplicants1/Onlinenav1")
+);
+const Online4ps1 = lazy(() =>
+  import("./Components/BarangayPage/OnlineApplicants1/Online4ps1")
+);
+const OnlineSenior1 = lazy(() =>
+  import("./Components/BarangayPage/OnlineApplicants1/OnlineSenior1")
+);
 
 function App() {
   return (
@@ -141,6 +166,11 @@ function App() {
               <Route path="benefit2" element={<Benefits2 />} />
             </Route>
             <Route path="download" element={<Download />} />
+            <Route path="applynow" element={<ApplyNow />} />
+            <Route path="4psSIN" element={<_4psSIN />} />
+            <Route path="seniorSIN" element={<SeniorSIN />} />
+            <Route path="4psBAY" element={<_4psBAY />} />
+            <Route path="seniorBAY" element={<SeniorBAY />} />
             <Route path="/about" element={<About />}>
               <Route path="aboutsystem" element={<AboutSystem />} />
               <Route path="abouttown" element={<AboutTown />} />
@@ -162,6 +192,10 @@ function App() {
                 <Route path="Barangay14ps" element={<Barangay14ps />} />
                 <Route path="Barangay1Senior" element={<Barangay1Senior />} />
               </Route>
+              <Route path="onlineNav" element={<OnlineNav1 />}>
+                <Route path="online4ps" element={<Online4ps1 />} />
+                <Route path="onlinesenior" element={<OnlineSenior1 />} />
+              </Route>
             </Route>
           </Route>
 
@@ -173,6 +207,10 @@ function App() {
               <Route path="applicants" element={<BarangayTable2 />}>
                 <Route path="Barangay24ps" element={<Barangay24ps />} />
                 <Route path="Barangay2Senior" element={<Barangay2Senior />} />
+              </Route>
+              <Route path="onlineNav" element={<OnlineNav />}>
+                <Route path="online4ps" element={<Online4ps />} />
+                <Route path="onlinesenior" element={<OnlineSenior />} />
               </Route>
             </Route>
           </Route>

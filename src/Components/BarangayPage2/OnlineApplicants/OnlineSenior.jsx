@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AcceptedApplicantsTable from "./Accept4ps";
-export default function Lgu4ps2() {
+import { Link } from "react-router-dom";
+
+export default function LguSenior1() {
   const [forms, setForms] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const formsPerPage = 15;
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/4ps/forms");
+        const response = await axios.get(
+          "http://localhost:4000/api/senior/entries"
+        );
         const data = response.data;
         const sanIsidroNorteForms = data.filter(
           (form) => form.barangay === "Baybay Lopez"
@@ -45,7 +39,7 @@ export default function Lgu4ps2() {
 
     if (confirmed) {
       try {
-        await axios.put(`http://localhost:4000/api/4ps/forms/${id}`, {
+        await axios.put(`http://localhost:4000/api/senior/entries/${id}`, {
           applicationStatus: newStatus,
         });
 
@@ -72,12 +66,13 @@ export default function Lgu4ps2() {
 
   const filteredForms = forms.filter((form) =>
     searchTerm
-      ? `${form.firstname} ${form.surname}`
+      ? `${form.firstName} ${form.lastName}`
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
         form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
+
   const handleStatusHeaderClick = () => {
     setShowDropdown(!showDropdown);
   };
@@ -93,8 +88,8 @@ export default function Lgu4ps2() {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      const nameA = `${a.firstname} ${a.surname}`.toUpperCase();
-      const nameB = `${b.firstname} ${b.surname}`.toUpperCase();
+      const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
       if (nameA < nameB) return -1;
       if (nameA > nameB) return 1;
       return 0;
@@ -123,6 +118,23 @@ export default function Lgu4ps2() {
     }
   };
 
+  const toggleIsAlive = async (applicant) => {
+    try {
+      const updatedApplicant = { ...applicant, isAlive: !applicant.isAlive };
+      await axios.put(
+        `http://localhost:4000/api/senior/entries/${applicant._id}`,
+        updatedApplicant
+      );
+      setForms(
+        forms.map((form) =>
+          form._id === applicant._id ? updatedApplicant : form
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -131,20 +143,9 @@ export default function Lgu4ps2() {
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#2D7144] border-l border-black border-r border-t flex  justify-between px-2 py-2">
-            <div>
-              <button
-                onClick={handleOpenModal}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-              >
-                Show Accepted Applicants
-              </button>
-            </div>
-            {isModalOpen && (
-              <AcceptedApplicantsTable handleCloseModal={handleCloseModal} />
-            )}
-            <div>
-              <button className="rounded-l-full bg-[#2D7144] border border-white text-white px-2">
+          <div className="bg-indigo-500 border-l border-black border-r border-t flex flex-row-reverse ">
+            <div className="mr-2 mt-1">
+              <button className="rounded-l-full bg-indigo-500 border border-white text-white px-2">
                 search
               </button>
               <input
@@ -156,55 +157,28 @@ export default function Lgu4ps2() {
               />
             </div>
           </div>
-
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
-              <tr className="bg-[#2D7144] text-white">
+              <tr className="bg-indigo-500 text-white">
                 <th className="px-4 py-2">No.</th>
+
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">User ID</th>
+                <th className="px-4 py-2">Osca ID</th>
                 <th className="px-4 py-2 flex-col flex">
                   Birthdate{" "}
                   <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
                 </th>
                 <th className="px-4 py-2">Gender</th>
+
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
-                  Application Status{" "}
+                  Verify
                   {showDropdown && (
-                    // Dropdown for status options
-                    <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10">
-                      {/* Option for showing all statuses */}
-                      <div
-                        key="all"
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                        onClick={() => handleStatusOptionClick(null)} // Passing null to indicate showing all statuses
-                      >
-                        All
-                      </div>
-                      {/* Other status options */}
-                      {[
-                        "pending",
-                        "on review",
-                        "incomplete",
-                        "not eligible",
-                        "eligible",
-                        "rejected",
-                        "approved",
-                        "updated",
-                      ].map((status) => (
-                        <div
-                          key={status}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                          onClick={() => handleStatusOptionClick(status)}
-                        >
-                          {status}
-                        </div>
-                      ))}
-                    </div>
+                    <div className="absolute bg-white rounded-md shadow-lg text-gray-500 mt-1 w-40 z-10"></div>
                   )}
                 </th>
-                <th className="px-4 py-2">View Info</th>
+                <th className="px-4 py-2">View Form</th>
               </tr>
             </thead>
             <tbody>
@@ -212,45 +186,45 @@ export default function Lgu4ps2() {
                 .filter(
                   (form) =>
                     form.applicationStatus !== "eligible" &&
-                    form.applicationStatus !== "on review" &&
+                    form.applicationStatus !== "pending" &&
                     form.applicationStatus !== "incomplete" &&
-                    form.applicationStatus !== "rejected"
+                    form.applicationStatus !== "eligible" &&
+                    form.applicationStatus !== "rejected" &&
+                    form.applicationStatus !== "approved" &&
+                    form.applicationStatus !== "updated"
                 )
                 .map((form, index) => (
-                  <tr key={form._id} className="border-b border-gray-300">
+                  <tr
+                    key={form._id}
+                    className={`px-4 py-2 text-center border border-gray-800 ${
+                      form.isAlive ? "" : "bg-gray-300 text-gray-500"
+                    }`}
+                  >
                     <td className="px-4 py-2 text-center">{index + 1}</td>
-                    <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
+
+                    <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
                     <td className="px-4 py-2 text-center">{form.userId}</td>
+                    <td className="px-4 py-2 text-center">{form.oscaId}</td>
                     <td className="px-4 py-2 text-center">
                       {form.dateOfBirth}
                     </td>
-                    <td className="px-4 py-2 text-center">{form.sex}</td>
-                    <td
-                      className={`px-4 py-2 text-center ${getStatusColorClass(
-                        form.applicationStatus
-                      )}`}
-                    >
-                      <select
-                        value={form.applicationStatus}
-                        className="text-black"
-                        onChange={(e) =>
-                          handleStatusChange(form._id, e.target.value)
-                        }
+                    <td className="px-4 py-2 text-center">{form.gender}</td>
+
+                    <td>
+                      <button
+                        onClick={() => handleStatusChange(form._id, "pending")}
+                        className="bg-green-500 text-white px-2 py-1 rounded-full mr-2"
                       >
-                        {[
-                          "pending",
-                          "on review",
-                          "incomplete",
-                          "not eligible",
-                          "eligible",
-                          "updated",
-                          "approved",
-                        ].map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
+                        Accept
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(form._id, "incomplete")
+                        }
+                        className="bg-red-500 text-white px-2 py-1 rounded-full"
+                      >
+                        Reject
+                      </button>
                     </td>
                     <td className="px-4 py-2 text-center">
                       <button
@@ -286,35 +260,42 @@ export default function Lgu4ps2() {
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
             <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
-              <div className="text-xl font-semibold bg-[#2D7144] text-white py-4 px-2 rounded-t-2xl flex justify-between">
+              <div className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-between">
                 <h1 className="flex justify-center items-center">
                   Applicant Information
                 </h1>
+                <div className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden">
+                  <img
+                    src={`http://localhost:4000/${selectedApplicant.picture}`}
+                    alt="Picture"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
               <div className="p-4 overflow-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold">First Name:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.firstname}
+                      {selectedApplicant.firstName}
                     </p>
                   </div>
                   <div className="flex flex-col">
                     <p className="font-semibold">Middle Name:</p>
                     <p
                       className={`border-b ${
-                        !selectedApplicant.middlename ? "text-gray-300" : ""
+                        !selectedApplicant.middleName ? "text-gray-300" : ""
                       } border-gray-400`}
                     >
-                      {selectedApplicant.middlename
-                        ? selectedApplicant.middlename
+                      {selectedApplicant.middleName
+                        ? selectedApplicant.middleName
                         : "n/a"}
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Surname:</p>
+                    <p className="font-semibold">Last Name:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.surname}
+                      {selectedApplicant.lastName}
                     </p>
                   </div>
                   <div className="flex flex-col">
@@ -330,15 +311,15 @@ export default function Lgu4ps2() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">House Number:</p>
+                    <p className="font-semibold">Age:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.houseNumber}
+                      {selectedApplicant.age}
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Street:</p>
+                    <p className="font-semibold">Gender:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.street}
+                      {selectedApplicant.sex}
                     </p>
                   </div>
                   <div className="flex flex-col">
@@ -348,27 +329,33 @@ export default function Lgu4ps2() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">City Municipality:</p>
+                    <p className="font-semibold">Contact Number:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.cityMunicipality}
+                      {selectedApplicant.contactNumber}
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Province:</p>
+                    <p className="font-semibold">Contact Person:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.province}
+                      {selectedApplicant.contactPerson}
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Region:</p>
+                    <p className="font-semibold">OSCA ID:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.region}
+                      {selectedApplicant.oscaId}
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Postal:</p>
+                    <p className="font-semibold">Date Of Application:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.postal}
+                      {selectedApplicant.createdAt}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="font-semibold">Nationality:</p>
+                    <p className="border-b border-gray-400">
+                      {selectedApplicant.nationality}
                     </p>
                   </div>
                   <div className="flex flex-col">
@@ -378,9 +365,15 @@ export default function Lgu4ps2() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">ContactNumber:</p>
+                    <p className="font-semibold">Place Of Birth:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.contactNumber}
+                      {selectedApplicant.placeOfBirth}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="font-semibold">Address:</p>
+                    <p className="border-b border-gray-400">
+                      {selectedApplicant.address}
                     </p>
                   </div>
                   <div className="flex flex-col">
@@ -390,7 +383,7 @@ export default function Lgu4ps2() {
                     </p>
                   </div>
                   <div className="flex flex-col">
-                    <p className="font-semibold">Applicant Status:</p>
+                    <p className="font-semibold">Application Status:</p>
                     <p className="border-b border-gray-400">
                       {selectedApplicant.applicationStatus}
                     </p>
@@ -398,7 +391,7 @@ export default function Lgu4ps2() {
                 </div>
                 <button
                   onClick={closeModal}
-                  className="bg-[#2D7144] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  className="bg-indigo-500 text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>

@@ -24,7 +24,8 @@ export default function FourPsForm() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState("");
+  const [emailError, setEmailError] = useState(""); // State to store email error
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,29 +33,18 @@ export default function FourPsForm() {
       ...formData,
       [name]: value,
     });
+    // Clear email error when email input changes
+    if (name === "email") {
+      setEmailError("");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        return;
-      }
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      setLoading(true);
-
       const response = await axios.post(
         "http://localhost:4000/api/4ps/submit",
-        formData,
-        config
+        formData
       );
       setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
@@ -84,9 +74,13 @@ export default function FourPsForm() {
     } catch (error) {
       console.error("Error submitting form:", error);
 
-      setModalMessage("Error submitting form");
-
-      setShowModal(true);
+      // Check if the error response contains an email error
+      if (error.response && error.response.data && error.response.data.error) {
+        setEmailError(error.response.data.error);
+      } else {
+        setModalMessage("Error submitting form");
+        setShowModal(true);
+      }
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -168,23 +162,27 @@ export default function FourPsForm() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-1">
+              <label htmlFor="email" className="block mb-2">
                 Email<span className="text-red-500">*</span>
               </label>
               <input
-                type="email" // Use type="email" for email input
+                type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="example@example.com" // Placeholder text for email input
                 required
                 className="w-full px-3 py-2 border rounded-md"
+                placeholder="example@example.com"
               />
+              {/* Display email error if exists */}
+              {emailError && (
+                <p className="text-red-500 text-sm mt-1">{emailError}</p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="sex" className="block mb-2">
-                Sex<span className="text-red-500">*</span>
+                Gender<span className="text-red-500">*</span>
               </label>
               <select
                 id="sex"
@@ -194,7 +192,7 @@ export default function FourPsForm() {
                 required
                 className="w-full px-3 py-2 border rounded-md"
               >
-                <option value="">Select Sex</option>
+                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>

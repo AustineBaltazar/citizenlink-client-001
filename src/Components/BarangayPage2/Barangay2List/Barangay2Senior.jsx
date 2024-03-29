@@ -49,7 +49,7 @@ export default function Barangay1Senior() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedForm({ ...updatedForm, [name]: value });
+    setSearchTerm(value);
   };
   const formatDate = (dateString) => {
     if (dateString.includes("T")) {
@@ -100,7 +100,8 @@ export default function Barangay1Senior() {
     searchTerm
       ? `${form.firstName} ${form.lastName}`
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()) ||
+        form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -141,11 +142,12 @@ export default function Barangay1Senior() {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      if (a.applicationStatus < b.applicationStatus) return -1;
-      if (a.applicationStatus > b.applicationStatus) return 1;
+      const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
     });
-
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -159,10 +161,10 @@ export default function Barangay1Senior() {
             </button>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search by Name or User ID"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40"
+              onChange={handleInputChange}
+              className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60"
             />
           </div>
         </div>
@@ -178,7 +180,7 @@ export default function Barangay1Senior() {
                 Birthdate{" "}
                 <span className="text-gray-400 text-sm">yyyy/mm/dd</span>
               </th>
-              <th className="px-4 py-2">Sex</th>
+              <th className="px-4 py-2">Gender</th>
               <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                 Application Status{" "}
                 {showDropdown && (
@@ -216,36 +218,38 @@ export default function Barangay1Senior() {
             </tr>
           </thead>
           <tbody>
-            {sortedForms.map((form, index) => (
-              <tr
-                key={form._id}
-                className={`px-4 py-2 text-center border border-gray-800 ${
-                  form.isAlive ? "" : "bg-gray-300 text-gray-500"
-                }`}
-              >
-                <td className="px-4 py-2 text-center">{index + 1}</td>
-                <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
-                <td className="px-4 py-2 text-center">{form.userId}</td>
-                <td className="px-4 py-2 text-center">{form.oscaId}</td>
-                <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                <td className="px-4 py-2 text-center">{form.sex}</td>
-                <td
-                  className={`px-4 py-2 text-center ${getStatusColorClass(
-                    form.applicationStatus
-                  )}`}
+            {sortedForms
+              .filter((form) => form.applicationStatus !== "on review")
+              .map((form, index) => (
+                <tr
+                  key={form._id}
+                  className={`px-4 py-2 text-center border border-gray-800 ${
+                    form.isAlive ? "" : "bg-gray-300 text-gray-500"
+                  }`}
                 >
-                  {form.applicationStatus}
-                </td>
-                <td className="px-4 py-2 text-center">
-                  <button
-                    onClick={() => handleApplicantClick(form)}
-                    className="px-2 bg-gray-200 border rounded-sl border-black"
+                  <td className="px-4 py-2 text-center">{index + 1}</td>
+                  <td className="px-4 py-2 text-center">{`${form.firstName} ${form.lastName}`}</td>
+                  <td className="px-4 py-2 text-center">{form.userId}</td>
+                  <td className="px-4 py-2 text-center">{form.oscaId}</td>
+                  <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
+                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td
+                    className={`px-4 py-2 text-center ${getStatusColorClass(
+                      form.applicationStatus
+                    )}`}
                   >
-                    View Info
-                  </button>
-                </td>
-              </tr>
-            ))}
+                    {form.applicationStatus}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <button
+                      onClick={() => handleApplicantClick(form)}
+                      className="px-2 bg-gray-200 border rounded-sl border-black"
+                    >
+                      View Info
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <ul className="flex justify-center mt-4">
@@ -329,7 +333,7 @@ export default function Barangay1Senior() {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="font-semibold">Sex:</p>
+                  <p className="font-semibold">Gender:</p>
                   <input
                     type="text"
                     name="sex"

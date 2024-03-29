@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function FourPsForm() {
+export default function Online4ps() {
   const [formData, setFormData] = useState({
     surname: "",
     firstname: "",
@@ -10,16 +10,17 @@ export default function FourPsForm() {
     suffix: "",
     houseNumber: "",
     street: "",
-    barangay: "",
+    barangay: "San Isidro Norte",
     cityMunicipality: "",
     province: "",
     region: "",
     postal: "2417",
     dateOfBirth: "",
     contactNumber: "",
-    sex: "",
+    gender: "",
     placeOfBirth: "",
-    applicationStatus: "pending",
+    applicationStatus: "on review",
+    applicationMethod: "online",
   });
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -58,16 +59,17 @@ export default function FourPsForm() {
         suffix: "",
         houseNumber: "",
         street: "",
-        barangay: "",
+        barangay: "San Isidro Norte",
         cityMunicipality: "",
         province: "",
         region: "",
         postal: "2417",
         dateOfBirth: "",
         contactNumber: "",
-        sex: "",
+        gender: "",
         placeOfBirth: "",
-        applicationStatus: "pending",
+        applicationStatus: "on review",
+        applicationMethod: "online",
       });
 
       setShowModal(true);
@@ -92,14 +94,14 @@ export default function FourPsForm() {
     setShowModal(false);
     setModalMessage("");
   };
+
   return (
-    <div className="bg-gray-100  ">
+    <div className=" px-20 py-2">
       <div className="w-full max-w-full p-8">
-        <h2 className="text-2xl mb-4 font-bold text-indigo-500 ">4Ps Form</h2>
+        <h2 className="text-2xl mb-4 font-bold text-[#0569B4] ">4Ps Form</h2>
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
           <form onSubmit={handleSubmit} className=" gap-4">
-            {/* Surname */}
             <div className="mb-4">
               <label htmlFor="surname" className="block mb-2">
                 Surname<span className="text-red-500">*</span>
@@ -181,13 +183,13 @@ export default function FourPsForm() {
               )}
             </div>
             <div className="mb-4">
-              <label htmlFor="sex" className="block mb-2">
+              <label htmlFor="gender" className="block mb-2">
                 Gender<span className="text-red-500">*</span>
               </label>
               <select
-                id="sex"
-                name="sex"
-                value={formData.sex}
+                id="gender"
+                name="gender"
+                value={formData.gender}
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
@@ -228,23 +230,6 @@ export default function FourPsForm() {
                 className="w-full px-3 py-2 border rounded-md"
                 placeholder="Enter Street Name"
               />
-            </div>
-            {/* Barangay */}
-            <div className="mb-4">
-              <label htmlFor="barangay" className="block mb-2">
-                Barangay<span className="text-red-500">*</span>
-              </label>
-              <select
-                id="barangay"
-                name="barangay"
-                value={formData.barangay}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border rounded-md"
-              >
-                <option value="">Select Barangay</option>
-                <option value="Baybay Lopez">Baybay Lopez</option>
-              </select>
             </div>
 
             <div className="mb-4">

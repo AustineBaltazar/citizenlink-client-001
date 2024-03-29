@@ -72,7 +72,8 @@ const FourPsApplicant2 = () => {
     searchTerm
       ? `${form.firstname} ${form.surname}`
           .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+          .includes(searchTerm.toLowerCase()) ||
+        form.userId.toLowerCase().includes(searchTerm.toLowerCase())
       : true
   );
 
@@ -91,11 +92,12 @@ const FourPsApplicant2 = () => {
     )
     .slice((currentPage - 1) * formsPerPage, currentPage * formsPerPage)
     .sort((a, b) => {
-      if (a.applicationStatus < b.applicationStatus) return -1;
-      if (a.applicationStatus > b.applicationStatus) return 1;
+      const nameA = `${a.firstname} ${a.surname}`.toUpperCase();
+      const nameB = `${b.firstname} ${b.surname}`.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
       return 0;
     });
-
   const getStatusColorClass = (status) => {
     switch (status) {
       case "pending":
@@ -147,7 +149,7 @@ const FourPsApplicant2 = () => {
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">User ID</th>
                 <th className="px-4 py-2">Birthday</th>
-                <th className="px-4 py-2">Sex</th>
+                <th className="px-4 py-2">Gender</th>
                 <th className="px-4 py-2" onClick={handleStatusHeaderClick}>
                   {/* Table header for status */}
                   Application Status{" "}
