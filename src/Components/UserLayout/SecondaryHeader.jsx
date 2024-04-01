@@ -63,6 +63,13 @@ export default function SecondaryHeader() {
             >
               Apply Now
             </Link>
+            <Link
+              to="/login"
+              className="text-white hover:text-cyan-500 transition-colors duration-300"
+              onClick={hideDropdown}
+            >
+              Sign in
+            </Link>
           </div>
           <div className="mr-32">
             {userRole === "regional" && (

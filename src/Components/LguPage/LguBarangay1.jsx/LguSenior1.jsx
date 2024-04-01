@@ -330,7 +330,7 @@ export default function LguSenior1() {
                 </h1>
                 <div className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden">
                   <img
-                    src={`http://localhost:4000/${selectedApplicant.picture}`}
+                    src={`http://localhost:4000/${selectedApplicant._1x1Picture}`}
                     alt="Picture"
                     className="w-full h-full object-cover"
                   />

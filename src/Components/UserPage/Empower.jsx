@@ -1,5 +1,5 @@
 import React from "react";
-import Image1 from "/img/empower2.png";
+import Image1 from "/img/emp2-07.png";
 
 export default function Empower() {
   return (

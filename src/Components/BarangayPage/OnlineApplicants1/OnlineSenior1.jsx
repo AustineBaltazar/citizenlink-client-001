@@ -8,10 +8,14 @@ export default function LguSenior1() {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const formsPerPage = 15;
-
+  const [showValidDocs, setShowValidDocs] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const toggleValidDocs = () => {
+    setShowValidDocs(!showValidDocs); // Toggle the visibility state
+  };
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -266,7 +270,7 @@ export default function LguSenior1() {
                 </h1>
                 <div className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden">
                   <img
-                    src={`http://localhost:4000/${selectedApplicant.picture}`}
+                    src={`http://localhost:4000/${selectedApplicant._1x1Picture}`}
                     alt="Picture"
                     className="w-full h-full object-cover"
                   />
@@ -388,10 +392,38 @@ export default function LguSenior1() {
                       {selectedApplicant.applicationStatus}
                     </p>
                   </div>
+                  <div className="flex flex-col">
+                    <p className="font-semibold">ValidDocs:</p>
+                    {showValidDocs && (
+                      <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+                        <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg">
+                          <img
+                            src={`http://localhost:4000/${selectedApplicant.validDocs}`}
+                            alt="Valid Docs"
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            onClick={toggleValidDocs}
+                            className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                          >
+                            {showValidDocs
+                              ? "Hide Valid Docs"
+                              : "Show Valid Docs"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    <button
+                      onClick={toggleValidDocs}
+                      className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                    >
+                      {showValidDocs ? "Hide Valid Docs" : "Show Valid Docs"}
+                    </button>
+                  </div>
                 </div>
                 <button
                   onClick={closeModal}
-                  className="bbg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                 >
                   Close
                 </button>

@@ -118,8 +118,7 @@ export default function OnlineSenior() {
 
       const response = await axios.post(
         "http://localhost:4000/api/senior/submit",
-        formDataToSend,
-        config
+        formDataToSend
       );
       setAccount(response.data.userId);
       console.log("Form submitted successfully:", response.data);
@@ -183,7 +182,9 @@ export default function OnlineSenior() {
 
   return (
     <div className=" px-20 py-2">
-      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">
+        Online Application for Senior Citizen ID
+      </h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
           {/* First Name */}
@@ -482,7 +483,7 @@ export default function OnlineSenior() {
           {/* Picture */}
           <div className="mb-4">
             <label htmlFor="_1x1Picture" className="block mb-2">
-              1x1 Picture
+              (1x1) Picture
             </label>
             <input
               type="file"
@@ -497,8 +498,12 @@ export default function OnlineSenior() {
             {errors._1x1Picture && (
               <p className="text-red-500 text-sm mt-1">{errors._1x1Picture}</p>
             )}
+            <p className="italic text-gray-500 text-xs mt-1">
+              *1 (1x1) Picture
+            </p>
           </div>
 
+          {/* Valid Docs */}
           <div className="mb-4">
             <label htmlFor="validDocs" className="block mb-2">
               Valid Docs
@@ -516,6 +521,9 @@ export default function OnlineSenior() {
             {errors.validDocs && (
               <p className="text-red-500 text-sm mt-1">{errors.validDocs}</p>
             )}
+            <p className="italic text-gray-500 text-xs mt-1">
+              *1 Valid Documents for being Senior Citizen
+            </p>
           </div>
 
           {/* Submit button */}

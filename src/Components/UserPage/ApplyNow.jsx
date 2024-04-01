@@ -4,6 +4,7 @@ export default function ApplyNow() {
   const [barangay, setBarangay] = useState("");
   const [program, setProgram] = useState("");
   const [dataPrivacy, setDataPrivacy] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,6 +29,10 @@ export default function ApplyNow() {
     } else {
       alert("Please agree to the data privacy notice.");
     }
+  };
+
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
   };
 
   return (
@@ -69,7 +74,7 @@ export default function ApplyNow() {
             </option>
           </select>
         </div>
-        <div className="mb-4">
+        <div className="">
           <label className="block text-sm font-semibold mb-2">
             <input
               type="checkbox"
@@ -80,6 +85,29 @@ export default function ApplyNow() {
             <span>Data Privacy Notice (I agree)</span>
           </label>
         </div>
+        <div className="mb-4">
+          <span
+            className="text-blue-500 cursor-pointer text-[14px]"
+            onClick={toggleShowMore}
+          >
+            {showMore ? "Show Less" : "Show More"}
+          </span>
+        </div>
+        {showMore && (
+          <div className="mb-4">
+            <p className="text-sm">
+              I understand that all participant identifiers and anonymized data
+              collected during this project will be retained until the end of
+              the academic year 2023–24 and securely disposed of thereafter. I
+              also agree to conform by the Data Retention Policy pertaining to
+              the capstone project titled "CitizenLink: Web-based Management
+              System for Senior-4Ps of Binmaley." Additionally, I confirm to my
+              understanding of the steps taken to guarantee data security and
+              management in addition to following to moral and legal
+              requirements. Learn more.
+            </p>
+          </div>
+        )}
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

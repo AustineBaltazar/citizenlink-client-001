@@ -145,6 +145,7 @@ const OnlineSenior1 = lazy(() =>
   import("./Components/BarangayPage/OnlineApplicants1/OnlineSenior1")
 );
 
+import Sample from "./Components/sample";
 function App() {
   return (
     <BrowserRouter>
@@ -157,6 +158,7 @@ function App() {
             path="/reset-password/:resetIdentifier"
             element={<ResetPassword />}
           />
+          <Route path="sample" element={<Sample />} />
 
           <Route path="/" element={<UserLayout />}>
             <Route path="/" element={<Home />} />

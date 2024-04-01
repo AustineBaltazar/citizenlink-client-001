@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Staffs from "./Staffs2";
+import PieChart from "./PieChart";
 
 const Dashboard2 = () => {
   const [totals, setTotals] = useState({
@@ -223,6 +224,9 @@ const Dashboard2 = () => {
         </div>
         <div>
           <Staffs />
+        </div>
+        <div className="mb-12 mt-4">
+          <PieChart />
         </div>
       </div>
     </div>

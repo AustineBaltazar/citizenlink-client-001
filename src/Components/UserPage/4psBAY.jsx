@@ -98,7 +98,10 @@ export default function Online4ps() {
   return (
     <div className=" px-20 py-2">
       <div className="w-full max-w-full p-8">
-        <h2 className="text-2xl mb-4 font-bold text-[#0569B4] ">4Ps Form</h2>
+        <h2 className="text-2xl mb-4 font-bold text-[#0569B4] ">
+          {" "}
+          Online Application for NON-4Ps LINELINER
+        </h2>
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
           <form onSubmit={handleSubmit} className=" gap-4">
