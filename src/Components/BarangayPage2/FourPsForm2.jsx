@@ -95,7 +95,9 @@ export default function FourPsForm() {
   return (
     <div className="bg-gray-100  ">
       <div className="w-full max-w-full p-8">
-        <h2 className="text-2xl mb-4 font-bold text-indigo-500 ">4Ps Form</h2>
+        <h2 className="text-2xl mb-4 font-bold text-indigo-500 ">
+          Application for NON-4Ps LIFELINER(New Applicants)
+        </h2>
 
         <div className="bg-white py-2 px-8 shadow-md border rounded-md">
           <form onSubmit={handleSubmit} className=" gap-4">

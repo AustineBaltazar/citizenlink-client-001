@@ -179,7 +179,9 @@ export default function SeniorForm() {
 
   return (
     <div className="bg-gray-100  p-8">
-      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">Senior Form</h2>
+      <h2 className="text-2xl font-bold mb-4 text-[#0569B4]">
+        Application for Senior Citizen ID
+      </h2>
       <div className="bg-white py-2 px-10 shadow-md border rounded-md">
         <form onSubmit={handleSubmit}>
           {/* First Name */}
