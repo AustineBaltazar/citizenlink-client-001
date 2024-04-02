@@ -10,7 +10,7 @@ export default function SeniorForm() {
     firstName: "",
     middleName: "",
     lastName: "",
-    sex: "",
+    gender: "",
     civilStatus: "",
     nationality: "",
     dateOfBirth: "",
@@ -132,7 +132,7 @@ export default function SeniorForm() {
         firstName: "",
         middleName: "",
         lastName: "",
-        sex: "",
+        gender: "",
         civilStatus: "",
         nationality: "",
         dateOfBirth: "",
@@ -313,27 +313,26 @@ export default function SeniorForm() {
             )}
           </div>
 
-          {/* Sex */}
           <div className="mb-4">
-            <label htmlFor="sex" className="block mb-2">
+            <label htmlFor="gender" className="block mb-2">
               Gender<span className="text-red-500">*</span>
             </label>
             <select
-              id="sex"
-              name="sex"
-              value={formData.sex}
+              id="gender"
+              name="gender"
+              value={formData.gender}
               onChange={handleChange}
               required
               className={`w-full px-3 py-2 border rounded-md ${
-                errors.sex && "border-red-500"
+                errors.gender && "border-red-500"
               }`}
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
-            {errors.sex && (
-              <p className="text-red-500 text-sm mt-1">{errors.sex}</p>
+            {errors.gender && (
+              <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
             )}
           </div>
 

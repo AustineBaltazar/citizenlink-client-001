@@ -17,7 +17,7 @@ export default function FourPsForm() {
     postal: "2417",
     dateOfBirth: "",
     contactNumber: "",
-    sex: "",
+    gender: "",
     placeOfBirth: "",
     applicationStatus: "pending",
   });
@@ -65,7 +65,7 @@ export default function FourPsForm() {
         postal: "2417",
         dateOfBirth: "",
         contactNumber: "",
-        sex: "",
+        gender: "",
         placeOfBirth: "",
         applicationStatus: "pending",
       });
@@ -181,13 +181,13 @@ export default function FourPsForm() {
               )}
             </div>
             <div className="mb-4">
-              <label htmlFor="sex" className="block mb-2">
+              <label htmlFor="gender" className="block mb-2">
                 Gender<span className="text-red-500">*</span>
               </label>
               <select
-                id="sex"
-                name="sex"
-                value={formData.sex}
+                id="gender"
+                name="gender"
+                value={formData.gender}
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md"
