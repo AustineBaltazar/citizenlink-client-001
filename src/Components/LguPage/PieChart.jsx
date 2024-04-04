@@ -17,10 +17,12 @@ const GraphComponent = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/4ps/users");
+        console.log(response.data);
 
         const approved4PsSINCount = response.data.filter(
           (user) =>
             user.userId.startsWith("4ps") &&
+            user.records &&
             user.records.applicationStatus === "approved" &&
             user.records.barangay === "San Isidro Norte"
         ).length;
@@ -28,6 +30,7 @@ const GraphComponent = () => {
         const approved4PsBBLCount = response.data.filter(
           (user) =>
             user.userId.startsWith("4ps") &&
+            user.records &&
             user.records.applicationStatus === "approved" &&
             user.records.barangay === "Baybay Lopez"
         ).length;
@@ -35,6 +38,7 @@ const GraphComponent = () => {
         const approvedSeniorSINCount = response.data.filter(
           (user) =>
             user.userId.startsWith("sen") &&
+            user.records &&
             user.records.applicationStatus === "approved" &&
             user.records.barangay === "San Isidro Norte"
         ).length;
@@ -42,6 +46,7 @@ const GraphComponent = () => {
         const approvedSeniorBBLCount = response.data.filter(
           (user) =>
             user.userId.startsWith("sen") &&
+            user.records &&
             user.records.applicationStatus === "approved" &&
             user.records.barangay === "Baybay Lopez"
         ).length;
@@ -51,7 +56,7 @@ const GraphComponent = () => {
         setApprovedSeniorSIN(approvedSeniorSINCount);
         setApprovedSeniorBBL(approvedSeniorBBLCount);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log("Error fetching data:", error);
       }
     };
 

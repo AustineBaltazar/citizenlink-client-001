@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function BarangayTable2() {
+  const [activeForm, setActiveForm] = useState("senior");
+
+  const getStatusColorClass2 = (formType) => {
+    return activeForm === formType ? "bg-red-500" : "bg-indigo-500 mt-0.5";
+  };
+
+  const handleFormChange = (formType) => {
+    setActiveForm(formType);
+  };
+
   const getStatusColorClass = (status) => {
     switch (status) {
       case "pending":
@@ -86,7 +96,10 @@ export default function BarangayTable2() {
           <li>
             <Link
               to="/Barangay2/applicants/Barangay2Senior"
-              className="inline-block bg-indigo-500 hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l  "
+              className={`inline-block ${getStatusColorClass2(
+                "senior"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l`}
+              onClick={() => handleFormChange("senior")}
             >
               Senior Form
             </Link>
@@ -94,7 +107,10 @@ export default function BarangayTable2() {
           <li>
             <Link
               to="/Barangay2/applicants/Barangay24ps"
-              className="inline-block bg-indigo-500 hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r"
+              className={`inline-block ${getStatusColorClass2(
+                "4ps"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r`}
+              onClick={() => handleFormChange("4ps")}
             >
               4ps Form
             </Link>

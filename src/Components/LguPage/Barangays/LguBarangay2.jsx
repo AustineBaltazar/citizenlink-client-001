@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function LguBarangay2() {
+  const [activeForm, setActiveForm] = useState("senior");
+
+  const handleFormChange = (formType) => {
+    setActiveForm(formType);
+  };
+
+  const getStatusColorClass2 = (formType) => {
+    return activeForm === formType ? "bg-red-500" : "bg-[#2D7144] mt-0.5";
+  };
+
   const getStatusColorClass = (status) => {
     switch (status) {
       case "pending":
@@ -75,7 +85,10 @@ export default function LguBarangay2() {
           <li>
             <Link
               to="/Lgu/Barangay2/FourPsApplicant2"
-              className="inline-block bg-[#2D7144] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l  "
+              className={`inline-block ${getStatusColorClass2(
+                "senior"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l`}
+              onClick={() => handleFormChange("senior")}
             >
               4ps Records
             </Link>
@@ -83,7 +96,10 @@ export default function LguBarangay2() {
           <li>
             <Link
               to="/Lgu/Barangay2/SeniorApplicant2"
-              className="inline-block bg-[#2D7144] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r"
+              className={`inline-block ${getStatusColorClass2(
+                "4ps"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r`}
+              onClick={() => handleFormChange("4ps")}
             >
               Senior Records
             </Link>

@@ -171,10 +171,10 @@ export default function LguSenior1() {
               </button>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Name or User ID"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60 "
               />
             </div>
           </div>
@@ -237,7 +237,8 @@ export default function LguSenior1() {
                     form.applicationStatus !== "eligible" &&
                     form.applicationStatus !== "on review" &&
                     form.applicationStatus !== "incomplete" &&
-                    form.applicationStatus !== "rejected"
+                    form.applicationStatus !== "rejected" &&
+                    form.applicationStatus !== "approved"
                 )
                 .map((form, index) => (
                   <tr
@@ -261,7 +262,7 @@ export default function LguSenior1() {
                     <td className="px-4 py-2 text-center">
                       {form.dateOfBirth}
                     </td>
-                    <td className="px-4 py-2 text-center">{form.sex}</td>
+                    <td className="px-4 py-2 text-center">{form.gender}</td>
 
                     <td
                       className={`px-2 py-2 text-center ${getStatusColorClass(
@@ -275,19 +276,13 @@ export default function LguSenior1() {
                           handleStatusChange(form._id, e.target.value)
                         }
                       >
-                        {[
-                          "pending",
-                          "on review",
-                          "incomplete",
-                          "not eligible",
-                          "eligible",
-                          "updated",
-                          "approved",
-                        ].map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
+                        {["pending", "not eligible", "eligible"].map(
+                          (status) => (
+                            <option key={status} value={status}>
+                              {status}
+                            </option>
+                          )
+                        )}
                       </select>
                     </td>
                     <td className="px-4 py-2 text-center">

@@ -10,9 +10,14 @@ export default function Barangay1Senior() {
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
   const formsPerPage = 15;
+  const [showValidDocs, setShowValidDocs] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const toggleValidDocs = () => {
+    setShowValidDocs(!showValidDocs); // Toggle the visibility state
+  };
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -232,7 +237,7 @@ export default function Barangay1Senior() {
                   <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.oscaId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td className="px-4 py-2 text-center">{form.gender}</td>
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(
                       form.applicationStatus
@@ -273,7 +278,7 @@ export default function Barangay1Senior() {
       </div>
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
             <div className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-between">
               <h1 className="flex justify-center items-center">
                 Applicant Information
@@ -466,6 +471,34 @@ export default function Barangay1Senior() {
                   <p className="border-b border-gray-400">
                     {updatedForm.applicationStatus}
                   </p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="font-semibold">ValidDocs:</p>
+                  {showValidDocs && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+                      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg">
+                        <img
+                          src={`http://localhost:4000/${selectedApplicant.validDocs}`}
+                          alt="Valid Docs"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          onClick={toggleValidDocs}
+                          className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                        >
+                          {showValidDocs
+                            ? "Hide Valid Docs"
+                            : "Show Valid Docs"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={toggleValidDocs}
+                    className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  >
+                    {showValidDocs ? "Hide Valid Docs" : "Show Valid Docs"}
+                  </button>
                 </div>
               </div>
               {/* Buttons */}

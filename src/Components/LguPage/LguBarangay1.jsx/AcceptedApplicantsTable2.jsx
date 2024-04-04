@@ -27,7 +27,7 @@ const AcceptedApplicantsTable = ({ handleCloseModal }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-800 bg-opacity-50">
-      <div className="bg-white py-4 px-6 rounded-lg">
+      <div className="bg-white py-4 px-16 rounded-lg">
         <div className="flex justify-end">
           <button onClick={handleCloseModal}>&times;</button>
         </div>
@@ -39,10 +39,10 @@ const AcceptedApplicantsTable = ({ handleCloseModal }) => {
         <table className="w-full">
           <thead>
             <tr>
-              <th className="border px-4 py-2">No.</th>
-              <th className="border px-4 py-2">Name</th>
+              <th className="border px-4 text-center py-2">No.</th>
+              <th className="border px-28 text-center py-2">Name</th>
 
-              <th className="border px-4 py-2">B/D</th>
+              <th className="border px-28 text-center py-2">B/D</th>
               {/* Add other table headers as needed */}
             </tr>
           </thead>
@@ -50,9 +50,11 @@ const AcceptedApplicantsTable = ({ handleCloseModal }) => {
             {acceptedApplicants.map((applicant, index) => (
               <tr key={applicant._id}>
                 <td className="border px-4 py-2">{index + 1}</td>
-                <td className="border px-4 py-2">{`${applicant.firstname} ${applicant.surname}`}</td>
+                <td className="border px-4 py-2 text-center">{`${applicant.firstname} ${applicant.surname}`}</td>
 
-                <td className="border px-4 py-2">{applicant.dateOfBirth}</td>
+                <td className="border px-4 py-2 text-center">
+                  {applicant.dateOfBirth}
+                </td>
                 {/* Add other table cells as needed */}
               </tr>
             ))}

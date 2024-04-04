@@ -138,10 +138,10 @@ const FourPsApplicant1 = () => {
               </button>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Name or User ID"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60 "
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ const FourPsApplicant1 = () => {
                   <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                   <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td className="px-4 py-2 text-center">{form.gender}</td>
 
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(

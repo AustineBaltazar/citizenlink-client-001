@@ -27,6 +27,7 @@ export default function SeniorForm() {
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState();
   const [errors, setErrors] = useState({});
+  const [email, setEmail] = useState();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -119,6 +120,7 @@ export default function SeniorForm() {
         formDataToSend
       );
       setAccount(response.data.userId);
+      setEmail(response.data.email);
       console.log("Form submitted successfully:", response.data);
 
       setModalMessage("Form submitted successfully");
@@ -500,10 +502,9 @@ export default function SeniorForm() {
               </p>
             )}
           </div>
-          {/* Picture */}
           <div className="mb-4">
             <label htmlFor="_1x1Picture" className="block mb-2">
-              1x1 Picture
+              (1x1) Picture
             </label>
             <input
               type="file"
@@ -518,8 +519,12 @@ export default function SeniorForm() {
             {errors._1x1Picture && (
               <p className="text-red-500 text-sm mt-1">{errors._1x1Picture}</p>
             )}
+            <p className="italic text-gray-500 text-xs mt-1">
+              *1 (1x1) Picture
+            </p>
           </div>
 
+          {/* Valid Docs */}
           <div className="mb-4">
             <label htmlFor="validDocs" className="block mb-2">
               Valid Docs
@@ -537,6 +542,12 @@ export default function SeniorForm() {
             {errors.validDocs && (
               <p className="text-red-500 text-sm mt-1">{errors.validDocs}</p>
             )}
+            <p className="italic text-gray-500 text-xs mt-1">
+              *Please upload at least 1 of the following: (Birth Certificate,
+              POSTAL ID, PRC ID, Philippine Driver's License, SSS / GSIS,
+              Philippine Passport, Voter's ID/ Registration, NBI Clearance,
+              BIR/TIN ID)
+            </p>
           </div>
 
           {/* Submit button */}
@@ -564,8 +575,12 @@ export default function SeniorForm() {
                 >
                   &times;
                 </button>
-                <div className="flex flex-col border-4 mb-2">
-                  <p className="text-center">userId: {account}</p>
+                <div className="flex flex-col  mb-1">
+                  <p className="text-center mb-1">userId: {account}</p>
+                  <p className="text-center">
+                    Application details are sent to:
+                  </p>
+                  <p className="text-center border-b font-semibold">{email}</p>
                 </div>
                 <p className="text-center ">{modalMessage}</p>
                 <button

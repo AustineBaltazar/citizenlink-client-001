@@ -9,10 +9,15 @@ export default function Barangay1Senior() {
   const [editable, setEditable] = useState(false);
   const [updatedForm, setUpdatedForm] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
-  const formsPerPage = 15;
+  const formsPerPage = 10;
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showValidDocs, setShowValidDocs] = useState(false);
+
+  const toggleValidDocs = () => {
+    setShowValidDocs(!showValidDocs); // Toggle the visibility state
+  };
   useEffect(() => {
     const fetchForms = async () => {
       try {
@@ -170,7 +175,7 @@ export default function Barangay1Senior() {
             />
           </div>
         </div>
-        {/* Table */}
+
         <table className="table-auto border-collapse border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-[#0569B4] text-white">
@@ -234,7 +239,7 @@ export default function Barangay1Senior() {
                   <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.oscaId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td className="px-4 py-2 text-center">{form.gender}</td>
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(
                       form.applicationStatus
@@ -273,17 +278,17 @@ export default function Barangay1Senior() {
           ))}
         </ul>
       </div>
-      {/* Applicant Information Modal */}
+
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
             <div className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-between">
               <h1 className="flex justify-center items-center">
                 Applicant Information
               </h1>
               <div className="w-20 h-20 border border-gray-300 rounded-md overflow-hidden">
                 <img
-                  src={`http://localhost:4000/${selectedApplicant.picture}`}
+                  src={`http://localhost:4000/${selectedApplicant._1x1Picture}`}
                   alt="Picture"
                   className="w-full h-full object-cover"
                 />
@@ -469,6 +474,34 @@ export default function Barangay1Senior() {
                   <p className="border-b border-gray-400">
                     {updatedForm.applicationStatus}
                   </p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="font-semibold">ValidDocs:</p>
+                  {showValidDocs && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
+                      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg">
+                        <img
+                          src={`http://localhost:4000/${selectedApplicant.validDocs}`}
+                          alt="Valid Docs"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          onClick={toggleValidDocs}
+                          className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                        >
+                          {showValidDocs
+                            ? "Hide  Valid Document"
+                            : "Show  Valid Document"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={toggleValidDocs}
+                    className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
+                  >
+                    {showValidDocs ? "Hide Valid Docs" : "Show Valid Docs"}
+                  </button>
                 </div>
               </div>
               {/* Buttons */}

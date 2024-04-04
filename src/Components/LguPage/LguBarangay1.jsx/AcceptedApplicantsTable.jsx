@@ -44,9 +44,9 @@ const AcceptedApplicantsTable = ({ handleCloseModal }) => {
           <thead>
             <tr>
               <th className="border px-4 py-2">No.</th>
-              <th className="border px-4 py-2">Name</th>
-              <th className="border px-4 py-2">OSCA ID</th>
-              <th className="border px-4 py-2">B/D</th>
+              <th className="border px-28 py-2">Name</th>
+              <th className="border px-28 py-2">OSCA ID</th>
+              <th className="border px-28 py-2">B/D</th>
               {/* Add other table headers as needed */}
             </tr>
           </thead>
@@ -54,9 +54,13 @@ const AcceptedApplicantsTable = ({ handleCloseModal }) => {
             {acceptedApplicants.map((applicant, index) => (
               <tr key={applicant._id}>
                 <td className="border px-4 py-2">{index + 1}</td>
-                <td className="border px-4 py-2">{`${applicant.firstName} ${applicant.lastName}`}</td>
-                <td className="border px-4 py-2">{applicant.oscaId}</td>
-                <td className="border px-4 py-2">{applicant.dateOfBirth}</td>
+                <td className="border px-4 py-2 text-center">{`${applicant.firstName} ${applicant.lastName}`}</td>
+                <td className="border px-4 py-2 text-center">
+                  {applicant.oscaId}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {applicant.dateOfBirth}
+                </td>
                 {/* Add other table cells as needed */}
               </tr>
             ))}

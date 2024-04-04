@@ -36,7 +36,7 @@ export default function ApplyNow() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-xl mt-16">
+    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-xl mt-16 mb-16">
       <h2 className="text-2xl font-semibold mb-4">Apply Now</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

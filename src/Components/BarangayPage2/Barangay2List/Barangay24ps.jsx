@@ -230,7 +230,7 @@ export default function Barangay14ps() {
                   <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                   <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td className="px-4 py-2 text-center">{form.gender}</td>
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(
                       form.applicationStatus
@@ -271,7 +271,7 @@ export default function Barangay14ps() {
       </div>
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
             <div className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-between">
               <h1 className="flex justify-center items-center">
                 Applicant Information

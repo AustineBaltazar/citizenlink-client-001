@@ -1,29 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function BarangayTable() {
-  const getStatusColorClass = (status) => {
-    switch (status) {
-      case "pending":
-        return "bg-blue-500  border-black text-white opacity-80";
-      case "on review":
-        return "bg-yellow-500  border-black text-white opacity-80";
-      case "incomplete":
-        return "bg-red-500 border-black text-white opacity-80";
-      case "not eligible":
-        return "bg-gray-500  border-black text-white opacity-80";
-      case "eligible":
-        return "bg-orange-500  border-black text-white opacity-80";
-      case "rejected":
-        return "bg-red-950  border-black text-white opacity-80";
-      case "approved":
-        return "bg-green-700  border-black text-white opacity-80";
-      case "updated":
-        return "bg-green-500 border-black text-white opacity-80";
-      default:
-        return "bg-white  border-black";
-    }
+  const [activeForm, setActiveForm] = useState("senior");
+  const getStatusColorClass = (formType) => {
+    return activeForm === formType ? "bg-red-500" : "bg-indigo-500 mt-0.5";
+  };
+  const handleFormChange = (formType) => {
+    setActiveForm(formType);
   };
   return (
     <div className="container bg-gray-100 h-full pt-8">
@@ -35,7 +20,10 @@ export default function BarangayTable() {
           <li>
             <Link
               to="/Barangay2/onlineNav/onlinesenior"
-              className="inline-block bg-indigo-500 hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l  "
+              className={`inline-block ${getStatusColorClass(
+                "senior"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l`}
+              onClick={() => handleFormChange("senior")}
             >
               Senior Form
             </Link>
@@ -43,7 +31,10 @@ export default function BarangayTable() {
           <li>
             <Link
               to="/Barangay2/onlineNav/online4ps"
-              className="inline-block bg-indigo-500 hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r"
+              className={`inline-block ${getStatusColorClass(
+                "4ps"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r`}
+              onClick={() => handleFormChange("4ps")}
             >
               4ps Form
             </Link>

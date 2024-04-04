@@ -157,7 +157,7 @@ export default function Barangay14ps() {
   return (
     <div className="container mx-auto px-4">
       <div className="overflow-x-auto">
-        <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse ">
+        <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse">
           <div className="mr-2 mt-1">
             <button className="rounded-l-full bg-[#0569B4] border border-white text-white px-2">
               search
@@ -171,6 +171,7 @@ export default function Barangay14ps() {
             />
           </div>
         </div>
+
         <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
           <thead>
             <tr className="bg-[#0569B4] text-white">
@@ -229,7 +230,7 @@ export default function Barangay14ps() {
                   <td className="px-4 py-2 text-center">{`${form.firstname} ${form.surname}`}</td>
                   <td className="px-4 py-2 text-center">{form.userId}</td>
                   <td className="px-4 py-2 text-center">{form.dateOfBirth}</td>
-                  <td className="px-4 py-2 text-center">{form.sex}</td>
+                  <td className="px-4 py-2 text-center">{form.gender}</td>
                   <td
                     className={`px-4 py-2 text-center ${getStatusColorClass(
                       form.applicationStatus
@@ -270,7 +271,7 @@ export default function Barangay14ps() {
       </div>
       {modalOpen && selectedApplicant && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-          <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+          <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
             <div className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-between">
               <h1 className="flex justify-center items-center">
                 Applicant Information

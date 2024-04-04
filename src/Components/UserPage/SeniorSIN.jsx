@@ -27,6 +27,7 @@ export default function OnlineSenior() {
   const [modalMessage, setModalMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState();
+  const [email, setEmail] = useState();
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -121,6 +122,7 @@ export default function OnlineSenior() {
         formDataToSend
       );
       setAccount(response.data.userId);
+      setEmail(response.data.email);
       console.log("Form submitted successfully:", response.data);
 
       setModalMessage("Form submitted successfully");
@@ -522,7 +524,10 @@ export default function OnlineSenior() {
               <p className="text-red-500 text-sm mt-1">{errors.validDocs}</p>
             )}
             <p className="italic text-gray-500 text-xs mt-1">
-              *1 Valid Documents for being Senior Citizen
+              *Please upload at least 1 of the following: (Birth Certificate,
+              POSTAL ID, PRC ID, Philippine Driver's License, SSS / GSIS,
+              Philippine Passport, Voter's ID/ Registration, NBI Clearance,
+              BIR/TIN ID)
             </p>
           </div>
 
@@ -551,10 +556,16 @@ export default function OnlineSenior() {
                 >
                   &times;
                 </button>
-                <div className="flex flex-col border-4 mb-2">
-                  <p className="text-center">userId: {account}</p>
+                <div className="flex flex-col  mb-1">
+                  <p className="text-center mb-1">userId: {account}</p>
+                  <p className="text-center">
+                    Application details are sent to:
+                  </p>
+                  <p className="text-center border-b font-semibold">{email}</p>
                 </div>
-                <p className="text-center ">{modalMessage}</p>
+                <p className="text-center text-green-600 font-bold">
+                  {modalMessage}
+                </p>
                 <button
                   className="bg-[#0569B4] text-white px-4 py-2 rounded-md mt-4 mx-auto block"
                   onClick={closeModal}

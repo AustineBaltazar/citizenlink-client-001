@@ -64,21 +64,21 @@ export default function Status() {
   function getStatusColor(status) {
     switch (status) {
       case "PENDING":
-        return "bg-gray-500";
+        return "bg-gray-500 rounded-md text-white";
       case "ON REVIEW":
-        return "bg-[#9B755E]";
+        return "bg-[#9B755E] rounded-md text-white";
       case "INCOMPLETE":
-        return "bg-[#F28E2C]";
+        return "bg-[#F28E2C] rounded-md text-white";
       case "NOT ELIGIBLE":
-        return "bg-[#F28E2C]";
+        return "bg-[#F28E2C] rounded-md text-white";
       case "ELIGIBLE":
-        return "bg-emerald-300";
+        return "bg-emerald-300 rounded-md text-white";
       case "REJECTED":
-        return "bg-red-500";
+        return "bg-red-500 rounded-md text-white";
       case "APPROVED":
-        return "bg-[#008000]";
+        return "bg-[#008000] rounded-md text-white";
       case "UPDATED":
-        return "bg-[#068CB6]";
+        return "bg-[#068CB6] rounded-md text-white";
       default:
         return "";
     }

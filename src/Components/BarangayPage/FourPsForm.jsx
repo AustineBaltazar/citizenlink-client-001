@@ -26,6 +26,7 @@ export default function FourPsForm() {
   const [loading, setLoading] = useState(false);
   const [account, setAccount] = useState("");
   const [emailError, setEmailError] = useState(""); // State to store email error
+  const [email, setEmail] = useState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +48,7 @@ export default function FourPsForm() {
         formData
       );
       setAccount(response.data.userId);
+      setEmail(response.data.email);
       console.log("Form submitted successfully:", response.data);
 
       setModalMessage("Form submitted successfully");
@@ -371,8 +373,12 @@ export default function FourPsForm() {
                 >
                   &times;
                 </button>
-                <div className="flex flex-col border-4 mb-2">
-                  <p className="text-center">userId: {account}</p>
+                <div className="flex flex-col  mb-1">
+                  <p className="text-center mb-1">userId: {account}</p>
+                  <p className="text-center">
+                    Application details are sent to:
+                  </p>
+                  <p className="text-center border-b font-semibold">{email}</p>
                 </div>
                 <p className="text-center font-bold">{modalMessage}</p>
                 <button

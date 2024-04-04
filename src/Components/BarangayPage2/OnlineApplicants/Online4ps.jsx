@@ -129,10 +129,10 @@ export default function Lgu4ps1() {
               </button>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Name or User ID"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60 "
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function Lgu4ps1() {
         </div>
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-            <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+            <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
               <div className="text-xl font-semibold bg-indigo-500 text-white py-4 px-2 rounded-t-2xl flex justify-between">
                 <h1 className="flex justify-center items-center">
                   Applicant Information

@@ -140,10 +140,10 @@ const SeniorApplicants1 = () => {
               </button>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Name or User ID"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 text-black"
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60 text-black"
               />
             </div>
           </div>

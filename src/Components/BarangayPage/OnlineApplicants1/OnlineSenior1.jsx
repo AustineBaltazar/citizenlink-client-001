@@ -17,6 +17,11 @@ export default function LguSenior1() {
     setShowValidDocs(!showValidDocs); // Toggle the visibility state
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchTerm(value);
+  };
+
   useEffect(() => {
     const fetchForms = async () => {
       try {
@@ -147,20 +152,21 @@ export default function LguSenior1() {
     <div className="container mx-auto px-4">
       <div className="container mx-auto  bg-white">
         <div className="overflow-x-auto">
-          <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse ">
+          <div className="bg-[#0569B4] border-l border-black border-r border-t flex flex-row-reverse">
             <div className="mr-2 mt-1">
               <button className="rounded-l-full bg-[#0569B4] border border-white text-white px-2">
                 search
               </button>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Search by Name or User ID"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-40 "
+                onChange={handleInputChange}
+                className="px-1 py-0.7 border-r border border-gray-400 rounded-r-full w-60"
               />
             </div>
           </div>
+
           <table className="table-auto border-collapse  border-gray-800 w-full border-l border-r">
             <thead>
               <tr className="bg-[#0569B4] text-white">
@@ -263,7 +269,7 @@ export default function LguSenior1() {
         </div>
         {modalOpen && selectedApplicant && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 overflow-auto">
-            <div className="bg-white rounded-2xl shadow-lg max-w-md w-full">
+            <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full">
               <div className="text-xl font-semibold bg-[#0569B4] text-white py-4 px-2 rounded-t-2xl flex justify-between">
                 <h1 className="flex justify-center items-center">
                   Applicant Information
@@ -323,7 +329,7 @@ export default function LguSenior1() {
                   <div className="flex flex-col">
                     <p className="font-semibold">Gender:</p>
                     <p className="border-b border-gray-400">
-                      {selectedApplicant.sex}
+                      {selectedApplicant.gender}
                     </p>
                   </div>
                   <div className="flex flex-col">
@@ -407,7 +413,7 @@ export default function LguSenior1() {
                             className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                           >
                             {showValidDocs
-                              ? "Hide Valid Docs"
+                              ? "Hide Valid Documents"
                               : "Show Valid Docs"}
                           </button>
                         </div>
@@ -417,7 +423,9 @@ export default function LguSenior1() {
                       onClick={toggleValidDocs}
                       className="bg-[#0569B4] text-white hover:bg-gray-400 p-2 border border-black rounded-lg mt-4"
                     >
-                      {showValidDocs ? "Hide Valid Docs" : "Show Valid Docs"}
+                      {showValidDocs
+                        ? "Hide Valid Documents"
+                        : "Show Valid Documents"}
                     </button>
                   </div>
                 </div>

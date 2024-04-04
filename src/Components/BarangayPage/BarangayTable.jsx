@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function BarangayTable() {
+  const [activeForm, setActiveForm] = useState("senior");
+
   const getStatusColorClass = (status) => {
     switch (status) {
       case "pending":
@@ -25,6 +27,15 @@ export default function BarangayTable() {
         return "bg-white  border-black";
     }
   };
+
+  const handleFormChange = (formType) => {
+    setActiveForm(formType);
+  };
+
+  const getStatusColorClass2 = (formType) => {
+    return activeForm === formType ? "bg-red-500" : "bg-[#0569B4] mt-0.5";
+  };
+
   return (
     <div className="container bg-gray-100 h-full pt-8">
       <h1 className="text-2xl font-bold ml-4">San Isidro Norte</h1>
@@ -86,7 +97,10 @@ export default function BarangayTable() {
           <li>
             <Link
               to="/Barangay/applicants/Barangay1Senior"
-              className="inline-block bg-[#0569B4] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l  "
+              className={`inline-block ${getStatusColorClass2(
+                "senior"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-l`}
+              onClick={() => handleFormChange("senior")}
             >
               Senior Form
             </Link>
@@ -94,7 +108,10 @@ export default function BarangayTable() {
           <li>
             <Link
               to="/Barangay/applicants/Barangay14ps"
-              className="inline-block bg-[#0569B4] hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r"
+              className={`inline-block ${getStatusColorClass2(
+                "4ps"
+              )} hover:bg-gray-400 text-white font-bold py-2 px-2 border-r border-white border-l border-t rounded-r`}
+              onClick={() => handleFormChange("4ps")}
             >
               4ps Form
             </Link>
