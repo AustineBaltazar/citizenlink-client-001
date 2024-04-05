@@ -159,7 +159,7 @@ const GraphComponent = () => {
       <div className="w-full md:w-[40%] shadow-xl">
         <div className="bg-white border rounded p-4">
           <h2 className="text-lg font-semibold mb-4">
-            Approved 4Ps Applications
+            Approved 4Ps Applicants
           </h2>
           <canvas id="chart-4ps"></canvas>
         </div>
@@ -167,7 +167,7 @@ const GraphComponent = () => {
       <div className="w-full md:w-[40%] shadow-xl">
         <div className="bg-white  rounded p-4">
           <h2 className="text-lg font-semibold mb-4">
-            Approved Senior Applications
+            Approved Senior Applicants
           </h2>
           <canvas id="chart-senior"></canvas>
         </div>

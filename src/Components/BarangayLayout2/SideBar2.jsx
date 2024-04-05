@@ -31,7 +31,9 @@ function Sidebar2() {
             <Link to="/Barangay2/applicants/Barangay2Senior">Applicants</Link>
           </li>
           <li className="mb-2">
-            <Link to="/Barangay2/onlineNav/online4ps">Online Applicants</Link>
+            <Link to="/Barangay2/onlineNav/onlinesenior">
+              Online Applicants
+            </Link>
           </li>
         </ul>
       </div>
